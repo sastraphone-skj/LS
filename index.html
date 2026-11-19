@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen & Laporan Service HP</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        };
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('service_hp_theme_v3');
+                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -16,6 +30,54 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        html.dark ::-webkit-scrollbar-thumb { background: #334155; }
+        html.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Optimalisasi responsivitas sentuhan keypad PIN */
+        .pin-key, #pin-clear, #pin-backspace {
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        @keyframes pinShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .animate-pin-shake {
+            animation: pinShake 0.32s ease-in-out;
+        }
+
+        /* Penyesuaian otomatis Mode Gelap (Dark Mode) */
+        html.dark body { background-color: #020617; color: #f1f5f9; }
+        html.dark header { background-color: rgba(15, 23, 42, 0.9); border-color: #1e293b; }
+        html.dark #bottom-nav-bar { background-color: rgba(15, 23, 42, 0.95); border-color: #1e293b; }
+        html.dark .bg-white { background-color: #0f172a !important; }
+        html.dark .bg-white\/95 { background-color: rgba(15, 23, 42, 0.95) !important; }
+        html.dark .bg-slate-50 { background-color: #1e293b !important; }
+        html.dark .bg-slate-50\/70 { background-color: rgba(30, 41, 59, 0.7) !important; }
+        html.dark .bg-slate-100 { background-color: #1e293b !important; }
+        html.dark .border-slate-100,
+        html.dark .border-slate-200,
+        html.dark .border-slate-300 { border-color: #334155 !important; }
+        html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: #1e293b !important; }
+        html.dark .text-slate-900,
+        html.dark .text-slate-800 { color: #f8fafc !important; }
+        html.dark .text-slate-700,
+        html.dark .text-slate-600 { color: #cbd5e1 !important; }
+        html.dark .text-slate-500,
+        html.dark .text-slate-400 { color: #94a3b8 !important; }
+        html.dark input,
+        html.dark select,
+        html.dark textarea {
+            background-color: #020617 !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+        html.dark .hover\:bg-slate-50\/80:hover,
+        html.dark .hover\:bg-slate-50\/90:hover,
+        html.dark .hover\:bg-slate-200:hover { background-color: #334155 !important; }
 
         @media print {
             body * { visibility: hidden; }
@@ -34,10 +96,22 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
 
     <!-- ==================== 1. LAYAR PENDAFTARAN / HUBUNGKAN TOKO ==================== -->
-    <div id="onboarding-screen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+    <div id="onboarding-screen" class="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+        <button type="button" title="Ganti Mode Gelap / Terang" class="btn-theme-toggle absolute top-4 right-4 p-2.5 rounded-2xl bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/20 transition cursor-pointer">
+            <svg class="theme-icon-sun hidden w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="theme-icon-moon w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
         <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
             <div class="p-6 sm:p-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center">
                 <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/25">
@@ -119,19 +193,32 @@
     </div>
 
     <!-- ==================== 2. LAYAR KUNCI PIN TOKO ==================== -->
-    <div id="pin-lock-screen" class="hidden min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950">
-        <div class="w-full max-w-sm bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 text-center border border-white/20">
-            <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/30 overflow-hidden">
-                <img id="pin-screen-avatar" src="" alt="Logo Toko" class="hidden w-full h-full object-cover">
-                <svg id="pin-screen-icon" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <div id="pin-lock-screen" class="hidden relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950">
+        <button type="button" title="Ganti Mode Gelap / Terang" class="btn-theme-toggle absolute top-4 right-4 p-2.5 rounded-2xl bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/20 transition cursor-pointer">
+            <svg class="theme-icon-sun hidden w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="theme-icon-moon w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+
+        <div id="pin-card" class="w-full max-w-sm bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 sm:p-8 text-center border border-white/20">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg overflow-hidden border border-slate-200">
+                <img id="pin-screen-avatar" src="" alt="Foto Toko" class="hidden w-full h-full object-cover">
+                <svg id="pin-screen-icon" class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
             </div>
-            <h2 id="pin-store-title" class="text-lg font-bold text-slate-900">Masuk ke Toko</h2>
-            <p class="text-xs text-slate-500 mt-0.5">Masukkan PIN keamanan untuk membuka dashboard</p>
+            <h2 id="pin-store-title" class="text-lg font-bold text-slate-900">Masukkan PIN Toko</h2>
+            <p class="text-xs text-slate-500 mt-1">Masukkan PIN keamanan untuk membuka aplikasi</p>
 
-            <div id="pin-dots" class="flex justify-center gap-3 my-6">
+            <div id="pin-dots" class="flex justify-center gap-3 my-5">
                 <span class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 transition-all"></span>
                 <span class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 transition-all"></span>
                 <span class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 transition-all"></span>
@@ -193,6 +280,19 @@
                         <span id="db-status-text">Online</span>
                     </div>
 
+                    <button type="button" id="btn-toggle-theme" title="Mode Gelap / Terang" class="btn-theme-toggle p-2.5 rounded-xl bg-slate-100 hover:bg-amber-50 dark:hover:bg-slate-800 text-slate-700 hover:text-amber-600 transition cursor-pointer">
+                        <svg class="theme-icon-sun hidden w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="theme-icon-moon w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+
                     <button type="button" id="btn-sync-now" title="Sinkronisasi dengan Google Sheets" class="p-2.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 transition cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <polyline points="23 4 23 10 17 10"></polyline>
@@ -215,8 +315,9 @@
 
             <!-- ==================== TAB 1: DASHBOARD ==================== -->
             <section id="view-dashboard" class="space-y-6">
-                <div id="dashboard-banner-card" class="w-full h-40 sm:h-56 md:h-64 rounded-3xl overflow-hidden shadow-sm border border-slate-200 bg-slate-200">
-                    <img id="dashboard-banner-img" src="https://placehold.co/1200x400/1e293b/ffffff?text=+" alt="Banner Toko" class="w-full h-full object-cover">
+                <div id="dashboard-banner-card" class="relative w-full h-44 sm:h-60 md:h-72 rounded-3xl overflow-hidden shadow-sm border border-slate-200 bg-slate-900">
+                    <img id="dashboard-banner-bg" src="" alt="" aria-hidden="true" class="hidden absolute inset-0 w-full h-full object-cover blur-2xl scale-110 opacity-45">
+                    <img id="dashboard-banner-img" src="https://placehold.co/1280x400/1e293b/ffffff?text=+" alt="Banner Toko" class="relative z-10 w-full h-full object-cover">
                 </div>
 
                 <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
@@ -788,17 +889,49 @@
         const STORAGE_PROFILE_KEY = 'service_hp_profile_v3';
         const STORAGE_SERVICES_KEY = 'service_hp_records_v3';
         const STORAGE_WEBAPP_URL_KEY = 'service_hp_webapp_url_v3';
+        const STORAGE_THEME_KEY = 'service_hp_theme_v3';
         const SESSION_UNLOCKED_KEY = 'service_hp_unlocked_v3';
 
         let storeProfile = null;
         let servicesData = [];
         let webAppUrl = '';
         let enteredPin = '';
+        let pinResetTimer = null;
         let statusChartInstance = null;
         let financeChartInstance = null;
         let currentNotaService = null;
         let confirmCallback = null;
         let memoryUnlocked = false;
+
+        // ==================== MODE GELAP & TERANG ====================
+        function getPreferredTheme() {
+            const saved = safeLocalGet(STORAGE_THEME_KEY);
+            if (saved === 'dark' || saved === 'light') return saved;
+            return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        }
+
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            document.documentElement.classList.toggle('dark', isDark);
+            safeLocalSet(STORAGE_THEME_KEY, isDark ? 'dark' : 'light');
+
+            document.querySelectorAll('.theme-icon-sun').forEach(el => {
+                el.classList.toggle('hidden', !isDark);
+            });
+            document.querySelectorAll('.theme-icon-moon').forEach(el => {
+                el.classList.toggle('hidden', isDark);
+            });
+
+            if (document.getElementById('app-workspace') && !document.getElementById('app-workspace').classList.contains('hidden')) {
+                if (!document.getElementById('view-dashboard').classList.contains('hidden')) renderDashboard();
+                if (!document.getElementById('view-reports').classList.contains('hidden')) renderReports();
+            }
+        }
+
+        function toggleTheme() {
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            applyTheme(isCurrentlyDark ? 'light' : 'dark');
+        }
 
         function safeLocalGet(key) {
             try { return localStorage.getItem(key); } catch (e) { return null; }
@@ -819,6 +952,15 @@
         }
 
         // ==================== UTILITAS FORMAT ====================
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         function formatRupiah(num) {
             const val = Number(num) || 0;
             return 'Rp ' + val.toLocaleString('id-ID');
@@ -855,7 +997,11 @@
             const text = document.getElementById('db-status-text');
             if (!badge) return;
 
-            badge.classList.remove('bg-emerald-50', 'text-emerald-700', 'border-emerald-200', 'bg-amber-50', 'text-amber-700', 'border-amber-200', 'bg-blue-50', 'text-blue-700', 'border-blue-200');
+            badge.classList.remove(
+                'bg-emerald-50', 'text-emerald-700', 'border-emerald-200',
+                'bg-amber-50', 'text-amber-700', 'border-amber-200',
+                'bg-blue-50', 'text-blue-700', 'border-blue-200'
+            );
             dot.classList.remove('bg-emerald-500', 'bg-amber-500', 'bg-blue-500', 'animate-pulse');
 
             if (state === 'syncing') {
@@ -873,41 +1019,54 @@
 
         // ==================== PENYIMPANAN & SINKRONISASI ONLINE ====================
         function saveLocalCache() {
-            if (storeProfile) {
-                safeLocalSet(STORAGE_PROFILE_KEY, JSON.stringify(storeProfile));
-            }
             safeLocalSet(STORAGE_SERVICES_KEY, JSON.stringify(servicesData));
             safeLocalSet(STORAGE_WEBAPP_URL_KEY, webAppUrl || '');
+            if (storeProfile) {
+                try {
+                    localStorage.setItem(STORAGE_PROFILE_KEY, JSON.stringify(storeProfile));
+                } catch (e) {
+                    const slimProfile = { ...storeProfile, photoUrl: '' };
+                    safeLocalSet(STORAGE_PROFILE_KEY, JSON.stringify(slimProfile));
+                }
+            }
         }
 
         function loadLocalCache() {
             try {
-                const p = safeLocalGet(STORAGE_PROFILE_KEY);
-                const s = safeLocalGet(STORAGE_SERVICES_KEY);
-                const u = safeLocalGet(STORAGE_WEBAPP_URL_KEY);
-                storeProfile = p ? JSON.parse(p) : null;
-                servicesData = s ? JSON.parse(s) : [];
-                webAppUrl = u || '';
+                const rawProf = safeLocalGet(STORAGE_PROFILE_KEY);
+                storeProfile = rawProf ? JSON.parse(rawProf) : null;
             } catch (e) {
                 storeProfile = null;
+            }
+
+            try {
+                const rawSrv = safeLocalGet(STORAGE_SERVICES_KEY);
+                servicesData = rawSrv ? JSON.parse(rawSrv) : [];
+                if (!Array.isArray(servicesData)) servicesData = [];
+            } catch (e) {
                 servicesData = [];
             }
+
+            webAppUrl = safeLocalGet(STORAGE_WEBAPP_URL_KEY) || '';
         }
 
-        function syncToOnlineDatabase(callback) {
+        function syncToOnlineDatabase(onDone) {
             saveLocalCache();
-            const payload = { profile: storeProfile, services: servicesData };
+            const payload = {
+                profile: storeProfile,
+                services: servicesData
+            };
 
             if (isGasEnvironment()) {
                 setDbStatus('syncing', 'Menyimpan...');
                 google.script.run
                     .withSuccessHandler(() => {
-                        setDbStatus('online', 'Sheets Terhubung');
-                        if (callback) callback(true);
+                        setDbStatus('online', 'Google Sheets');
+                        if (typeof onDone === 'function') onDone(true);
                     })
                     .withFailureHandler(() => {
-                        setDbStatus('offline', 'Gagal Sync');
-                        if (callback) callback(false);
+                        setDbStatus('local', 'Lokal (Gagal Sync)');
+                        if (typeof onDone === 'function') onDone(false);
                     })
                     .saveAllDataPayload(payload);
                 return;
@@ -922,76 +1081,81 @@
                     body: JSON.stringify(payload)
                 })
                 .then(() => {
-                    setDbStatus('online', 'Online Sheets');
-                    if (callback) callback(true);
+                    setDbStatus('online', 'Sheets Terhubung');
+                    if (typeof onDone === 'function') onDone(true);
                 })
                 .catch(() => {
-                    setDbStatus('offline', 'Offline Cache');
-                    if (callback) callback(false);
+                    setDbStatus('local', 'Mode Lokal');
+                    if (typeof onDone === 'function') onDone(false);
                 });
-            } else {
-                setDbStatus('offline', 'Mode Lokal');
-                if (callback) callback(true);
+                return;
             }
+
+            setDbStatus('local', 'Mode Lokal');
+            if (typeof onDone === 'function') onDone(true);
         }
 
-        function pullFromOnlineDatabase(customUrl, onDone) {
-            const targetUrl = (customUrl !== undefined && customUrl !== null) ? customUrl : webAppUrl;
+        function pullFromOnlineDatabase(targetUrl, onDone) {
+            const urlToUse = (targetUrl || webAppUrl || '').trim();
 
             if (isGasEnvironment()) {
                 setDbStatus('syncing', 'Memuat...');
                 google.script.run
-                    .withSuccessHandler(res => {
+                    .withSuccessHandler((res) => {
                         if (res && res.status === 'success') {
-                            if (res.profile && res.profile.name) storeProfile = res.profile;
                             if (Array.isArray(res.services)) servicesData = res.services;
+                            if (res.profile && res.profile.name) {
+                                storeProfile = { ...(storeProfile || {}), ...res.profile };
+                            }
                             saveLocalCache();
-                            setDbStatus('online', 'Sheets Terhubung');
-                            if (onDone) onDone(true, res);
+                            setDbStatus('online', 'Google Sheets');
+                            if (typeof onDone === 'function') onDone(true);
                         } else {
-                            setDbStatus('online', 'Sheets Siap');
-                            if (onDone) onDone(false, res);
+                            setDbStatus('local', 'Mode Lokal');
+                            if (typeof onDone === 'function') onDone(false);
                         }
                     })
-                    .withFailureHandler(err => {
-                        setDbStatus('offline', 'Error Server');
-                        if (onDone) onDone(false, err);
+                    .withFailureHandler(() => {
+                        setDbStatus('local', 'Mode Lokal');
+                        if (typeof onDone === 'function') onDone(false);
                     })
                     .getAllDataPayload();
                 return;
             }
 
-            if (!targetUrl || !targetUrl.startsWith('http')) {
-                setDbStatus('offline', 'Mode Lokal');
-                if (onDone) onDone(false);
+            if (!urlToUse || !urlToUse.startsWith('http')) {
+                setDbStatus('local', 'Mode Lokal');
+                if (typeof onDone === 'function') onDone(false);
                 return;
             }
 
-            setDbStatus('syncing', 'Sinkronisasi...');
-            const fetchUrl = targetUrl + (targetUrl.includes('?') ? '&' : '?') + 'action=getAll';
-            const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-            const timer = controller ? setTimeout(() => controller.abort(), 10000) : null;
+            setDbStatus('syncing', 'Menghubungkan...');
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 12000);
+            const fetchUrl = urlToUse + (urlToUse.includes('?') ? '&' : '?') + 'action=getAll&t=' + Date.now();
 
-            fetch(fetchUrl, controller ? { signal: controller.signal } : {})
+            fetch(fetchUrl, { signal: controller.signal })
                 .then(r => r.json())
                 .then(res => {
-                    if (timer) clearTimeout(timer);
+                    clearTimeout(timer);
                     if (res && res.status === 'success') {
-                        if (res.profile && res.profile.name) storeProfile = res.profile;
+                        webAppUrl = urlToUse;
                         if (Array.isArray(res.services)) servicesData = res.services;
-                        webAppUrl = targetUrl;
+                        if (res.profile && res.profile.name) {
+                            storeProfile = { ...(storeProfile || {}), ...res.profile };
+                        }
                         saveLocalCache();
-                        setDbStatus('online', 'Online Sheets');
-                        if (onDone) onDone(true, res);
+                        setDbStatus('online', 'Sheets Terhubung');
+                        if (typeof onDone === 'function') onDone(true);
                     } else {
-                        setDbStatus('offline', 'Respon Tidak Valid');
-                        if (onDone) onDone(false, res);
+                        setDbStatus('local', 'Mode Lokal');
+                        if (typeof onDone === 'function') onDone(false);
                     }
                 })
-                .catch(err => {
-                    if (timer) clearTimeout(timer);
-                    setDbStatus('offline', 'Offline Cache');
-                    if (onDone) onDone(false, err);
+                .catch(() => {
+                    clearTimeout(timer);
+                    setDbStatus('local', 'Mode Lokal');
+                    if (typeof onDone === 'function') onDone(false);
                 });
         }
 
@@ -1012,25 +1176,54 @@
             const pinAvatar = document.getElementById('pin-screen-avatar');
             const pinIcon = document.getElementById('pin-screen-icon');
             const bannerImg = document.getElementById('dashboard-banner-img');
+            const bannerBg = document.getElementById('dashboard-banner-bg');
+            const defaultBanner = 'https://placehold.co/1280x400/1e293b/ffffff?text=+';
 
-            if (photo) {
+            const resetToFallback = () => {
+                headerAvatar.classList.add('hidden');
+                headerIcon.classList.remove('hidden');
+                pinAvatar.classList.add('hidden');
+                pinIcon.classList.remove('hidden');
+                bannerBg.classList.add('hidden');
+                bannerImg.classList.remove('object-contain');
+                bannerImg.classList.add('object-cover');
+                bannerImg.src = defaultBanner;
+            };
+
+            if ((photo && photo.startsWith('data:image')) || (photo && photo.startsWith('http'))) {
+                headerAvatar.onerror = () => {
+                    headerAvatar.classList.add('hidden');
+                    headerIcon.classList.remove('hidden');
+                };
                 headerAvatar.src = photo;
                 headerAvatar.classList.remove('hidden');
                 headerIcon.classList.add('hidden');
 
+                pinAvatar.onerror = () => {
+                    pinAvatar.classList.add('hidden');
+                    pinIcon.classList.remove('hidden');
+                };
                 pinAvatar.src = photo;
                 pinAvatar.classList.remove('hidden');
                 pinIcon.classList.add('hidden');
 
+                bannerImg.onload = function() {
+                    const isWideBanner = this.naturalWidth >= this.naturalHeight * 1.35;
+                    if (isWideBanner) {
+                        bannerBg.classList.add('hidden');
+                        this.classList.remove('object-contain');
+                        this.classList.add('object-cover');
+                    } else {
+                        bannerBg.src = photo;
+                        bannerBg.classList.remove('hidden');
+                        this.classList.remove('object-cover');
+                        this.classList.add('object-contain');
+                    }
+                };
+                bannerImg.onerror = resetToFallback;
                 bannerImg.src = photo;
             } else {
-                headerAvatar.classList.add('hidden');
-                headerIcon.classList.remove('hidden');
-
-                pinAvatar.classList.add('hidden');
-                pinIcon.classList.remove('hidden');
-
-                bannerImg.src = 'https://placehold.co/1200x400/1e293b/ffffff?text=+';
+                resetToFallback();
             }
         }
 
@@ -1054,48 +1247,68 @@
         }
 
         function updatePinDots() {
-            const targetLen = (storeProfile && storeProfile.pin) ? storeProfile.pin.length : 4;
             const dots = document.querySelectorAll('#pin-dots span');
+            const targetLen = (storeProfile && storeProfile.pin) ? String(storeProfile.pin).length : 4;
             dots.forEach((dot, idx) => {
                 if (idx >= targetLen) {
                     dot.classList.add('hidden');
                 } else {
                     dot.classList.remove('hidden');
                     if (idx < enteredPin.length) {
-                        dot.classList.remove('border-slate-300', 'bg-transparent');
-                        dot.classList.add('border-blue-600', 'bg-blue-600', 'scale-110');
+                        dot.classList.add('bg-blue-600', 'border-blue-600', 'scale-110');
+                        dot.classList.remove('border-slate-300');
                     } else {
-                        dot.classList.remove('border-blue-600', 'bg-blue-600', 'scale-110');
-                        dot.classList.add('border-slate-300', 'bg-transparent');
+                        dot.classList.remove('bg-blue-600', 'border-blue-600', 'scale-110');
+                        dot.classList.add('border-slate-300');
                     }
                 }
             });
         }
 
         function handlePinInput(digit) {
-            if (!storeProfile || !storeProfile.pin) {
+            const correctPin = (storeProfile && storeProfile.pin) ? String(storeProfile.pin) : '';
+            if (!correctPin) {
+                safeSessionSet(SESSION_UNLOCKED_KEY, '1');
                 enterMainWorkspace();
                 return;
             }
-            const targetPin = String(storeProfile.pin);
-            if (enteredPin.length >= targetPin.length) return;
 
+            if (pinResetTimer) {
+                clearTimeout(pinResetTimer);
+                pinResetTimer = null;
+                enteredPin = '';
+                document.getElementById('pin-error').classList.add('hidden');
+            }
+
+            if (enteredPin.length >= correctPin.length) return;
             enteredPin += String(digit);
             updatePinDots();
-            document.getElementById('pin-error').classList.add('hidden');
 
-            if (enteredPin.length === targetPin.length) {
-                if (enteredPin === targetPin) {
+            if (navigator.vibrate) {
+                try { navigator.vibrate(12); } catch (e) {}
+            }
+
+            if (enteredPin.length === correctPin.length) {
+                if (enteredPin === correctPin) {
+                    document.getElementById('pin-error').classList.add('hidden');
                     safeSessionSet(SESSION_UNLOCKED_KEY, '1');
-                    enteredPin = '';
-                    updatePinDots();
-                    enterMainWorkspace();
+                    setTimeout(() => enterMainWorkspace(), 80);
                 } else {
                     document.getElementById('pin-error').classList.remove('hidden');
-                    setTimeout(() => {
+                    const pinCard = document.getElementById('pin-card');
+                    if (pinCard) {
+                        pinCard.classList.remove('animate-pin-shake');
+                        void pinCard.offsetWidth;
+                        pinCard.classList.add('animate-pin-shake');
+                    }
+                    if (navigator.vibrate) {
+                        try { navigator.vibrate([30, 40, 30]); } catch (e) {}
+                    }
+                    pinResetTimer = setTimeout(() => {
                         enteredPin = '';
                         updatePinDots();
-                    }, 400);
+                        pinResetTimer = null;
+                    }, 300);
                 }
             }
         }
@@ -1107,13 +1320,8 @@
             document.getElementById('bottom-nav-bar').classList.remove('hidden');
 
             applyStoreIdentityToUI();
-            const currentMonth = new Date().toISOString().slice(0, 7);
-            const monthInput = document.getElementById('report-month-filter');
-            if (monthInput && !monthInput.value) monthInput.value = currentMonth;
-
+            populateProfileForm();
             switchTab('dashboard');
-            renderDashboard();
-            renderServicesTable();
         }
 
         // ==================== NAVIGASI TAB ====================
@@ -1121,15 +1329,21 @@
             const views = ['dashboard', 'services', 'reports', 'profile'];
             views.forEach(v => {
                 const el = document.getElementById('view-' + v);
-                if (el) el.classList.toggle('hidden', v !== tabName);
+                if (el) {
+                    if (v === tabName) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
             });
 
             document.querySelectorAll('#bottom-nav-bar .nav-btn').forEach(btn => {
-                const isActive = btn.getAttribute('data-tab') === tabName;
-                btn.classList.toggle('text-blue-600', isActive);
-                btn.classList.toggle('font-semibold', isActive);
-                btn.classList.toggle('text-slate-500', !isActive);
-                btn.classList.toggle('font-medium', !isActive);
+                const isTarget = btn.getAttribute('data-tab') === tabName;
+                if (isTarget) {
+                    btn.classList.add('text-blue-600', 'font-semibold');
+                    btn.classList.remove('text-slate-500', 'font-medium');
+                } else {
+                    btn.classList.remove('text-blue-600', 'font-semibold');
+                    btn.classList.add('text-slate-500', 'font-medium');
+                }
             });
 
             if (tabName === 'dashboard') renderDashboard();
@@ -1138,143 +1352,151 @@
             if (tabName === 'profile') populateProfileForm();
         }
 
-        // ==================== DASHBOARD & GRAFIK STATUS ====================
-        function getStatusBadgeClass(status) {
-            switch (status) {
-                case 'Antrian': return 'bg-slate-100 text-slate-700 border-slate-200';
-                case 'Proses': return 'bg-blue-50 text-blue-700 border-blue-200';
-                case 'Menunggu Part': return 'bg-amber-50 text-amber-700 border-amber-200';
-                case 'Selesai': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-                case 'Diambil': return 'bg-indigo-50 text-indigo-700 border-indigo-200';
-                case 'Batal': return 'bg-rose-50 text-rose-700 border-rose-200';
-                default: return 'bg-slate-100 text-slate-700 border-slate-200';
-            }
-        }
-
+        // ==================== DASHBOARD & GRAFIK ====================
         function renderDashboard() {
-            const total = servicesData.length;
+            const totalUnits = servicesData.length;
             const inProcess = servicesData.filter(s => ['Antrian', 'Proses', 'Menunggu Part'].includes(s.status)).length;
-            const ready = servicesData.filter(s => ['Selesai', 'Diambil'].includes(s.status)).length;
+            const readyUnits = servicesData.filter(s => ['Selesai', 'Diambil'].includes(s.status)).length;
 
-            let revenue = 0;
-            let profit = 0;
+            const validFinancial = servicesData.filter(s => s.status !== 'Batal');
+            const totalRevenue = validFinancial.reduce((sum, s) => sum + (Number(s.totalPrice) || 0), 0);
+            const totalParts = validFinancial.reduce((sum, s) => sum + (Number(s.partsCost) || 0), 0);
+            const totalProfit = totalRevenue - totalParts;
+
+            document.getElementById('kpi-total').textContent = totalUnits;
+            document.getElementById('kpi-process').textContent = inProcess;
+            document.getElementById('kpi-ready').textContent = readyUnits;
+            document.getElementById('kpi-revenue').textContent = formatRupiah(totalRevenue);
+            document.getElementById('kpi-profit').textContent = formatRupiah(totalProfit);
+
+            const statusCounts = {
+                'Antrian': 0,
+                'Proses': 0,
+                'Menunggu Part': 0,
+                'Selesai': 0,
+                'Diambil': 0,
+                'Batal': 0
+            };
             servicesData.forEach(s => {
-                if (s.status !== 'Batal') {
-                    const tot = Number(s.totalPrice) || 0;
-                    const part = Number(s.partsCost) || 0;
-                    revenue += tot;
-                    profit += (tot - part);
+                if (Object.prototype.hasOwnProperty.call(statusCounts, s.status)) {
+                    statusCounts[s.status]++;
                 }
             });
-
-            document.getElementById('kpi-total').textContent = total;
-            document.getElementById('kpi-process').textContent = inProcess;
-            document.getElementById('kpi-ready').textContent = ready;
-            document.getElementById('kpi-revenue').textContent = formatRupiah(revenue);
-            document.getElementById('kpi-profit').textContent = formatRupiah(profit);
+            renderStatusChart(statusCounts);
 
             const recentBody = document.getElementById('recent-services-body');
-            const recentList = [...servicesData].slice(0, 5);
+            const recentList = servicesData.slice(0, 5);
             if (recentList.length === 0) {
                 recentBody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-slate-400 text-xs">Belum ada data service masuk.</td></tr>';
             } else {
-                recentBody.innerHTML = recentList.map(s => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="py-3 px-2">
-                            <div class="font-mono text-[11px] font-bold text-blue-600">${s.nota}</div>
-                            <div class="font-semibold text-slate-800 text-xs">${s.customer}</div>
+                recentBody.innerHTML = recentList.map(item => `
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="py-2.5 px-2">
+                            <span class="font-mono font-bold text-blue-600 block text-[11px]">${escapeHtml(item.nota)}</span>
+                            <span class="font-semibold text-slate-800">${escapeHtml(item.customer)}</span>
                         </td>
-                        <td class="py-3 px-2">
-                            <div class="font-medium text-slate-800 text-xs">${s.device}</div>
-                            <div class="text-[11px] text-slate-500 truncate max-w-[150px]">${s.issue}</div>
+                        <td class="py-2.5 px-2">
+                            <span class="font-medium text-slate-800 block">${escapeHtml(item.device)}</span>
+                            <span class="text-[11px] text-slate-400 line-clamp-1">${escapeHtml(item.issue)}</span>
                         </td>
-                        <td class="py-3 px-2 font-semibold text-slate-800 text-xs">${formatRupiah(s.totalPrice)}</td>
-                        <td class="py-3 px-2 text-right">
-                            <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-semibold border ${getStatusBadgeClass(s.status)}">${s.status}</span>
-                        </td>
+                        <td class="py-2.5 px-2 font-semibold text-slate-700">${formatRupiah(item.totalPrice)}</td>
+                        <td class="py-2.5 px-2 text-right">${getStatusBadgeHtml(item.status)}</td>
                     </tr>
                 `).join('');
             }
-
-            renderStatusChart();
         }
 
-        function renderStatusChart() {
+        function renderStatusChart(counts) {
             const canvas = document.getElementById('statusChart');
-            if (!canvas || typeof Chart === 'undefined') return;
-
-            const statuses = ['Antrian', 'Proses', 'Menunggu Part', 'Selesai', 'Diambil', 'Batal'];
-            const colors = ['#64748b', '#2563eb', '#f59e0b', '#10b981', '#6366f1', '#f43f5e'];
-            const counts = statuses.map(st => servicesData.filter(s => s.status === st).length);
-
             const legendContainer = document.getElementById('status-legend-list');
+            if (!canvas) return;
+
+            const labels = ['Antrian', 'Proses', 'Menunggu Part', 'Selesai', 'Diambil', 'Batal'];
+            const colors = ['#94a3b8', '#3b82f6', '#f59e0b', '#10b981', '#059669', '#ef4444'];
+            const values = labels.map(l => counts[l] || 0);
+
             if (legendContainer) {
-                legendContainer.innerHTML = statuses.map((st, idx) => `
+                legendContainer.innerHTML = labels.map((label, idx) => `
                     <div class="flex items-center justify-between px-2 py-1 rounded-lg bg-slate-50">
                         <span class="flex items-center gap-1.5 text-slate-600">
-                            <span class="w-2.5 h-2.5 rounded-full" style="background:${colors[idx]}"></span>
-                            ${st}
+                            <span class="w-2.5 h-2.5 rounded-full" style="background-color:${colors[idx]}"></span>
+                            ${label}
                         </span>
-                        <span class="font-bold text-slate-800">${counts[idx]}</span>
+                        <span class="font-bold text-slate-800">${values[idx]}</span>
                     </div>
                 `).join('');
             }
 
+            if (typeof Chart === 'undefined') return;
             if (statusChartInstance) statusChartInstance.destroy();
+            const isDark = document.documentElement.classList.contains('dark');
+
             statusChartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: statuses,
+                    labels: labels,
                     datasets: [{
-                        data: counts,
+                        data: values,
                         backgroundColor: colors,
                         borderWidth: 2,
-                        borderColor: '#ffffff'
+                        borderColor: isDark ? '#0f172a' : '#ffffff'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     cutout: '68%',
-                    plugins: { legend: { display: false } }
+                    plugins: {
+                        legend: { display: false }
+                    }
                 }
             });
         }
 
-        // ==================== MANAJEMEN DATA SERVICE ====================
+        // ==================== DATA SERVICE & TABEL ====================
+        function getStatusBadgeHtml(status) {
+            const styles = {
+                'Antrian': 'bg-slate-100 text-slate-700 border-slate-200',
+                'Proses': 'bg-blue-50 text-blue-700 border-blue-200',
+                'Menunggu Part': 'bg-amber-50 text-amber-700 border-amber-200',
+                'Selesai': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                'Diambil': 'bg-teal-50 text-teal-700 border-teal-200',
+                'Batal': 'bg-rose-50 text-rose-700 border-rose-200'
+            };
+            const cls = styles[status] || styles['Antrian'];
+            return `<span class="inline-block px-2.5 py-1 rounded-full text-[11px] font-semibold border ${cls}">${escapeHtml(status)}</span>`;
+        }
+
         function updateTechnicianFilterOptions() {
             const select = document.getElementById('filter-tech');
             if (!select) return;
             const currentVal = select.value;
             const techs = [...new Set(servicesData.map(s => (s.technician || '').trim()).filter(Boolean))];
             select.innerHTML = '<option value="ALL">Semua Teknisi</option>' +
-                techs.map(t => `<option value="${t}">${t}</option>`).join('');
+                techs.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
             if (techs.includes(currentVal)) select.value = currentVal;
-        }
-
-        function getFilteredServices() {
-            const query = (document.getElementById('search-service').value || '').toLowerCase().trim();
-            const statusFilter = document.getElementById('filter-status').value;
-            const techFilter = document.getElementById('filter-tech').value;
-
-            return servicesData.filter(s => {
-                const matchQuery = !query ||
-                    (s.nota || '').toLowerCase().includes(query) ||
-                    (s.customer || '').toLowerCase().includes(query) ||
-                    (s.device || '').toLowerCase().includes(query) ||
-                    (s.imei || '').toLowerCase().includes(query) ||
-                    (s.phone || '').toLowerCase().includes(query);
-                const matchStatus = statusFilter === 'ALL' || s.status === statusFilter;
-                const matchTech = techFilter === 'ALL' || s.technician === techFilter;
-                return matchQuery && matchStatus && matchTech;
-            });
         }
 
         function renderServicesTable() {
             updateTechnicianFilterOptions();
+            const search = (document.getElementById('search-service').value || '').toLowerCase();
+            const statusFilter = document.getElementById('filter-status').value;
+            const techFilter = document.getElementById('filter-tech').value;
+
+            const filtered = servicesData.filter(item => {
+                const matchSearch =
+                    (item.nota || '').toLowerCase().includes(search) ||
+                    (item.customer || '').toLowerCase().includes(search) ||
+                    (item.device || '').toLowerCase().includes(search) ||
+                    (item.imei || '').toLowerCase().includes(search) ||
+                    (item.issue || '').toLowerCase().includes(search);
+                const matchStatus = statusFilter === 'ALL' || item.status === statusFilter;
+                const matchTech = techFilter === 'ALL' || item.technician === techFilter;
+                return matchSearch && matchStatus && matchTech;
+            });
+
             const tbody = document.getElementById('services-table-body');
             const emptyState = document.getElementById('services-empty-state');
-            const filtered = getFilteredServices();
 
             if (filtered.length === 0) {
                 tbody.innerHTML = '';
@@ -1283,89 +1505,89 @@
             }
 
             emptyState.classList.add('hidden');
-            tbody.innerHTML = filtered.map(s => {
-                const profit = (Number(s.totalPrice) || 0) - (Number(s.partsCost) || 0);
+            tbody.innerHTML = filtered.map(item => {
+                const profit = (Number(item.totalPrice) || 0) - (Number(item.partsCost) || 0);
                 return `
-                <tr class="hover:bg-slate-50/80 transition">
-                    <td class="py-3.5 px-4 whitespace-nowrap">
-                        <div class="font-mono font-bold text-blue-600 text-xs">${s.nota}</div>
-                        <div class="text-[11px] text-slate-500">${s.date}</div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                        <div class="font-semibold text-slate-900 text-xs sm:text-sm">${s.customer}</div>
-                        <button type="button" data-action="wa" data-id="${s.id}" class="inline-flex items-center gap-1 text-[11px] text-emerald-600 hover:underline font-medium mt-0.5 cursor-pointer">
-                            WA: ${s.phone}
-                        </button>
-                    </td>
-                    <td class="py-3.5 px-4">
-                        <div class="font-semibold text-slate-800 text-xs sm:text-sm">${s.device}</div>
-                        <div class="text-[11px] text-slate-500 line-clamp-1">${s.issue}</div>
-                    </td>
-                    <td class="py-3.5 px-4 whitespace-nowrap text-xs font-medium text-slate-700">
-                        ${s.technician || '-'}
-                    </td>
-                    <td class="py-3.5 px-4 whitespace-nowrap">
-                        <div class="font-bold text-slate-900 text-xs">${formatRupiah(s.totalPrice)}</div>
-                        <div class="text-[11px] text-emerald-600 font-medium">Laba: ${formatRupiah(profit)}</div>
-                    </td>
-                    <td class="py-3.5 px-4 whitespace-nowrap">
-                        <span class="inline-block px-2.5 py-1 rounded-full text-[11px] font-semibold border ${getStatusBadgeClass(s.status)}">${s.status}</span>
-                    </td>
-                    <td class="py-3.5 px-4 whitespace-nowrap text-right">
-                        <div class="inline-flex items-center gap-1.5">
-                            <button type="button" data-action="nota" data-id="${s.id}" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer" title="Cetak Nota">Nota</button>
-                            <button type="button" data-action="edit" data-id="${s.id}" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition cursor-pointer" title="Edit Data">Edit</button>
-                            <button type="button" data-action="delete" data-id="${s.id}" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-semibold transition cursor-pointer" title="Hapus">Hapus</button>
-                        </div>
-                    </td>
-                </tr>
+                    <tr class="hover:bg-slate-50/90 transition">
+                        <td class="py-3.5 px-4 align-top">
+                            <span class="font-mono font-bold text-blue-600 block">${escapeHtml(item.nota)}</span>
+                            <span class="text-[11px] text-slate-400">${escapeHtml(item.date)}</span>
+                        </td>
+                        <td class="py-3.5 px-4 align-top">
+                            <span class="font-semibold text-slate-900 block">${escapeHtml(item.customer)}</span>
+                            <button type="button" data-action="wa" data-id="${escapeHtml(item.id)}" class="mt-0.5 inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 hover:underline cursor-pointer">
+                                WA: ${escapeHtml(item.phone)}
+                            </button>
+                        </td>
+                        <td class="py-3.5 px-4 align-top max-w-xs">
+                            <span class="font-semibold text-slate-800 block">${escapeHtml(item.device)}</span>
+                            <span class="text-xs text-slate-500 block mt-0.5">${escapeHtml(item.issue)}</span>
+                            ${item.imei ? `<span class="text-[10px] font-mono text-slate-400 block mt-0.5">IMEI: ${escapeHtml(item.imei)}</span>` : ''}
+                        </td>
+                        <td class="py-3.5 px-4 align-top">
+                            <span class="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">${escapeHtml(item.technician)}</span>
+                        </td>
+                        <td class="py-3.5 px-4 align-top">
+                            <span class="font-bold text-slate-900 block">${formatRupiah(item.totalPrice)}</span>
+                            <span class="text-[11px] text-emerald-600 font-medium block">Laba: ${formatRupiah(profit)}</span>
+                        </td>
+                        <td class="py-3.5 px-4 align-top">${getStatusBadgeHtml(item.status)}</td>
+                        <td class="py-3.5 px-4 align-top text-right">
+                            <div class="inline-flex items-center gap-1">
+                                <button type="button" data-action="nota" data-id="${escapeHtml(item.id)}" title="Cetak Nota" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer">Nota</button>
+                                <button type="button" data-action="edit" data-id="${escapeHtml(item.id)}" title="Edit Data" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-semibold transition cursor-pointer">Edit</button>
+                                <button type="button" data-action="delete" data-id="${escapeHtml(item.id)}" title="Hapus" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-semibold transition cursor-pointer">Hapus</button>
+                            </div>
+                        </td>
+                    </tr>
                 `;
             }).join('');
         }
 
-        function generateNotaNumber() {
+        function generateNextNotaNumber() {
             const now = new Date();
             const ym = String(now.getFullYear()).slice(-2) + String(now.getMonth() + 1).padStart(2, '0');
-            const rand = String(Math.floor(100 + Math.random() * 900));
-            return `SRV-${ym}-${rand}`;
+            const seq = String(servicesData.length + 1).padStart(3, '0');
+            return `SRV-${ym}-${seq}`;
         }
 
-        function openServiceModal(serviceObj) {
-            const form = document.getElementById('service-form');
-            form.reset();
-            const titleEl = document.getElementById('service-modal-title');
+        function openServiceModal(serviceItem) {
+            const modal = document.getElementById('service-modal');
+            const title = document.getElementById('service-modal-title');
+            document.getElementById('service-form').reset();
 
-            if (serviceObj) {
-                titleEl.textContent = 'Edit Data Service - ' + serviceObj.nota;
-                document.getElementById('srv-id').value = serviceObj.id;
-                document.getElementById('srv-nota').value = serviceObj.nota;
-                document.getElementById('srv-date').value = serviceObj.date;
-                document.getElementById('srv-customer').value = serviceObj.customer;
-                document.getElementById('srv-phone').value = serviceObj.phone;
-                document.getElementById('srv-device').value = serviceObj.device;
-                document.getElementById('srv-imei').value = serviceObj.imei || '';
-                document.getElementById('srv-issue').value = serviceObj.issue;
-                document.getElementById('srv-tech').value = serviceObj.technician || '';
-                document.getElementById('srv-status').value = serviceObj.status;
-                document.getElementById('srv-parts').value = serviceObj.partsCost || 0;
-                document.getElementById('srv-total').value = serviceObj.totalPrice || 0;
+            if (serviceItem) {
+                title.textContent = 'Edit Data Service - ' + serviceItem.nota;
+                document.getElementById('srv-id').value = serviceItem.id;
+                document.getElementById('srv-nota').value = serviceItem.nota;
+                document.getElementById('srv-date').value = serviceItem.date;
+                document.getElementById('srv-customer').value = serviceItem.customer;
+                document.getElementById('srv-phone').value = serviceItem.phone;
+                document.getElementById('srv-device').value = serviceItem.device;
+                document.getElementById('srv-imei').value = serviceItem.imei || '';
+                document.getElementById('srv-issue').value = serviceItem.issue;
+                document.getElementById('srv-tech').value = serviceItem.technician;
+                document.getElementById('srv-status').value = serviceItem.status;
+                document.getElementById('srv-parts').value = serviceItem.partsCost || 0;
+                document.getElementById('srv-total').value = serviceItem.totalPrice || 0;
 
-                const accList = Array.isArray(serviceObj.accessories) ? serviceObj.accessories : [];
+                const accList = Array.isArray(serviceItem.accessories) ? serviceItem.accessories : [];
                 document.querySelectorAll('.acc-checkbox').forEach(cb => {
                     cb.checked = accList.includes(cb.value);
                 });
             } else {
-                titleEl.textContent = 'Tambah Data Service Baru';
+                title.textContent = 'Tambah Data Service Baru';
                 document.getElementById('srv-id').value = '';
-                document.getElementById('srv-nota').value = generateNotaNumber();
-                document.getElementById('srv-date').value = new Date().toISOString().slice(0, 10);
-                document.getElementById('srv-status').value = 'Antrian';
-                document.getElementById('srv-parts').value = 0;
-                document.getElementById('srv-total').value = 0;
+                document.getElementById('srv-nota').value = generateNextNotaNumber();
+                document.getElementById('srv-date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('srv-tech').value = (storeProfile && storeProfile.adminName) ? storeProfile.adminName : '';
+                document.querySelectorAll('.acc-checkbox').forEach(cb => {
+                    cb.checked = ['Unit HP', 'Baterai'].includes(cb.value);
+                });
             }
 
             updateProfitPreview();
-            document.getElementById('service-modal').classList.remove('hidden');
+            modal.classList.remove('hidden');
         }
 
         function closeServiceModal() {
@@ -1378,128 +1600,112 @@
             document.getElementById('srv-profit-preview').textContent = formatRupiah(total - parts);
         }
 
-        function openNotaModal(serviceObj) {
-            if (!serviceObj) return;
-            currentNotaService = serviceObj;
+        function openNotaModal(item) {
+            currentNotaService = item;
+            const p = storeProfile || {};
 
-            const storeName = (storeProfile && storeProfile.name) ? storeProfile.name : 'TOKO SERVICE HP';
             const logoEl = document.getElementById('nota-doc-logo');
-            if (storeProfile && storeProfile.photoUrl) {
-                logoEl.src = storeProfile.photoUrl;
+            if (p.photoUrl && (p.photoUrl.startsWith('data:image') || p.photoUrl.startsWith('http'))) {
+                logoEl.src = p.photoUrl;
                 logoEl.classList.remove('hidden');
             } else {
                 logoEl.classList.add('hidden');
             }
 
-            document.getElementById('nota-doc-store').textContent = storeName;
-            document.getElementById('nota-doc-tagline').textContent = (storeProfile && storeProfile.tagline) || '';
-            document.getElementById('nota-doc-address').textContent = (storeProfile && storeProfile.address) || '';
-            document.getElementById('nota-doc-phone').textContent = (storeProfile && storeProfile.phone) ? 'WA: ' + storeProfile.phone : '';
+            document.getElementById('nota-doc-store').textContent = p.name || 'KONTER SERVICE HP';
+            document.getElementById('nota-doc-tagline').textContent = p.tagline || '';
+            document.getElementById('nota-doc-address').textContent = p.address || '';
+            document.getElementById('nota-doc-phone').textContent = p.phone ? 'WA: ' + p.phone : '';
 
-            document.getElementById('nota-doc-number').textContent = serviceObj.nota;
-            document.getElementById('nota-doc-date').textContent = serviceObj.date;
-            document.getElementById('nota-doc-customer').textContent = serviceObj.customer;
-            document.getElementById('nota-doc-custphone').textContent = serviceObj.phone;
-            document.getElementById('nota-doc-device').textContent = serviceObj.device;
-            document.getElementById('nota-doc-imei').textContent = serviceObj.imei || '-';
-            document.getElementById('nota-doc-tech').textContent = serviceObj.technician || '-';
-            document.getElementById('nota-doc-status').textContent = serviceObj.status;
-            document.getElementById('nota-doc-acc').textContent = Array.isArray(serviceObj.accessories) && serviceObj.accessories.length > 0
-                ? serviceObj.accessories.join(', ')
-                : 'Unit HP';
-            document.getElementById('nota-doc-issue').textContent = serviceObj.issue;
-            document.getElementById('nota-doc-total').textContent = formatRupiah(serviceObj.totalPrice);
-            document.getElementById('nota-doc-terms').textContent = (storeProfile && storeProfile.terms) ||
-                '1. Garansi service berlaku sesuai ketentuan toko.\n2. Barang yang tidak diambil lebih dari 30 hari di luar tanggung jawab kami.';
+            document.getElementById('nota-doc-number').textContent = item.nota;
+            document.getElementById('nota-doc-date').textContent = item.date;
+            document.getElementById('nota-doc-customer').textContent = item.customer;
+            document.getElementById('nota-doc-custphone').textContent = item.phone;
+            document.getElementById('nota-doc-device').textContent = item.device;
+            document.getElementById('nota-doc-imei').textContent = item.imei || '-';
+            document.getElementById('nota-doc-tech').textContent = item.technician;
+            document.getElementById('nota-doc-status').textContent = item.status;
+            document.getElementById('nota-doc-acc').textContent = Array.isArray(item.accessories) ? item.accessories.join(', ') : '-';
+            document.getElementById('nota-doc-issue').textContent = item.issue;
+            document.getElementById('nota-doc-total').textContent = formatRupiah(item.totalPrice);
+            document.getElementById('nota-doc-terms').textContent = p.terms || 'Terima kasih atas kepercayaan Anda.';
 
             document.getElementById('nota-modal').classList.remove('hidden');
         }
 
-        function sendWhatsAppUpdate(serviceObj) {
-            if (!serviceObj) return;
-            let rawPhone = String(serviceObj.phone || '').replace(/[^0-9]/g, '');
-            if (rawPhone.startsWith('0')) rawPhone = '62' + rawPhone.slice(1);
-            if (!rawPhone) {
-                showToast('Nomor WhatsApp pelanggan tidak valid.');
-                return;
-            }
-
-            const storeName = (storeProfile && storeProfile.name) ? storeProfile.name : 'Konter Service HP';
-            const msg = `Halo Kak *${serviceObj.customer}*,\n` +
-                `Berikut update status service unit Anda di *${storeName}*:\n\n` +
-                `• No. Nota: *${serviceObj.nota}*\n` +
-                `• Perangkat: *${serviceObj.device}*\n` +
-                `• Keluhan/Tindakan: ${serviceObj.issue}\n` +
-                `• Status Saat Ini: *${serviceObj.status}*\n` +
-                `• Total Biaya: *${formatRupiah(serviceObj.totalPrice)}*\n\n` +
-                `Terima kasih telah mempercayakan perbaikan perangkat Anda kepada kami.`;
-
-            const waUrl = `https://wa.me/${rawPhone}?text=${encodeURIComponent(msg)}`;
-            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        function sendWhatsAppUpdate(item) {
+            let cleanPhone = String(item.phone || '').replace(/[^0-9]/g, '');
+            if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+            const storeName = (storeProfile && storeProfile.name) ? storeProfile.name : 'Toko Service HP';
+            const msg =
+                `Halo Kak *${item.customer}*,\n` +
+                `Update status service HP dari *${storeName}*:\n\n` +
+                `• No. Nota: *${item.nota}*\n` +
+                `• Unit: *${item.device}*\n` +
+                `• Kerusakan: ${item.issue}\n` +
+                `• Status: *${item.status}*\n` +
+                `• Total Biaya: *${formatRupiah(item.totalPrice)}*\n\n` +
+                `Terima kasih.`;
+            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         // ==================== LAPORAN KEUANGAN & EKSPOR CSV ====================
         function renderReports() {
-            const monthFilter = document.getElementById('report-month-filter').value;
-            const list = servicesData.filter(s => {
+            const monthVal = document.getElementById('report-month-filter').value;
+            const filtered = servicesData.filter(s => {
                 if (s.status === 'Batal') return false;
-                if (!monthFilter) return true;
-                return String(s.date || '').startsWith(monthFilter);
+                if (!monthVal) return true;
+                return (s.date || '').startsWith(monthVal);
             });
 
-            let revenue = 0;
-            let parts = 0;
-            const techMap = {};
-
-            list.forEach(s => {
-                const rev = Number(s.totalPrice) || 0;
-                const prt = Number(s.partsCost) || 0;
-                const prof = rev - prt;
-                revenue += rev;
-                parts += prt;
-
-                const tName = (s.technician || 'Umum').trim();
-                if (!techMap[tName]) techMap[tName] = { count: 0, profit: 0 };
-                techMap[tName].count += 1;
-                techMap[tName].profit += prof;
-            });
-
+            const revenue = filtered.reduce((sum, s) => sum + (Number(s.totalPrice) || 0), 0);
+            const parts = filtered.reduce((sum, s) => sum + (Number(s.partsCost) || 0), 0);
             const profit = revenue - parts;
-            document.getElementById('rep-count').textContent = list.length;
+
+            document.getElementById('rep-count').textContent = filtered.length;
             document.getElementById('rep-revenue').textContent = formatRupiah(revenue);
             document.getElementById('rep-parts').textContent = formatRupiah(parts);
             document.getElementById('rep-profit').textContent = formatRupiah(profit);
 
+            renderFinanceChart(revenue, parts, profit);
+
+            const techMap = {};
+            filtered.forEach(s => {
+                const tech = (s.technician || 'Umum').trim();
+                if (!techMap[tech]) techMap[tech] = { count: 0, profit: 0 };
+                techMap[tech].count++;
+                techMap[tech].profit += ((Number(s.totalPrice) || 0) - (Number(s.partsCost) || 0));
+            });
+
             const techBody = document.getElementById('tech-report-body');
-            const techKeys = Object.keys(techMap);
-            if (techKeys.length === 0) {
-                techBody.innerHTML = '<tr><td colspan="3" class="py-6 text-center text-slate-400 text-xs">Tidak ada data pada periode ini.</td></tr>';
+            const techEntries = Object.entries(techMap);
+            if (techEntries.length === 0) {
+                techBody.innerHTML = '<tr><td colspan="3" class="py-6 text-center text-slate-400 text-xs">Belum ada data pada periode ini.</td></tr>';
             } else {
-                techBody.innerHTML = techKeys.map(t => `
+                techBody.innerHTML = techEntries.map(([tech, stat]) => `
                     <tr>
-                        <td class="py-2.5 px-2 font-semibold text-slate-800">${t}</td>
-                        <td class="py-2.5 px-2 text-center text-slate-600">${techMap[t].count}</td>
-                        <td class="py-2.5 px-2 text-right font-bold text-emerald-600">${formatRupiah(techMap[t].profit)}</td>
+                        <td class="py-2.5 px-2 font-semibold text-slate-800">${escapeHtml(tech)}</td>
+                        <td class="py-2.5 px-2 text-center font-bold text-blue-600">${stat.count}</td>
+                        <td class="py-2.5 px-2 text-right font-semibold text-emerald-600">${formatRupiah(stat.profit)}</td>
                     </tr>
                 `).join('');
             }
-
-            renderFinanceChart(revenue, parts, profit);
         }
 
         function renderFinanceChart(revenue, parts, profit) {
             const canvas = document.getElementById('financeChart');
             if (!canvas || typeof Chart === 'undefined') return;
-
             if (financeChartInstance) financeChartInstance.destroy();
+            const isDark = document.documentElement.classList.contains('dark');
+
             financeChartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'bar',
                 data: {
                     labels: ['Total Omzet', 'Modal Sparepart', 'Laba Bersih'],
                     datasets: [{
-                        label: 'Nominal (Rp)',
+                        label: 'Rupiah',
                         data: [revenue, parts, profit],
-                        backgroundColor: ['#2563eb', '#f43f5e', '#10b981'],
+                        backgroundColor: ['#2563eb', '#e11d48', '#10b981'],
                         borderRadius: 10
                     }]
                 },
@@ -1508,11 +1714,17 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
+                        x: {
+                            ticks: { color: isDark ? '#cbd5e1' : '#475569' },
+                            grid: { color: isDark ? '#1e293b' : '#f1f5f9' }
+                        },
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                callback: value => 'Rp ' + Number(value).toLocaleString('id-ID')
-                            }
+                                color: isDark ? '#cbd5e1' : '#475569',
+                                callback: (val) => 'Rp ' + Number(val).toLocaleString('id-ID')
+                            },
+                            grid: { color: isDark ? '#1e293b' : '#f1f5f9' }
                         }
                     }
                 }
@@ -1520,58 +1732,52 @@
         }
 
         function exportToCSV() {
-            const monthFilter = document.getElementById('report-month-filter').value;
-            const list = servicesData.filter(s => !monthFilter || String(s.date || '').startsWith(monthFilter));
-
-            if (list.length === 0) {
-                showToast('Tidak ada data untuk diekspor pada periode ini.');
+            if (servicesData.length === 0) {
+                showToast('Tidak ada data untuk diekspor.');
                 return;
             }
-
-            const headers = ['No Nota', 'Tanggal', 'Pelanggan', 'No WA', 'Perangkat', 'IMEI', 'Keluhan', 'Teknisi', 'Modal Sparepart', 'Total Biaya', 'Laba Bersih', 'Status'];
-            const rows = list.map(s => {
+            const headers = ['No Nota', 'Tanggal', 'Pelanggan', 'WhatsApp', 'Perangkat', 'IMEI', 'Keluhan', 'Teknisi', 'Modal Part', 'Total Biaya', 'Laba Bersih', 'Status'];
+            const rows = servicesData.map(s => {
                 const parts = Number(s.partsCost) || 0;
                 const total = Number(s.totalPrice) || 0;
                 return [
-                    s.nota, s.date, s.customer, s.phone, s.device, s.imei || '',
-                    s.issue, s.technician || '', parts, total, total - parts, s.status
-                ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(',');
+                    s.nota, s.date, s.customer, s.phone, s.device, s.imei || '-',
+                    s.issue, s.technician, parts, total, total - parts, s.status
+                ].map(v => `"${String(v || '').replace(/"/g, '""')}"`).join(',');
             });
 
-            const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows].join('\n');
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement('a');
-            link.setAttribute('href', encodedUri);
-            link.setAttribute('download', `Laporan_Service_${monthFilter || 'Semua'}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Laporan_Service_HP_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
             showToast('File laporan CSV berhasil diunduh!');
         }
 
         // ==================== PROFIL TOKO & UPLOAD FOTO ====================
         function populateProfileForm() {
-            if (!storeProfile) return;
-            document.getElementById('prof-name').value = storeProfile.name || '';
-            document.getElementById('prof-tagline').value = storeProfile.tagline || '';
-            document.getElementById('prof-phone').value = storeProfile.phone || '';
-            document.getElementById('prof-admin').value = storeProfile.adminName || '';
-            document.getElementById('prof-address').value = storeProfile.address || '';
-            document.getElementById('prof-terms').value = storeProfile.terms ||
-                '1. Garansi service berlaku 14 hari untuk kerusakan yang sama.\n2. Barang yang tidak diambil lebih dari 30 hari di luar tanggung jawab toko.';
-            document.getElementById('prof-pin').value = storeProfile.pin || '1234';
+            const p = storeProfile || {};
+            document.getElementById('prof-name').value = p.name || '';
+            document.getElementById('prof-tagline').value = p.tagline || '';
+            document.getElementById('prof-phone').value = p.phone || '';
+            document.getElementById('prof-admin').value = p.adminName || '';
+            document.getElementById('prof-address').value = p.address || '';
+            document.getElementById('prof-terms').value = p.terms || '';
+            document.getElementById('prof-pin').value = p.pin || '';
             document.getElementById('prof-webapp-url').value = webAppUrl || '';
-
             updateProfileLivePreview();
         }
 
         function updateProfileLivePreview() {
-            const name = document.getElementById('prof-name').value.trim() || 'NAMA TOKO';
-            const tagline = document.getElementById('prof-tagline').value.trim() || 'Slogan Toko Anda';
-            const phone = document.getElementById('prof-phone').value.trim() || '-';
-            const admin = document.getElementById('prof-admin').value.trim() || '-';
-            const address = document.getElementById('prof-address').value.trim() || 'Alamat Lengkap Toko';
-            const terms = document.getElementById('prof-terms').value.trim() || '-';
+            const name = document.getElementById('prof-name').value.trim() || (storeProfile && storeProfile.name) || 'Nama Toko Anda';
+            const tagline = document.getElementById('prof-tagline').value.trim() || (storeProfile && storeProfile.tagline) || 'Slogan Toko';
+            const phone = document.getElementById('prof-phone').value.trim() || (storeProfile && storeProfile.phone) || '-';
+            const admin = document.getElementById('prof-admin').value.trim() || (storeProfile && storeProfile.adminName) || '-';
+            const address = document.getElementById('prof-address').value.trim() || (storeProfile && storeProfile.address) || 'Alamat Lengkap Toko';
+            const terms = document.getElementById('prof-terms').value.trim() || (storeProfile && storeProfile.terms) || '-';
             const photo = (storeProfile && storeProfile.photoUrl) ? storeProfile.photoUrl : '';
 
             document.getElementById('prof-hero-name').textContent = name;
@@ -1589,7 +1795,7 @@
             const avatarHolder = document.getElementById('prof-avatar-placeholder');
             const notaLogo = document.getElementById('nota-prev-logo');
 
-            if (photo) {
+            if (photo && (photo.startsWith('data:image') || photo.startsWith('http'))) {
                 avatarPrev.src = photo;
                 avatarPrev.classList.remove('hidden');
                 avatarHolder.classList.add('hidden');
@@ -1609,21 +1815,24 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const maxW = 640;
+                    const maxW = 1280;
                     const scale = Math.min(1, maxW / img.width);
                     canvas.width = Math.round(img.width * scale);
                     canvas.height = Math.round(img.height * scale);
                     const ctx = canvas.getContext('2d');
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.72);
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
                     if (!storeProfile) storeProfile = {};
                     storeProfile.photoUrl = compressedDataUrl;
 
                     updateProfileLivePreview();
                     applyStoreIdentityToUI();
                     syncToOnlineDatabase(() => {
-                        showToast('Foto profil & banner toko berhasil diperbarui!');
+                        showToast('Foto profil & banner HD berhasil diperbarui!');
                     });
                 };
                 img.src = evt.target.result;
@@ -1633,7 +1842,6 @@
 
         // ==================== EVENT LISTENERS TERPUSAT ====================
         function bindAllEvents() {
-            // Switcher Tab Onboarding
             document.getElementById('tab-onboard-new').addEventListener('click', () => {
                 document.getElementById('tab-onboard-new').classList.add('bg-white', 'text-blue-600', 'shadow-sm');
                 document.getElementById('tab-onboard-new').classList.remove('text-slate-600');
@@ -1652,7 +1860,6 @@
                 document.getElementById('form-register-store').classList.add('hidden');
             });
 
-            // Submit Daftar Toko Baru
             document.getElementById('form-register-store').addEventListener('submit', (e) => {
                 e.preventDefault();
                 storeProfile = {
@@ -1669,56 +1876,89 @@
                 safeSessionSet(SESSION_UNLOCKED_KEY, '1');
                 syncToOnlineDatabase();
                 enterMainWorkspace();
-                showToast('Pendaftaran toko berhasil!');
+                showToast('Toko berhasil didaftarkan!');
             });
 
-            // Submit Hubungkan Link Database Existing
             document.getElementById('form-connect-existing').addEventListener('submit', (e) => {
                 e.preventDefault();
                 const urlInput = document.getElementById('connect-url').value.trim();
                 const btn = document.getElementById('btn-connect-submit');
-                btn.textContent = 'Menghubungkan...';
+                const origText = btn.textContent;
                 btn.disabled = true;
+                btn.textContent = 'Menghubungkan ke Google Sheets...';
 
                 pullFromOnlineDatabase(urlInput, (ok) => {
-                    btn.textContent = 'Tarik Data Toko dari Google Sheets';
                     btn.disabled = false;
+                    btn.textContent = origText;
                     if (ok && storeProfile && storeProfile.name) {
-                        safeSessionSet(SESSION_UNLOCKED_KEY, '1');
-                        enterMainWorkspace();
                         showToast('Data toko berhasil ditarik dari Google Sheets!');
+                        if (storeProfile.pin) {
+                            showPinLockScreen();
+                        } else {
+                            safeSessionSet(SESSION_UNLOCKED_KEY, '1');
+                            enterMainWorkspace();
+                        }
+                    } else if (ok) {
+                        webAppUrl = urlInput;
+                        saveLocalCache();
+                        showToast('Terhubung ke server! Silakan isi profil toko baru.');
+                        document.getElementById('reg-url').value = urlInput;
+                        document.getElementById('tab-onboard-new').click();
                     } else {
-                        showToast('Data toko belum ditemukan di link tersebut. Silakan daftar toko baru.');
+                        showToast('Gagal terhubung. Pastikan URL Web App benar & akses Anyone.');
                     }
                 });
             });
 
-            // Keypad PIN
+            document.querySelectorAll('.btn-theme-toggle').forEach(btn => {
+                btn.addEventListener('click', toggleTheme);
+            });
+
+            const bindFastTap = (el, handler) => {
+                let lastTouchTime = 0;
+                el.addEventListener('pointerdown', (e) => {
+                    if (e.button !== undefined && e.button !== 0) return;
+                    lastTouchTime = Date.now();
+                    handler();
+                });
+                el.addEventListener('click', () => {
+                    if (Date.now() - lastTouchTime < 400) return;
+                    handler();
+                });
+            };
+
             document.querySelectorAll('.pin-key').forEach(btn => {
-                btn.addEventListener('click', () => handlePinInput(btn.getAttribute('data-key')));
+                bindFastTap(btn, () => handlePinInput(btn.getAttribute('data-key')));
             });
-            document.getElementById('pin-clear').addEventListener('click', () => {
+            bindFastTap(document.getElementById('pin-clear'), () => {
+                if (pinResetTimer) { clearTimeout(pinResetTimer); pinResetTimer = null; }
                 enteredPin = '';
+                document.getElementById('pin-error').classList.add('hidden');
                 updatePinDots();
             });
-            document.getElementById('pin-backspace').addEventListener('click', () => {
+            bindFastTap(document.getElementById('pin-backspace'), () => {
+                if (pinResetTimer) { clearTimeout(pinResetTimer); pinResetTimer = null; }
                 enteredPin = enteredPin.slice(0, -1);
+                document.getElementById('pin-error').classList.add('hidden');
                 updatePinDots();
             });
+
             document.addEventListener('keydown', (e) => {
                 if (!document.getElementById('pin-lock-screen').classList.contains('hidden')) {
                     if (/^[0-9]$/.test(e.key)) handlePinInput(e.key);
                     if (e.key === 'Backspace') {
+                        if (pinResetTimer) { clearTimeout(pinResetTimer); pinResetTimer = null; }
                         enteredPin = enteredPin.slice(0, -1);
+                        document.getElementById('pin-error').classList.add('hidden');
                         updatePinDots();
                     }
                 }
             });
+
             document.getElementById('btn-reset-onboarding').addEventListener('click', () => {
                 showOnboardingScreen();
             });
 
-            // Header Actions
             document.getElementById('btn-sync-now').addEventListener('click', () => {
                 pullFromOnlineDatabase(webAppUrl, (ok) => {
                     if (ok) {
@@ -1737,7 +1977,6 @@
                 showPinLockScreen();
             });
 
-            // Bottom Navigation Bar
             document.getElementById('bottom-nav-bar').addEventListener('click', (e) => {
                 const btn = e.target.closest('.nav-btn');
                 if (!btn) return;
@@ -1745,11 +1984,9 @@
                 if (tab) switchTab(tab);
             });
 
-            // Dashboard Shortcuts
             document.getElementById('btn-dash-add').addEventListener('click', () => openServiceModal(null));
             document.getElementById('btn-dash-all').addEventListener('click', () => switchTab('services'));
 
-            // Service Tab Actions
             document.getElementById('btn-add-service').addEventListener('click', () => openServiceModal(null));
             document.getElementById('search-service').addEventListener('input', renderServicesTable);
             document.getElementById('filter-status').addEventListener('change', renderServicesTable);
@@ -1777,7 +2014,6 @@
                 }
             });
 
-            // Service Modal Form
             document.getElementById('btn-close-service-modal').addEventListener('click', closeServiceModal);
             document.getElementById('btn-cancel-service-modal').addEventListener('click', closeServiceModal);
             document.getElementById('srv-parts').addEventListener('input', updateProfitPreview);
@@ -1820,7 +2056,6 @@
                 renderDashboard();
             });
 
-            // Nota Modal Actions
             document.getElementById('btn-close-nota-modal').addEventListener('click', () => {
                 document.getElementById('nota-modal').classList.add('hidden');
             });
@@ -1829,11 +2064,9 @@
                 if (currentNotaService) sendWhatsAppUpdate(currentNotaService);
             });
 
-            // Reports Actions
             document.getElementById('report-month-filter').addEventListener('change', renderReports);
             document.getElementById('btn-export-csv').addEventListener('click', exportToCSV);
 
-            // Profile Toko & Foto Upload
             const triggerFileInput = () => document.getElementById('prof-photo-file').click();
             document.getElementById('btn-camera-upload').addEventListener('click', triggerFileInput);
             document.getElementById('btn-upload-photo-main').addEventListener('click', triggerFileInput);
@@ -1892,7 +2125,6 @@
                 });
             });
 
-            // Confirm Modal Actions
             document.getElementById('btn-confirm-cancel').addEventListener('click', closeConfirmModal);
             document.getElementById('btn-confirm-ok').addEventListener('click', () => {
                 if (typeof confirmCallback === 'function') confirmCallback();
@@ -1903,6 +2135,7 @@
         // ==================== INISIALISASI APLIKASI ====================
         function initApp() {
             try {
+                applyTheme(getPreferredTheme());
                 bindAllEvents();
                 loadLocalCache();
 
