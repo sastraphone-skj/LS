@@ -177,12 +177,12 @@
 
         <!-- ==================== HEADER / NAVBAR ==================== -->
         <header class="sticky top-0 z-30 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 no-print">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-16">
-                    <!-- Brand Logo (Otomatis menggunakan Nama Toko yang didaftarkan) -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                    <!-- Brand Logo (Otomatis menggunakan Nama & Foto Toko yang didaftarkan) -->
                     <div class="flex items-center gap-3">
-                        <div class="bg-blue-600 text-white p-2 rounded-xl shadow-md shadow-blue-600/20">
-                            <i data-lucide="smartphone" class="w-6 h-6"></i>
+                        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/20 overflow-hidden shrink-0 border border-blue-500/30">
+                            <img id="header-store-logo" src="https://placehold.co/100x100/2563eb/ffffff?text=HP" alt="Logo Toko" class="hidden w-full h-full object-cover" onerror="this.classList.add('hidden'); document.getElementById('header-store-fallback-icon').classList.remove('hidden');">
+                            <i data-lucide="smartphone" id="header-store-fallback-icon" class="w-5 h-5"></i>
                         </div>
                         <div>
                             <span id="header-store-name" class="font-bold text-base sm:text-lg tracking-tight text-slate-900 dark:text-white block leading-tight">Nama Toko Anda</span>
@@ -239,15 +239,53 @@
 
             <!-- ==================== TAB 1: DASHBOARD ==================== -->
             <section id="tab-dashboard" class="tab-content space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Ringkasan Operasional</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Seluruh data tersimpan langsung secara online ke Google Sheets.</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button type="button" id="btn-dash-refresh" class="flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition cursor-pointer">
-                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Muat Ulang Online
-                        </button>
+                <!-- Banner Toko dengan Foto Profil -->
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-900 text-white shadow-xl border border-blue-500/20">
+                    <!-- Dekorasi Latar -->
+                    <div class="absolute -right-12 -top-12 w-56 h-56 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+                    <div class="absolute right-24 -bottom-16 w-44 h-44 rounded-full bg-blue-400/15 blur-xl pointer-events-none"></div>
+
+                    <div class="relative p-5 sm:p-7 flex flex-col md:flex-row items-center md:items-center justify-between gap-5">
+                        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 sm:gap-5">
+                            <!-- Foto Profil Toko di Banner -->
+                            <div class="relative shrink-0">
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-1 bg-white/20 backdrop-blur-md shadow-xl border border-white/30">
+                                    <img id="dash-banner-photo" src="https://placehold.co/200x200/1e40af/ffffff?text=TOKO" alt="Foto Profil Toko" onerror="this.src='https://placehold.co/200x200/1e40af/ffffff?text=TOKO'" class="w-full h-full object-cover rounded-xl bg-slate-800">
+                                </div>
+                                <span class="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-emerald-500 border-2 border-indigo-800 flex items-center justify-center shadow" title="Toko Aktif Online">
+                                    <i data-lucide="check" class="w-3.5 h-3.5 text-white"></i>
+                                </span>
+                            </div>
+
+                            <!-- Info Identitas Toko -->
+                            <div class="space-y-1.5">
+                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/15 text-blue-100 border border-white/15">
+                                    <i data-lucide="sparkles" class="w-3 h-3"></i> Dashboard Operasional Toko
+                                </div>
+                                <h2 id="dash-banner-name" class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">Nama Toko Anda</h2>
+                                <p id="dash-banner-tagline" class="text-xs sm:text-sm text-blue-100/90 max-w-xl">Spesialis Service HP & Sparepart Bergaransi</p>
+                                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-1 pt-1 text-xs text-blue-100/85">
+                                    <span class="inline-flex items-center gap-1">
+                                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-300"></i>
+                                        <span id="dash-banner-address">Alamat toko belum diatur</span>
+                                    </span>
+                                    <span class="inline-flex items-center gap-1">
+                                        <i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-300"></i>
+                                        <span id="dash-banner-phone">-</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Aksi Banner -->
+                        <div class="flex flex-wrap items-center justify-center gap-2.5 shrink-0">
+                            <button type="button" id="btn-dash-edit-profile" class="flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 backdrop-blur-sm transition cursor-pointer">
+                                <i data-lucide="image" class="w-3.5 h-3.5"></i> Ubah Foto & Profil
+                            </button>
+                            <button type="button" id="btn-dash-refresh" class="flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2.5 rounded-xl bg-white text-blue-700 hover:bg-blue-50 shadow-md transition cursor-pointer">
+                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Muat Ulang Online
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -379,9 +417,6 @@
                         </select>
                         <select id="filter-tech" class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="ALL">Semua Teknisi</option>
-                            <option value="Andi Pratama">Andi Pratama</option>
-                            <option value="Rizky Hidayat">Rizky Hidayat</option>
-                            <option value="Budi Santoso">Budi Santoso</option>
                         </select>
                     </div>
                 </div>
@@ -473,97 +508,144 @@
 
             <!-- ==================== TAB 4: PROFIL TOKO ==================== -->
             <section id="tab-profile" class="tab-content hidden space-y-6">
+                <!-- Header Profil Toko -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Profil Toko, PIN & Database Online</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Terisi otomatis dari menu Pendaftaran Toko dan tersimpan online ke Google Sheets.</p>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Pengaturan Profil Toko</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Kelola foto profil, identitas konter, PIN keamanan, dan koneksi Google Sheets.</p>
                     </div>
                     <button type="button" id="btn-sync-now" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-sm font-medium shadow-sm transition cursor-pointer">
                         <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sinkronkan Google Sheets
                     </button>
                 </div>
 
-                <form id="profile-form" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-                            <h3 class="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                                <i data-lucide="store" class="w-4 h-4 text-blue-600"></i> Identitas Konter / Toko
-                            </h3>
-                        </div>
+                <form id="profile-form" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Kolom Kiri (7 Kolom): Form Pengaturan Terstruktur -->
+                    <div class="lg:col-span-7 space-y-5">
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Nama Toko / Konter *</label>
-                                <input type="text" id="prof-name" required placeholder="Nama Toko Anda" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <!-- Kartu 1: Foto Profil & Identitas Utama -->
+                        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+                            <div class="flex items-center gap-2.5 border-b border-slate-100 dark:border-slate-800 pb-3.5">
+                                <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                                    <i data-lucide="store" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-sm text-slate-900 dark:text-white">Foto Profil & Identitas Toko</h3>
+                                    <p class="text-[11px] text-slate-400">Tampil pada banner dashboard, header aplikasi, dan kop nota cetak</p>
+                                </div>
                             </div>
+
+                            <!-- Input & Preview Foto Profil Toko -->
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 flex flex-col sm:flex-row items-center gap-4">
+                                <div class="w-20 h-20 rounded-2xl overflow-hidden border-2 border-white dark:border-slate-700 shadow-md bg-slate-200 dark:bg-slate-800 shrink-0">
+                                    <img id="prof-photo-preview" src="https://placehold.co/200x200/2563eb/ffffff?text=TOKO" alt="Preview Foto Toko" onerror="this.src='https://placehold.co/200x200/2563eb/ffffff?text=TOKO'" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 w-full space-y-1.5">
+                                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-200">URL Foto Profil / Logo Toko</label>
+                                    <input type="url" id="prof-photo-url" placeholder="https://contoh.com/logo-toko.jpg atau link Google Drive" class="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                    <p class="text-[11px] text-slate-400 leading-relaxed">Tempelkan link gambar langsung (JPG/PNG) atau link berbagi Google Drive (otomatis dikonversi).</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Nama Toko / Konter *</label>
+                                    <input type="text" id="prof-name" required placeholder="Nama Toko Anda" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Slogan / Layanan Utama</label>
+                                    <input type="text" id="prof-tagline" placeholder="Pusat Service & Sparepart HP" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">No. WhatsApp Toko *</label>
+                                    <input type="tel" id="prof-phone" required placeholder="0812-3456-7890" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Nama Pemilik / Admin *</label>
+                                    <input type="text" id="prof-admin" required placeholder="Admin Service" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                </div>
+                            </div>
+
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Slogan / Layanan Utama</label>
-                                <input type="text" id="prof-tagline" placeholder="Pusat Service & Sparepart HP" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Alamat Lengkap Toko *</label>
+                                <textarea id="prof-address" rows="2" required placeholder="Jl. Raya Merdeka No. 123, Kota" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">No. WhatsApp Toko *</label>
-                                <input type="tel" id="prof-phone" required placeholder="0812-3456-7890" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <!-- Kartu 2: Keamanan PIN, Garansi & Database Online -->
+                        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                            <div class="flex items-center gap-2.5 border-b border-slate-100 dark:border-slate-800 pb-3.5">
+                                <div class="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-sm text-slate-900 dark:text-white">Keamanan PIN, Garansi & Database</h3>
+                                    <p class="text-[11px] text-slate-400">Atur PIN masuk aplikasi, catatan garansi nota, dan endpoint database</p>
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Nama Pemilik / Admin *</label>
-                                <input type="text" id="prof-admin" required placeholder="Admin Service" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">PIN Keamanan (4–6 Angka) *</label>
+                                    <input type="text" id="prof-pin" inputmode="numeric" pattern="[0-9]{4,6}" maxlength="6" required placeholder="123456" class="w-full px-3.5 py-2.5 text-sm font-mono bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-1">Link Database Online (Web App GAS) *</label>
+                                    <input type="url" id="prof-gas-url" required placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 text-xs font-mono bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                </div>
                             </div>
+
                             <div>
-                                <label class="block text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">PIN Keamanan (4–6 Angka) *</label>
-                                <input type="text" id="prof-pin" inputmode="numeric" pattern="[0-9]{4,6}" maxlength="6" required placeholder="123456" class="w-full px-3.5 py-2.5 text-sm font-mono bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Syarat & Ketentuan Garansi (Footer Nota)</label>
+                                <textarea id="prof-terms" rows="3" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Alamat Lengkap Toko *</label>
-                            <textarea id="prof-address" rows="2" required placeholder="Jl. Raya Merdeka No. 123, Kota" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Syarat & Ketentuan Garansi (Footer Nota)</label>
-                            <textarea id="prof-terms" rows="3" class="w-full px-3.5 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
-                        </div>
-
-                        <div class="pt-3 border-t border-slate-100 dark:border-slate-800">
-                            <label class="block text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-1 flex items-center gap-1.5">
-                                <i data-lucide="database" class="w-3.5 h-3.5"></i> Link Database Online (Web App Google Apps Script) *
-                            </label>
-                            <input type="url" id="prof-gas-url" required placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 text-xs font-mono bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <p class="text-[11px] text-slate-400 mt-1">Semua data service, profil toko, dan PIN langsung disinkronkan secara online ke Google Sheets menggunakan URL ini.</p>
-                        </div>
-
-                        <div class="pt-2 flex justify-end">
-                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
-                                <i data-lucide="save" class="w-4 h-4"></i> Simpan Profil & PIN Online
-                            </button>
+                            <div class="pt-2 flex justify-end">
+                                <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-600/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                                    <i data-lucide="save" class="w-4 h-4"></i> Simpan Semua Pengaturan Profil
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Preview Kartu Toko & Nota -->
-                    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-4">
-                        <div>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mb-3">
-                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Live Preview Kop Nota
-                            </span>
-                            <div class="p-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/40 text-center space-y-1">
-                                <h4 id="preview-card-name" class="font-bold text-base text-slate-900 dark:text-white uppercase">NAMA TOKO ANDA</h4>
-                                <p id="preview-card-tagline" class="text-xs text-slate-500 dark:text-slate-400">Pusat Service & Sparepart HP</p>
-                                <p id="preview-card-address" class="text-xs text-slate-600 dark:text-slate-300 pt-1">Jl. Raya Merdeka No. 123, Kota</p>
-                                <p id="preview-card-phone" class="text-xs font-medium text-blue-600 dark:text-blue-400">WA: 0812-3456-7890</p>
-                                <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700 text-left">
-                                    <p class="text-[10px] font-semibold text-slate-400 uppercase mb-1">Catatan Garansi:</p>
-                                    <p id="preview-card-terms" class="text-[11px] text-slate-500 dark:text-slate-400 whitespace-pre-line leading-relaxed"></p>
+                    <!-- Kolom Kanan (5 Kolom): Live Preview Kartu Profil & Kop Nota -->
+                    <div class="lg:col-span-5 space-y-5 lg:sticky lg:top-24">
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                            <!-- Mini Banner Preview -->
+                            <div class="h-24 bg-gradient-to-r from-blue-600 to-indigo-700 relative">
+                                <span class="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-black/25 text-white backdrop-blur-sm">
+                                    <i data-lucide="eye" class="w-3 h-3"></i> Live Preview
+                                </span>
+                            </div>
+
+                            <div class="px-6 pb-6 -mt-10 relative">
+                                <div class="flex flex-col items-center text-center">
+                                    <div class="w-20 h-20 rounded-2xl p-1 bg-white dark:bg-slate-900 shadow-lg border border-slate-200 dark:border-slate-700">
+                                        <img id="preview-card-photo" src="https://placehold.co/200x200/2563eb/ffffff?text=TOKO" alt="Foto Profil" onerror="this.src='https://placehold.co/200x200/2563eb/ffffff?text=TOKO'" class="w-full h-full object-cover rounded-xl">
+                                    </div>
+                                    <h4 id="preview-card-name" class="font-extrabold text-base text-slate-900 dark:text-white uppercase mt-3">NAMA TOKO ANDA</h4>
+                                    <p id="preview-card-tagline" class="text-xs text-slate-500 dark:text-slate-400">Pusat Service & Sparepart HP</p>
+                                    <p id="preview-card-address" class="text-xs text-slate-600 dark:text-slate-300 mt-1.5">Jl. Raya Merdeka No. 123, Kota</p>
+                                    <span id="preview-card-phone" class="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">WA: 0812-3456-7890</span>
+                                </div>
+
+                                <div class="mt-5 pt-4 border-t border-dashed border-slate-200 dark:border-slate-700">
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Preview Catatan Garansi Nota:</p>
+                                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/70">
+                                        <p id="preview-card-terms" class="text-[11px] text-slate-600 dark:text-slate-300 whitespace-pre-line leading-relaxed"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-3.5 rounded-xl bg-emerald-50/70 dark:bg-emerald-900/20 border border-emerald-200/70 dark:border-emerald-800/50 text-xs text-emerald-800 dark:text-emerald-300">
+
+                        <div class="p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 text-xs text-emerald-800 dark:text-emerald-300">
                             <p class="font-semibold flex items-center gap-1.5 mb-1">
-                                <i data-lucide="cloud-check" class="w-4 h-4"></i> 100% Cloud Online (GitHub Ready)
+                                <i data-lucide="cloud-check" class="w-4 h-4"></i> Sinkronisasi Otomatis Online
                             </p>
-                            <p class="text-[11px] leading-relaxed opacity-90">Data tidak bergantung pada penyimpanan lokal. Setiap perubahan langsung tersimpan online di Google Sheets Anda.</p>
+                            <p class="text-[11px] leading-relaxed opacity-90">Foto profil, identitas toko, dan PIN langsung tersimpan ke Google Sheets sehingga otomatis muncul saat dibuka di perangkat lain.</p>
                         </div>
                     </div>
                 </form>
@@ -645,12 +727,8 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Teknisi Penanggung Jawab</label>
-                        <select id="srv-tech" class="w-full px-3.5 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            <option value="Andi Pratama">Andi Pratama</option>
-                            <option value="Rizky Hidayat">Rizky Hidayat</option>
-                            <option value="Budi Santoso">Budi Santoso</option>
-                        </select>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Teknisi Penanggung Jawab *</label>
+                        <input type="text" id="srv-tech" required placeholder="Ketik nama teknisi..." class="w-full px-3.5 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-500 dark:text-slate-400 mb-1">Status Pengerjaan</label>
@@ -710,6 +788,7 @@
             <!-- Receipt Body (Printable) -->
             <div id="printable-receipt" class="p-6 bg-white text-slate-900 space-y-4 text-sm">
                 <div class="text-center border-b-2 border-dashed border-slate-300 pb-3">
+                    <img id="rcp-store-logo" src="https://placehold.co/120x120/2563eb/ffffff?text=TOKO" alt="Logo Toko" onerror="this.classList.add('hidden')" class="hidden w-12 h-12 rounded-xl object-cover mx-auto mb-2 border border-slate-200">
                     <h2 id="rcp-store-name" class="text-xl font-extrabold tracking-tight uppercase">NAMA TOKO ANDA</h2>
                     <p id="rcp-store-tagline" class="text-xs text-slate-600">Pusat Service & Sparepart HP</p>
                     <p id="rcp-store-address" class="text-xs text-slate-500 mt-0.5">Jl. Raya Merdeka No. 123, Kota</p>
@@ -798,6 +877,7 @@
             adminName: 'Admin Service',
             address: '',
             pin: '',
+            photoUrl: '',
             terms: '1. Garansi service berlaku 14 hari untuk kerusakan yang sama.\n2. Barang yang tidak diambil lebih dari 30 hari di luar tanggung jawab kami.\n3. Nota ini wajib dibawa saat pengambilan unit.',
             gasUrl: ''
         };
@@ -806,13 +886,28 @@
         let statusChartInstance = null;
         let financeChartInstance = null;
 
-        function isGasEnvironment() {
-            return typeof google !== 'undefined' && google.script && google.script.run;
+        function normalizeStorePhotoUrl(rawUrl, storeNameText = 'TOKO') {
+            const fallbackText = encodeURIComponent((storeNameText || 'TOKO').substring(0, 6).toUpperCase());
+            const fallback = `https://placehold.co/200x200/2563eb/ffffff?text=${fallbackText}`;
+            const url = String(rawUrl || '').trim();
+            if (!url) return fallback;
+
+            // Konversi otomatis link berbagi Google Drive menjadi URL gambar langsung
+            const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                               url.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/);
+            if (driveMatch && driveMatch[1]) {
+                return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+            }
+            return url;
         }
 
         function getActiveGasUrl() {
             const url = (storeProfile.gasUrl || localStorage.getItem(CLOUD_ENDPOINT_KEY) || '').trim();
             return url.startsWith('http') ? url : '';
+        }
+
+        function isGasEnvironment() {
+            return typeof google !== 'undefined' && google.script && google.script.run;
         }
 
         function isOnlineDatabaseReady() {
@@ -937,6 +1032,7 @@
             const displayStoreName = storeProfile.name && storeProfile.name.trim()
                 ? storeProfile.name.trim()
                 : 'Sistem Manajemen Service HP';
+            const resolvedPhoto = normalizeStorePhotoUrl(storeProfile.photoUrl, displayStoreName);
 
             // Ganti judul tab browser & layar gerbang PIN dengan nama toko yang didaftarkan
             document.title = `${displayStoreName} - Laporan & Manajemen Service HP`;
@@ -947,14 +1043,43 @@
                 pinPromptName.textContent = `Masukkan PIN - ${storeProfile.name}`;
             }
 
-            // Header utama
+            // Header utama & Logo
             const headerName = document.getElementById('header-store-name');
             const headerTagline = document.getElementById('header-store-tagline');
+            const headerLogo = document.getElementById('header-store-logo');
+            const headerFallbackIcon = document.getElementById('header-store-fallback-icon');
             if (headerName) headerName.textContent = displayStoreName;
             if (headerTagline) headerTagline.textContent = storeProfile.tagline || 'Manajemen & Laporan Service HP';
+            if (headerLogo && headerFallbackIcon) {
+                if (storeProfile.photoUrl && storeProfile.photoUrl.trim()) {
+                    headerLogo.src = resolvedPhoto;
+                    headerLogo.classList.remove('hidden');
+                    headerFallbackIcon.classList.add('hidden');
+                } else {
+                    headerLogo.classList.add('hidden');
+                    headerFallbackIcon.classList.remove('hidden');
+                }
+            }
+
+            // Banner Dashboard
+            const dashPhoto = document.getElementById('dash-banner-photo');
+            if (dashPhoto) dashPhoto.src = resolvedPhoto;
+            if (document.getElementById('dash-banner-name')) {
+                document.getElementById('dash-banner-name').textContent = displayStoreName;
+            }
+            if (document.getElementById('dash-banner-tagline')) {
+                document.getElementById('dash-banner-tagline').textContent = storeProfile.tagline || 'Spesialis Service HP & Sparepart Bergaransi';
+            }
+            if (document.getElementById('dash-banner-address')) {
+                document.getElementById('dash-banner-address').textContent = storeProfile.address || 'Alamat toko belum diatur';
+            }
+            if (document.getElementById('dash-banner-phone')) {
+                document.getElementById('dash-banner-phone').textContent = storeProfile.phone || '-';
+            }
 
             // Form Tab Profil Toko
             if (document.getElementById('prof-name')) {
+                document.getElementById('prof-photo-url').value = storeProfile.photoUrl || '';
                 document.getElementById('prof-name').value = storeProfile.name || '';
                 document.getElementById('prof-tagline').value = storeProfile.tagline || '';
                 document.getElementById('prof-phone').value = storeProfile.phone || '';
@@ -972,11 +1097,19 @@
             const nameEl = document.getElementById('preview-card-name');
             if (!nameEl) return;
             const liveName = document.getElementById('prof-name')?.value || storeProfile.name || 'NAMA TOKO ANDA';
+            const livePhotoInput = document.getElementById('prof-photo-url')?.value ?? storeProfile.photoUrl;
+            const resolvedLivePhoto = normalizeStorePhotoUrl(livePhotoInput, liveName);
+
+            const formPhotoPrev = document.getElementById('prof-photo-preview');
+            const cardPhotoPrev = document.getElementById('preview-card-photo');
+            if (formPhotoPrev) formPhotoPrev.src = resolvedLivePhoto;
+            if (cardPhotoPrev) cardPhotoPrev.src = resolvedLivePhoto;
+
             nameEl.textContent = liveName;
             document.getElementById('preview-card-tagline').textContent = document.getElementById('prof-tagline')?.value || storeProfile.tagline || '';
             document.getElementById('preview-card-address').textContent = document.getElementById('prof-address')?.value || storeProfile.address || '';
             const phoneVal = document.getElementById('prof-phone')?.value || storeProfile.phone || '';
-            document.getElementById('preview-card-phone').textContent = phoneVal ? `WA: ${phoneVal}` : '';
+            document.getElementById('preview-card-phone').textContent = phoneVal ? `WA: ${phoneVal}` : 'WA: -';
             document.getElementById('preview-card-terms').textContent = document.getElementById('prof-terms')?.value || storeProfile.terms || '';
         }
 
@@ -1104,6 +1237,7 @@
 
             const newGasUrl = document.getElementById('prof-gas-url').value.trim();
             storeProfile = {
+                photoUrl: document.getElementById('prof-photo-url').value.trim(),
                 name: document.getElementById('prof-name').value.trim(),
                 tagline: document.getElementById('prof-tagline').value.trim(),
                 phone: document.getElementById('prof-phone').value.trim(),
@@ -1184,6 +1318,7 @@
                 await fetchOnlineDatabase('', true);
                 updateAllViews();
             });
+            document.getElementById('btn-dash-edit-profile')?.addEventListener('click', () => switchTab('profile'));
             document.getElementById('btn-dash-see-all')?.addEventListener('click', () => switchTab('services'));
 
             // Filter & Search
@@ -1202,7 +1337,7 @@
                 await fetchOnlineDatabase('', true);
                 updateAllViews();
             });
-            ['prof-name', 'prof-tagline', 'prof-address', 'prof-phone', 'prof-terms'].forEach(id => {
+            ['prof-photo-url', 'prof-name', 'prof-tagline', 'prof-address', 'prof-phone', 'prof-terms'].forEach(id => {
                 document.getElementById(id)?.addEventListener('input', updateProfilePreviewCard);
             });
 
@@ -1413,18 +1548,34 @@
                 }
             });
 
-            document.getElementById('status-legend-summary').innerHTML = labels.map((label, idx) => `
-                <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/60 px-2.5 py-1.5 rounded-lg">
-                    <span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 truncate">
-                        <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${colors[idx]}"></span>
-                        <span class="truncate">${label}</span>
-                    </span>
-                    <span class="font-bold text-slate-800 dark:text-white ml-1">${dataValues[idx]}</span>
-                </div>
-            `).join('');
+            const legendEl = document.getElementById('status-legend-summary');
+            if (legendEl) {
+                legendEl.innerHTML = labels.map((label, idx) => `
+                    <div class="flex items-center justify-between gap-1.5 bg-slate-50 dark:bg-slate-800/60 px-2.5 py-1.5 rounded-lg">
+                        <span class="flex items-center gap-1.5 truncate text-slate-600 dark:text-slate-300">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${colors[idx]}"></span>
+                            <span class="truncate">${label}</span>
+                        </span>
+                        <span class="font-bold text-slate-800 dark:text-white">${dataValues[idx]}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function updateTechnicianFilterOptions() {
+            const filterSelect = document.getElementById('filter-tech');
+            if (!filterSelect) return;
+            const currentVal = filterSelect.value;
+            const uniqueTechs = [...new Set(serviceList.map(s => String(s.technician || '').trim()).filter(Boolean))];
+            filterSelect.innerHTML = `<option value="ALL">Semua Teknisi</option>` +
+                uniqueTechs.map(t => `<option value="${t}">${t}</option>`).join('');
+            if (uniqueTechs.includes(currentVal)) {
+                filterSelect.value = currentVal;
+            }
         }
 
         function renderServicesTable() {
+            updateTechnicianFilterOptions();
             const query = document.getElementById('search-input').value.toLowerCase();
             const statusFilter = document.getElementById('filter-status').value;
             const techFilter = document.getElementById('filter-tech').value;
@@ -1547,7 +1698,7 @@
                 imei: document.getElementById('srv-imei').value.trim(),
                 accessories: accessories,
                 issue: document.getElementById('srv-issue').value.trim(),
-                technician: document.getElementById('srv-tech').value,
+                technician: document.getElementById('srv-tech').value.trim() || 'Teknisi Toko',
                 status: document.getElementById('srv-status').value,
                 partsCost: Number(document.getElementById('srv-parts-cost').value) || 0,
                 totalPrice: Number(document.getElementById('srv-total-price').value) || 0
@@ -1601,6 +1752,16 @@
         function openReceiptModal(id) {
             const item = serviceList.find(s => s.id === id);
             if (!item) return;
+
+            const rcpLogo = document.getElementById('rcp-store-logo');
+            if (rcpLogo) {
+                if (storeProfile.photoUrl && storeProfile.photoUrl.trim()) {
+                    rcpLogo.src = normalizeStorePhotoUrl(storeProfile.photoUrl, storeProfile.name);
+                    rcpLogo.classList.remove('hidden');
+                } else {
+                    rcpLogo.classList.add('hidden');
+                }
+            }
 
             document.getElementById('rcp-store-name').textContent = storeProfile.name || 'NAMA TOKO ANDA';
             document.getElementById('rcp-store-tagline').textContent = storeProfile.tagline || '';
