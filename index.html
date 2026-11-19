@@ -311,15 +311,22 @@
             </div>
         </header>
 
+        <!-- Banner Full-Bleed Rasio 1280 x 400 (aspect-[16/5]) -->
+        <div id="dashboard-banner-card" class="relative w-full aspect-[16/5] max-h-[400px] overflow-hidden border-b border-slate-200/80 dark:border-slate-800 bg-slate-900 select-none transition-all duration-300">
+            <img id="dashboard-banner-bg" src="" alt="" aria-hidden="true" class="hidden absolute inset-0 w-full h-full object-cover blur-2xl scale-110 brightness-75 saturate-125 transition-opacity duration-300">
+            <div id="dashboard-banner-vignette" class="hidden absolute inset-0 z-[5] pointer-events-none bg-gradient-to-b from-black/10 via-transparent to-black/15"></div>
+            <img id="dashboard-banner-img" src="" alt="Banner Toko" class="hidden relative z-10 w-full h-full object-cover object-center transition-all duration-300">
+            <div id="dashboard-banner-empty" class="relative w-full h-full bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 overflow-hidden">
+                <div class="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-blue-500/20 blur-3xl"></div>
+                <div class="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-indigo-500/20 blur-3xl"></div>
+                <div class="absolute inset-0 opacity-15" style="background-image: radial-gradient(#93c5fd 1px, transparent 1px); background-size: 24px 24px;"></div>
+            </div>
+        </div>
+
         <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-1">
 
             <!-- ==================== TAB 1: DASHBOARD ==================== -->
             <section id="view-dashboard" class="space-y-6">
-                <div id="dashboard-banner-card" class="relative w-full h-44 sm:h-60 md:h-72 rounded-3xl overflow-hidden shadow-sm border border-slate-200 bg-slate-900">
-                    <img id="dashboard-banner-bg" src="" alt="" aria-hidden="true" class="hidden absolute inset-0 w-full h-full object-cover blur-2xl scale-110 opacity-45">
-                    <img id="dashboard-banner-img" src="https://placehold.co/1280x400/1e293b/ffffff?text=+" alt="Banner Toko" class="relative z-10 w-full h-full object-cover">
-                </div>
-
                 <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                         <p class="text-xs font-medium text-slate-500">Total Unit Masuk</p>
@@ -622,6 +629,47 @@
                     </form>
 
                     <div class="lg:col-span-5 space-y-4">
+                        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-900">Tampilan Banner Dashboard</h3>
+                                    <p class="text-[11px] text-slate-500">Rasio standar 1280 × 400 px (bebas ukuran lain)</p>
+                                </div>
+                                <button type="button" id="btn-upload-banner-card" class="shrink-0 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition cursor-pointer">
+                                    + Pilih Gambar
+                                </button>
+                            </div>
+
+                            <div id="prof-banner-preview-box" class="relative w-full aspect-[16/5] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-900 transition-all duration-300">
+                                <img id="prof-banner-preview-bg" src="" alt="" aria-hidden="true" class="hidden absolute inset-0 w-full h-full object-cover blur-xl scale-110 brightness-75 saturate-125">
+                                <img id="prof-banner-preview-img" src="" alt="Preview Banner" class="hidden relative z-10 w-full h-full object-cover object-center transition-all duration-300">
+                                <div id="prof-banner-preview-empty" class="relative w-full h-full bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 overflow-hidden">
+                                    <div class="absolute -top-10 -left-10 w-36 h-36 rounded-full bg-blue-500/20 blur-2xl"></div>
+                                    <div class="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-indigo-500/20 blur-2xl"></div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-slate-700 mb-1">Mode Tampilan Banner</label>
+                                    <select id="prof-banner-fit" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                        <option value="auto">Otomatis (Adaptif Semua Ukuran)</option>
+                                        <option value="natural">Sesuai Proporsi Asli Gambar</option>
+                                        <option value="cover">Penuh Melebar (Full Cover)</option>
+                                        <option value="contain">Utuh + Latar Blur (Contain)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-slate-700 mb-1">Posisi Fokus</label>
+                                    <select id="prof-banner-pos" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                        <option value="center">Tengah</option>
+                                        <option value="top">Bagian Atas</option>
+                                        <option value="bottom">Bagian Bawah</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-sm font-bold text-slate-900">Pratinjau Kop Nota Cetak</h3>
@@ -1160,190 +1208,300 @@
         }
 
         // ==================== IDENTITAS TOKO & FOTO ====================
+        function applyBannerStyleToElements(imgEl, bgEl, emptyEl, photo, isDashboard) {
+            const fitPref = (storeProfile && storeProfile.bannerFit) || 'auto';
+            const posPref = (storeProfile && storeProfile.bannerPos) || 'center';
+            const containerEl = imgEl.parentElement;
+            const vignetteEl = isDashboard ? document.getElementById('dashboard-banner-vignette') : null;
+
+            const posClass = posPref === 'top' ? 'object-top' : (posPref === 'bottom' ? 'object-bottom' : 'object-center');
+
+            const renderWithDimensions = () => {
+                const nw = imgEl.naturalWidth || 1280;
+                const nh = imgEl.naturalHeight || 400;
+                const ratio = nw / nh;
+
+                imgEl.classList.remove(
+                    'hidden', 'object-cover', 'object-contain',
+                    'object-top', 'object-center', 'object-bottom',
+                    'h-full', 'h-auto', 'max-h-[480px]', 'max-h-72',
+                    'drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)]'
+                );
+                if (emptyEl) emptyEl.classList.add('hidden');
+                if (vignetteEl) vignetteEl.classList.remove('hidden');
+
+                if (containerEl) {
+                    containerEl.classList.remove('h-auto');
+                    containerEl.classList.add('aspect-[16/5]');
+                    if (isDashboard) containerEl.classList.add('max-h-[400px]');
+                }
+
+                // Tentukan mode efektif (rasio >= 2.2 otomatis full cover sesuai 1280x400)
+                let effectiveMode = fitPref;
+                if (fitPref === 'auto') {
+                    effectiveMode = ratio >= 2.2 ? 'cover' : 'contain';
+                }
+
+                if (effectiveMode === 'natural') {
+                    if (bgEl) bgEl.classList.add('hidden');
+                    if (containerEl) {
+                        containerEl.classList.remove('aspect-[16/5]');
+                        if (isDashboard) containerEl.classList.remove('max-h-[400px]');
+                        containerEl.classList.add('h-auto');
+                    }
+                    imgEl.classList.add('w-full', 'h-auto', isDashboard ? 'max-h-[400px]' : 'max-h-72', 'object-contain', 'object-center');
+                } else if (effectiveMode === 'contain') {
+                    if (bgEl) {
+                        bgEl.src = photo;
+                        bgEl.classList.remove('hidden');
+                    }
+                    imgEl.classList.add('h-full', 'object-contain', 'object-center', 'drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)]');
+                } else {
+                    if (bgEl) bgEl.classList.add('hidden');
+                    imgEl.classList.add('h-full', 'object-cover', posClass);
+                }
+            };
+
+            imgEl.onload = renderWithDimensions;
+            if (imgEl.complete && imgEl.naturalWidth > 0) {
+                renderWithDimensions();
+            }
+        }
+
         function applyStoreIdentityToUI() {
-            if (!storeProfile) return;
-            const name = storeProfile.name || 'Manajemen Service HP';
-            const tagline = storeProfile.tagline || 'Laporan & Manajemen Service Handphone';
-            const photo = storeProfile.photoUrl || '';
+            const p = storeProfile || {
+                name: 'Toko Service HP',
+                tagline: 'Manajemen & Laporan Service HP',
+                phone: '-',
+                adminName: 'Admin',
+                address: '-',
+                terms: '1. Garansi service 14 hari.\n2. Barang tidak diambil > 30 hari di luar tanggung jawab kami.',
+                photoUrl: ''
+            };
 
-            document.title = name + ' - Manajemen Service HP';
-            document.getElementById('header-store-name').textContent = name;
-            document.getElementById('header-store-tagline').textContent = tagline;
-            document.getElementById('pin-store-title').textContent = name;
+            document.title = p.name + ' - Manajemen Service HP';
+            document.getElementById('header-store-name').textContent = p.name;
+            document.getElementById('header-store-tagline').textContent = p.tagline || 'Manajemen Service HP';
+            document.getElementById('pin-store-title').textContent = p.name;
 
+            const photo = (p.photoUrl || '').trim();
             const headerAvatar = document.getElementById('header-store-avatar');
             const headerIcon = document.getElementById('header-store-icon');
             const pinAvatar = document.getElementById('pin-screen-avatar');
             const pinIcon = document.getElementById('pin-screen-icon');
             const bannerImg = document.getElementById('dashboard-banner-img');
             const bannerBg = document.getElementById('dashboard-banner-bg');
-            const defaultBanner = 'https://placehold.co/1280x400/1e293b/ffffff?text=+';
+            const bannerVignette = document.getElementById('dashboard-banner-vignette');
+            const bannerEmpty = document.getElementById('dashboard-banner-empty');
+            const bannerCard = document.getElementById('dashboard-banner-card');
 
-            const resetToFallback = () => {
-                headerAvatar.classList.add('hidden');
-                headerIcon.classList.remove('hidden');
-                pinAvatar.classList.add('hidden');
-                pinIcon.classList.remove('hidden');
-                bannerBg.classList.add('hidden');
-                bannerImg.classList.remove('object-contain');
-                bannerImg.classList.add('object-cover');
-                bannerImg.src = defaultBanner;
-            };
-
-            if ((photo && photo.startsWith('data:image')) || (photo && photo.startsWith('http'))) {
-                headerAvatar.onerror = () => {
-                    headerAvatar.classList.add('hidden');
-                    headerIcon.classList.remove('hidden');
-                };
+            if (photo) {
                 headerAvatar.src = photo;
                 headerAvatar.classList.remove('hidden');
                 headerIcon.classList.add('hidden');
 
-                pinAvatar.onerror = () => {
-                    pinAvatar.classList.add('hidden');
-                    pinIcon.classList.remove('hidden');
-                };
                 pinAvatar.src = photo;
                 pinAvatar.classList.remove('hidden');
                 pinIcon.classList.add('hidden');
 
-                bannerImg.onload = function() {
-                    const isWideBanner = this.naturalWidth >= this.naturalHeight * 1.35;
-                    if (isWideBanner) {
-                        bannerBg.classList.add('hidden');
-                        this.classList.remove('object-contain');
-                        this.classList.add('object-cover');
-                    } else {
-                        bannerBg.src = photo;
-                        bannerBg.classList.remove('hidden');
-                        this.classList.remove('object-cover');
-                        this.classList.add('object-contain');
-                    }
-                };
-                bannerImg.onerror = resetToFallback;
                 bannerImg.src = photo;
+                applyBannerStyleToElements(bannerImg, bannerBg, bannerEmpty, photo, true);
+                bannerImg.onerror = function() {
+                    bannerImg.classList.add('hidden');
+                    if (bannerBg) bannerBg.classList.add('hidden');
+                    if (bannerVignette) bannerVignette.classList.add('hidden');
+                    bannerEmpty.classList.remove('hidden');
+                };
             } else {
-                resetToFallback();
+                headerAvatar.classList.add('hidden');
+                headerIcon.classList.remove('hidden');
+
+                pinAvatar.classList.add('hidden');
+                pinIcon.classList.remove('hidden');
+
+                bannerImg.classList.add('hidden');
+                if (bannerBg) bannerBg.classList.add('hidden');
+                if (bannerVignette) bannerVignette.classList.add('hidden');
+                if (bannerCard) {
+                    bannerCard.classList.remove('h-auto');
+                    bannerCard.classList.add('aspect-[16/5]', 'max-h-[400px]');
+                }
+                bannerEmpty.classList.remove('hidden');
             }
         }
 
-        // ==================== LAYAR ONBOARDING & PIN ====================
-        function showOnboardingScreen() {
-            document.getElementById('onboarding-screen').classList.remove('hidden');
-            document.getElementById('pin-lock-screen').classList.add('hidden');
-            document.getElementById('app-workspace').classList.add('hidden');
-            document.getElementById('bottom-nav-bar').classList.add('hidden');
+        function compressAndUploadPhoto(file) {
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                showToast('Pilih file gambar (JPG, PNG, WEBP, GIF).');
+                return;
+            }
+
+            showToast('Memproses gambar...');
+            const reader = new FileReader();
+            reader.onerror = function() {
+                showToast('Gagal membaca file gambar.');
+            };
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onerror = function() {
+                    showToast('Format gambar tidak didukung browser.');
+                };
+                img.onload = function() {
+                    // Kompresi adaptif bertahap agar bebas upload ukuran & resolusi berapapun
+                    const dimSteps = [1600, 1360, 1120, 900];
+                    const qualitySteps = [0.88, 0.78, 0.68, 0.58];
+                    let bestDataUrl = '';
+
+                    for (let d = 0; d < dimSteps.length; d++) {
+                        const maxDim = dimSteps[d];
+                        let w = img.naturalWidth || img.width;
+                        let h = img.naturalHeight || img.height;
+
+                        if (w > maxDim || h > maxDim) {
+                            if (w >= h) {
+                                h = Math.round((h * maxDim) / w);
+                                w = maxDim;
+                            } else {
+                                w = Math.round((w * maxDim) / h);
+                                h = maxDim;
+                            }
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = Math.max(1, w);
+                        canvas.height = Math.max(1, h);
+                        const ctx = canvas.getContext('2d');
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
+                        ctx.fillStyle = '#0f172a';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                        for (let q = 0; q < qualitySteps.length; q++) {
+                            bestDataUrl = canvas.toDataURL('image/jpeg', qualitySteps[q]);
+                            if (bestDataUrl.length <= 250000) break;
+                        }
+                        if (bestDataUrl.length <= 250000) break;
+                    }
+
+                    storeProfile = {
+                        ...(storeProfile || {}),
+                        photoUrl: bestDataUrl,
+                        bannerFit: (storeProfile && storeProfile.bannerFit) || 'auto'
+                    };
+                    applyStoreIdentityToUI();
+                    updateProfileLivePreview();
+                    syncToOnlineDatabase(() => {
+                        showToast('Foto & banner toko berhasil disimpan!');
+                    });
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
-        function showPinLockScreen() {
-            enteredPin = '';
-            updatePinDots();
-            document.getElementById('pin-error').classList.add('hidden');
-            applyStoreIdentityToUI();
-            document.getElementById('onboarding-screen').classList.add('hidden');
-            document.getElementById('pin-lock-screen').classList.remove('hidden');
-            document.getElementById('app-workspace').classList.add('hidden');
-            document.getElementById('bottom-nav-bar').classList.add('hidden');
-        }
-
+        // ==================== LAYAR KUNCI PIN ====================
         function updatePinDots() {
             const dots = document.querySelectorAll('#pin-dots span');
-            const targetLen = (storeProfile && storeProfile.pin) ? String(storeProfile.pin).length : 4;
             dots.forEach((dot, idx) => {
-                if (idx >= targetLen) {
-                    dot.classList.add('hidden');
+                if (idx < enteredPin.length) {
+                    dot.classList.remove('border-slate-300');
+                    dot.classList.add('bg-blue-600', 'border-blue-600', 'scale-110');
                 } else {
-                    dot.classList.remove('hidden');
-                    if (idx < enteredPin.length) {
-                        dot.classList.add('bg-blue-600', 'border-blue-600', 'scale-110');
-                        dot.classList.remove('border-slate-300');
-                    } else {
-                        dot.classList.remove('bg-blue-600', 'border-blue-600', 'scale-110');
-                        dot.classList.add('border-slate-300');
-                    }
+                    dot.classList.add('border-slate-300');
+                    dot.classList.remove('bg-blue-600', 'border-blue-600', 'scale-110');
                 }
             });
         }
 
-        function handlePinInput(digit) {
-            const correctPin = (storeProfile && storeProfile.pin) ? String(storeProfile.pin) : '';
-            if (!correctPin) {
-                safeSessionSet(SESSION_UNLOCKED_KEY, '1');
-                enterMainWorkspace();
-                return;
-            }
-
+        function handlePinDigit(digit) {
+            const expectedPin = String((storeProfile && storeProfile.pin) || '1234');
             if (pinResetTimer) {
                 clearTimeout(pinResetTimer);
                 pinResetTimer = null;
-                enteredPin = '';
-                document.getElementById('pin-error').classList.add('hidden');
             }
+            document.getElementById('pin-error').classList.add('hidden');
+            document.getElementById('pin-card').classList.remove('animate-pin-shake');
 
-            if (enteredPin.length >= correctPin.length) return;
+            if (enteredPin.length >= 6) return;
             enteredPin += String(digit);
             updatePinDots();
 
             if (navigator.vibrate) {
-                try { navigator.vibrate(12); } catch (e) {}
+                try { navigator.vibrate(15); } catch (e) {}
             }
 
-            if (enteredPin.length === correctPin.length) {
-                if (enteredPin === correctPin) {
-                    document.getElementById('pin-error').classList.add('hidden');
-                    safeSessionSet(SESSION_UNLOCKED_KEY, '1');
-                    setTimeout(() => enterMainWorkspace(), 80);
-                } else {
-                    document.getElementById('pin-error').classList.remove('hidden');
-                    const pinCard = document.getElementById('pin-card');
-                    if (pinCard) {
-                        pinCard.classList.remove('animate-pin-shake');
-                        void pinCard.offsetWidth;
-                        pinCard.classList.add('animate-pin-shake');
-                    }
-                    if (navigator.vibrate) {
-                        try { navigator.vibrate([30, 40, 30]); } catch (e) {}
-                    }
-                    pinResetTimer = setTimeout(() => {
-                        enteredPin = '';
-                        updatePinDots();
-                        pinResetTimer = null;
-                    }, 300);
+            if (enteredPin === expectedPin) {
+                safeSessionSet(SESSION_UNLOCKED_KEY, '1');
+                enteredPin = '';
+                updatePinDots();
+                enterAppWorkspace();
+                return;
+            }
+
+            if (enteredPin.length >= expectedPin.length) {
+                const errEl = document.getElementById('pin-error');
+                const cardEl = document.getElementById('pin-card');
+                errEl.classList.remove('hidden');
+                cardEl.classList.remove('animate-pin-shake');
+                void cardEl.offsetWidth;
+                cardEl.classList.add('animate-pin-shake');
+
+                if (navigator.vibrate) {
+                    try { navigator.vibrate([40, 40, 40]); } catch (e) {}
                 }
+
+                pinResetTimer = setTimeout(() => {
+                    enteredPin = '';
+                    updatePinDots();
+                }, 420);
             }
         }
 
-        function enterMainWorkspace() {
-            document.getElementById('onboarding-screen').classList.add('hidden');
-            document.getElementById('pin-lock-screen').classList.add('hidden');
-            document.getElementById('app-workspace').classList.remove('hidden');
-            document.getElementById('bottom-nav-bar').classList.remove('hidden');
+        function clearPinInput() {
+            if (pinResetTimer) {
+                clearTimeout(pinResetTimer);
+                pinResetTimer = null;
+            }
+            enteredPin = '';
+            document.getElementById('pin-error').classList.add('hidden');
+            updatePinDots();
+        }
 
-            applyStoreIdentityToUI();
-            populateProfileForm();
-            switchTab('dashboard');
+        function backspacePinInput() {
+            if (pinResetTimer) {
+                clearTimeout(pinResetTimer);
+                pinResetTimer = null;
+            }
+            enteredPin = enteredPin.slice(0, -1);
+            document.getElementById('pin-error').classList.add('hidden');
+            updatePinDots();
         }
 
         // ==================== NAVIGASI TAB ====================
         function switchTab(tabName) {
+            const bannerCard = document.getElementById('dashboard-banner-card');
+            if (bannerCard) {
+                if (tabName === 'dashboard') bannerCard.classList.remove('hidden');
+                else bannerCard.classList.add('hidden');
+            }
+
             const views = ['dashboard', 'services', 'reports', 'profile'];
             views.forEach(v => {
-                const el = document.getElementById('view-' + v);
-                if (el) {
-                    if (v === tabName) el.classList.remove('hidden');
-                    else el.classList.add('hidden');
+                const section = document.getElementById('view-' + v);
+                if (section) {
+                    if (v === tabName) section.classList.remove('hidden');
+                    else section.classList.add('hidden');
                 }
             });
 
             document.querySelectorAll('#bottom-nav-bar .nav-btn').forEach(btn => {
-                const isTarget = btn.getAttribute('data-tab') === tabName;
-                if (isTarget) {
-                    btn.classList.add('text-blue-600', 'font-semibold');
-                    btn.classList.remove('text-slate-500', 'font-medium');
-                } else {
-                    btn.classList.remove('text-blue-600', 'font-semibold');
-                    btn.classList.add('text-slate-500', 'font-medium');
-                }
+                const isActive = btn.getAttribute('data-tab') === tabName;
+                btn.classList.toggle('text-blue-600', isActive);
+                btn.classList.toggle('font-semibold', isActive);
+                btn.classList.toggle('text-slate-500', !isActive);
+                btn.classList.toggle('font-medium', !isActive);
             });
 
             if (tabName === 'dashboard') renderDashboard();
@@ -1352,15 +1510,28 @@
             if (tabName === 'profile') populateProfileForm();
         }
 
-        // ==================== DASHBOARD & GRAFIK ====================
+        // ==================== DASHBOARD & GRAFIK STATUS ====================
+        function getStatusBadgeHtml(status) {
+            const map = {
+                'Antrian': 'bg-slate-100 text-slate-700 border-slate-200',
+                'Proses': 'bg-blue-50 text-blue-700 border-blue-200',
+                'Menunggu Part': 'bg-amber-50 text-amber-700 border-amber-200',
+                'Selesai': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                'Diambil': 'bg-purple-50 text-purple-700 border-purple-200',
+                'Batal': 'bg-rose-50 text-rose-700 border-rose-200'
+            };
+            const cls = map[status] || map['Antrian'];
+            return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${cls}">${escapeHtml(status)}</span>`;
+        }
+
         function renderDashboard() {
             const totalUnits = servicesData.length;
             const inProcess = servicesData.filter(s => ['Antrian', 'Proses', 'Menunggu Part'].includes(s.status)).length;
             const readyUnits = servicesData.filter(s => ['Selesai', 'Diambil'].includes(s.status)).length;
 
-            const validFinancial = servicesData.filter(s => s.status !== 'Batal');
-            const totalRevenue = validFinancial.reduce((sum, s) => sum + (Number(s.totalPrice) || 0), 0);
-            const totalParts = validFinancial.reduce((sum, s) => sum + (Number(s.partsCost) || 0), 0);
+            const validTrans = servicesData.filter(s => s.status !== 'Batal');
+            const totalRevenue = validTrans.reduce((acc, s) => acc + (Number(s.totalPrice) || 0), 0);
+            const totalParts = validTrans.reduce((acc, s) => acc + (Number(s.partsCost) || 0), 0);
             const totalProfit = totalRevenue - totalParts;
 
             document.getElementById('kpi-total').textContent = totalUnits;
@@ -1369,77 +1540,59 @@
             document.getElementById('kpi-revenue').textContent = formatRupiah(totalRevenue);
             document.getElementById('kpi-profit').textContent = formatRupiah(totalProfit);
 
-            const statusCounts = {
-                'Antrian': 0,
-                'Proses': 0,
-                'Menunggu Part': 0,
-                'Selesai': 0,
-                'Diambil': 0,
-                'Batal': 0
-            };
-            servicesData.forEach(s => {
-                if (Object.prototype.hasOwnProperty.call(statusCounts, s.status)) {
-                    statusCounts[s.status]++;
-                }
-            });
-            renderStatusChart(statusCounts);
-
             const recentBody = document.getElementById('recent-services-body');
-            const recentList = servicesData.slice(0, 5);
+            const recentList = [...servicesData].slice(0, 5);
             if (recentList.length === 0) {
-                recentBody.innerHTML = '<tr><td colspan="4" class="py-8 text-center text-slate-400 text-xs">Belum ada data service masuk.</td></tr>';
+                recentBody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-400 text-xs">Belum ada data service. Klik "+ Input Baru" untuk memulai.</td></tr>`;
             } else {
                 recentBody.innerHTML = recentList.map(item => `
                     <tr class="hover:bg-slate-50/80 transition">
-                        <td class="py-2.5 px-2">
-                            <span class="font-mono font-bold text-blue-600 block text-[11px]">${escapeHtml(item.nota)}</span>
-                            <span class="font-semibold text-slate-800">${escapeHtml(item.customer)}</span>
+                        <td class="py-3 px-2">
+                            <div class="font-mono text-[11px] font-bold text-blue-600">${escapeHtml(item.nota)}</div>
+                            <div class="font-semibold text-slate-800">${escapeHtml(item.customer)}</div>
                         </td>
-                        <td class="py-2.5 px-2">
-                            <span class="font-medium text-slate-800 block">${escapeHtml(item.device)}</span>
-                            <span class="text-[11px] text-slate-400 line-clamp-1">${escapeHtml(item.issue)}</span>
+                        <td class="py-3 px-2">
+                            <div class="font-medium text-slate-800">${escapeHtml(item.device)}</div>
+                            <div class="text-[11px] text-slate-500 truncate max-w-[160px]">${escapeHtml(item.issue)}</div>
                         </td>
-                        <td class="py-2.5 px-2 font-semibold text-slate-700">${formatRupiah(item.totalPrice)}</td>
-                        <td class="py-2.5 px-2 text-right">${getStatusBadgeHtml(item.status)}</td>
+                        <td class="py-3 px-2 font-semibold text-slate-800">${formatRupiah(item.totalPrice)}</td>
+                        <td class="py-3 px-2 text-right">${getStatusBadgeHtml(item.status)}</td>
                     </tr>
                 `).join('');
             }
+
+            const statuses = ['Antrian', 'Proses', 'Menunggu Part', 'Selesai', 'Diambil', 'Batal'];
+            const counts = statuses.map(st => servicesData.filter(s => s.status === st).length);
+            renderStatusChart(statuses, counts);
         }
 
-        function renderStatusChart(counts) {
+        function renderStatusChart(labels, counts) {
             const canvas = document.getElementById('statusChart');
-            const legendContainer = document.getElementById('status-legend-list');
-            if (!canvas) return;
+            const legendBox = document.getElementById('status-legend-list');
+            const colors = ['#64748b', '#2563eb', '#f59e0b', '#10b981', '#8b5cf6', '#f43f5e'];
 
-            const labels = ['Antrian', 'Proses', 'Menunggu Part', 'Selesai', 'Diambil', 'Batal'];
-            const colors = ['#94a3b8', '#3b82f6', '#f59e0b', '#10b981', '#059669', '#ef4444'];
-            const values = labels.map(l => counts[l] || 0);
+            legendBox.innerHTML = labels.map((lbl, i) => `
+                <div class="flex items-center justify-between px-2 py-1 rounded-lg bg-slate-50">
+                    <span class="flex items-center gap-1.5 text-slate-600 truncate">
+                        <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${colors[i]}"></span>
+                        <span class="truncate">${lbl}</span>
+                    </span>
+                    <span class="font-bold text-slate-800">${counts[i]}</span>
+                </div>
+            `).join('');
 
-            if (legendContainer) {
-                legendContainer.innerHTML = labels.map((label, idx) => `
-                    <div class="flex items-center justify-between px-2 py-1 rounded-lg bg-slate-50">
-                        <span class="flex items-center gap-1.5 text-slate-600">
-                            <span class="w-2.5 h-2.5 rounded-full" style="background-color:${colors[idx]}"></span>
-                            ${label}
-                        </span>
-                        <span class="font-bold text-slate-800">${values[idx]}</span>
-                    </div>
-                `).join('');
-            }
-
-            if (typeof Chart === 'undefined') return;
+            if (typeof Chart === 'undefined' || !canvas) return;
             if (statusChartInstance) statusChartInstance.destroy();
-            const isDark = document.documentElement.classList.contains('dark');
 
+            const hasData = counts.some(c => c > 0);
             statusChartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'doughnut',
                 data: {
-                    labels: labels,
+                    labels: hasData ? labels : ['Belum Ada Data'],
                     datasets: [{
-                        data: values,
-                        backgroundColor: colors,
-                        borderWidth: 2,
-                        borderColor: isDark ? '#0f172a' : '#ffffff'
+                        data: hasData ? counts : [1],
+                        backgroundColor: hasData ? colors : ['#e2e8f0'],
+                        borderWidth: 0
                     }]
                 },
                 options: {
@@ -1453,46 +1606,32 @@
             });
         }
 
-        // ==================== DATA SERVICE & TABEL ====================
-        function getStatusBadgeHtml(status) {
-            const styles = {
-                'Antrian': 'bg-slate-100 text-slate-700 border-slate-200',
-                'Proses': 'bg-blue-50 text-blue-700 border-blue-200',
-                'Menunggu Part': 'bg-amber-50 text-amber-700 border-amber-200',
-                'Selesai': 'bg-emerald-50 text-emerald-700 border-emerald-200',
-                'Diambil': 'bg-teal-50 text-teal-700 border-teal-200',
-                'Batal': 'bg-rose-50 text-rose-700 border-rose-200'
-            };
-            const cls = styles[status] || styles['Antrian'];
-            return `<span class="inline-block px-2.5 py-1 rounded-full text-[11px] font-semibold border ${cls}">${escapeHtml(status)}</span>`;
-        }
-
+        // ==================== TABEL & CRUD DATA SERVICE ====================
         function updateTechnicianFilterOptions() {
             const select = document.getElementById('filter-tech');
-            if (!select) return;
             const currentVal = select.value;
             const techs = [...new Set(servicesData.map(s => (s.technician || '').trim()).filter(Boolean))];
-            select.innerHTML = '<option value="ALL">Semua Teknisi</option>' +
+            select.innerHTML = `<option value="ALL">Semua Teknisi</option>` +
                 techs.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
             if (techs.includes(currentVal)) select.value = currentVal;
         }
 
         function renderServicesTable() {
             updateTechnicianFilterOptions();
-            const search = (document.getElementById('search-service').value || '').toLowerCase();
+            const q = (document.getElementById('search-service').value || '').toLowerCase().trim();
             const statusFilter = document.getElementById('filter-status').value;
             const techFilter = document.getElementById('filter-tech').value;
 
             const filtered = servicesData.filter(item => {
-                const matchSearch =
-                    (item.nota || '').toLowerCase().includes(search) ||
-                    (item.customer || '').toLowerCase().includes(search) ||
-                    (item.device || '').toLowerCase().includes(search) ||
-                    (item.imei || '').toLowerCase().includes(search) ||
-                    (item.issue || '').toLowerCase().includes(search);
+                const matchQuery = !q ||
+                    (item.nota || '').toLowerCase().includes(q) ||
+                    (item.customer || '').toLowerCase().includes(q) ||
+                    (item.device || '').toLowerCase().includes(q) ||
+                    (item.imei || '').toLowerCase().includes(q) ||
+                    (item.phone || '').toLowerCase().includes(q);
                 const matchStatus = statusFilter === 'ALL' || item.status === statusFilter;
-                const matchTech = techFilter === 'ALL' || item.technician === techFilter;
-                return matchSearch && matchStatus && matchTech;
+                const matchTech = techFilter === 'ALL' || (item.technician || '').trim() === techFilter;
+                return matchQuery && matchStatus && matchTech;
             });
 
             const tbody = document.getElementById('services-table-body');
@@ -1510,32 +1649,30 @@
                 return `
                     <tr class="hover:bg-slate-50/90 transition">
                         <td class="py-3.5 px-4 align-top">
-                            <span class="font-mono font-bold text-blue-600 block">${escapeHtml(item.nota)}</span>
-                            <span class="text-[11px] text-slate-400">${escapeHtml(item.date)}</span>
+                            <div class="font-mono text-xs font-bold text-blue-600">${escapeHtml(item.nota)}</div>
+                            <div class="text-[11px] text-slate-500 mt-0.5">${escapeHtml(item.date)}</div>
                         </td>
                         <td class="py-3.5 px-4 align-top">
-                            <span class="font-semibold text-slate-900 block">${escapeHtml(item.customer)}</span>
-                            <button type="button" data-action="wa" data-id="${escapeHtml(item.id)}" class="mt-0.5 inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 hover:underline cursor-pointer">
+                            <div class="font-semibold text-slate-900">${escapeHtml(item.customer)}</div>
+                            <button type="button" data-action="wa" data-id="${escapeHtml(item.id)}" class="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 hover:underline cursor-pointer">
                                 WA: ${escapeHtml(item.phone)}
                             </button>
                         </td>
-                        <td class="py-3.5 px-4 align-top max-w-xs">
-                            <span class="font-semibold text-slate-800 block">${escapeHtml(item.device)}</span>
-                            <span class="text-xs text-slate-500 block mt-0.5">${escapeHtml(item.issue)}</span>
-                            ${item.imei ? `<span class="text-[10px] font-mono text-slate-400 block mt-0.5">IMEI: ${escapeHtml(item.imei)}</span>` : ''}
-                        </td>
                         <td class="py-3.5 px-4 align-top">
-                            <span class="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium">${escapeHtml(item.technician)}</span>
+                            <div class="font-semibold text-slate-800">${escapeHtml(item.device)}</div>
+                            <div class="text-xs text-slate-500 max-w-xs">${escapeHtml(item.issue)}</div>
+                            ${item.imei ? `<div class="text-[10px] font-mono text-slate-400 mt-0.5">IMEI: ${escapeHtml(item.imei)}</div>` : ''}
                         </td>
+                        <td class="py-3.5 px-4 align-top text-xs font-medium text-slate-700">${escapeHtml(item.technician || '-')}</td>
                         <td class="py-3.5 px-4 align-top">
-                            <span class="font-bold text-slate-900 block">${formatRupiah(item.totalPrice)}</span>
-                            <span class="text-[11px] text-emerald-600 font-medium block">Laba: ${formatRupiah(profit)}</span>
+                            <div class="font-bold text-slate-900">${formatRupiah(item.totalPrice)}</div>
+                            <div class="text-[11px] text-emerald-600 font-medium">Laba: ${formatRupiah(profit)}</div>
                         </td>
                         <td class="py-3.5 px-4 align-top">${getStatusBadgeHtml(item.status)}</td>
-                        <td class="py-3.5 px-4 align-top text-right">
+                        <td class="py-3.5 px-4 align-top text-right whitespace-nowrap">
                             <div class="inline-flex items-center gap-1">
-                                <button type="button" data-action="nota" data-id="${escapeHtml(item.id)}" title="Cetak Nota" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer">Nota</button>
-                                <button type="button" data-action="edit" data-id="${escapeHtml(item.id)}" title="Edit Data" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-semibold transition cursor-pointer">Edit</button>
+                                <button type="button" data-action="nota" data-id="${escapeHtml(item.id)}" title="Cetak Nota" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 text-xs font-semibold transition cursor-pointer">Nota</button>
+                                <button type="button" data-action="edit" data-id="${escapeHtml(item.id)}" title="Edit" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-600 text-xs font-semibold transition cursor-pointer">Edit</button>
                                 <button type="button" data-action="delete" data-id="${escapeHtml(item.id)}" title="Hapus" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-semibold transition cursor-pointer">Hapus</button>
                             </div>
                         </td>
@@ -1546,41 +1683,49 @@
 
         function generateNextNotaNumber() {
             const now = new Date();
-            const ym = String(now.getFullYear()).slice(-2) + String(now.getMonth() + 1).padStart(2, '0');
+            const yymm = String(now.getFullYear()).slice(-2) + String(now.getMonth() + 1).padStart(2, '0');
             const seq = String(servicesData.length + 1).padStart(3, '0');
-            return `SRV-${ym}-${seq}`;
+            return `SRV-${yymm}-${seq}`;
         }
 
-        function openServiceModal(serviceItem) {
+        function updateProfitPreview() {
+            const parts = Number(document.getElementById('srv-parts').value) || 0;
+            const total = Number(document.getElementById('srv-total').value) || 0;
+            document.getElementById('srv-profit-preview').textContent = formatRupiah(total - parts);
+        }
+
+        function openServiceModal(serviceObj) {
             const modal = document.getElementById('service-modal');
-            const title = document.getElementById('service-modal-title');
-            document.getElementById('service-form').reset();
+            const form = document.getElementById('service-form');
+            form.reset();
 
-            if (serviceItem) {
-                title.textContent = 'Edit Data Service - ' + serviceItem.nota;
-                document.getElementById('srv-id').value = serviceItem.id;
-                document.getElementById('srv-nota').value = serviceItem.nota;
-                document.getElementById('srv-date').value = serviceItem.date;
-                document.getElementById('srv-customer').value = serviceItem.customer;
-                document.getElementById('srv-phone').value = serviceItem.phone;
-                document.getElementById('srv-device').value = serviceItem.device;
-                document.getElementById('srv-imei').value = serviceItem.imei || '';
-                document.getElementById('srv-issue').value = serviceItem.issue;
-                document.getElementById('srv-tech').value = serviceItem.technician;
-                document.getElementById('srv-status').value = serviceItem.status;
-                document.getElementById('srv-parts').value = serviceItem.partsCost || 0;
-                document.getElementById('srv-total').value = serviceItem.totalPrice || 0;
+            if (serviceObj) {
+                document.getElementById('service-modal-title').textContent = 'Edit Data Service';
+                document.getElementById('srv-id').value = serviceObj.id;
+                document.getElementById('srv-nota').value = serviceObj.nota;
+                document.getElementById('srv-date').value = serviceObj.date;
+                document.getElementById('srv-customer').value = serviceObj.customer;
+                document.getElementById('srv-phone').value = serviceObj.phone;
+                document.getElementById('srv-device').value = serviceObj.device;
+                document.getElementById('srv-imei').value = serviceObj.imei || '';
+                document.getElementById('srv-issue').value = serviceObj.issue;
+                document.getElementById('srv-tech').value = serviceObj.technician || '';
+                document.getElementById('srv-status').value = serviceObj.status || 'Antrian';
+                document.getElementById('srv-parts').value = serviceObj.partsCost || 0;
+                document.getElementById('srv-total').value = serviceObj.totalPrice || 0;
 
-                const accList = Array.isArray(serviceItem.accessories) ? serviceItem.accessories : [];
+                const accList = Array.isArray(serviceObj.accessories) ? serviceObj.accessories : [];
                 document.querySelectorAll('.acc-checkbox').forEach(cb => {
                     cb.checked = accList.includes(cb.value);
                 });
             } else {
-                title.textContent = 'Tambah Data Service Baru';
+                document.getElementById('service-modal-title').textContent = 'Tambah Data Service Baru';
                 document.getElementById('srv-id').value = '';
                 document.getElementById('srv-nota').value = generateNextNotaNumber();
                 document.getElementById('srv-date').value = new Date().toISOString().split('T')[0];
-                document.getElementById('srv-tech').value = (storeProfile && storeProfile.adminName) ? storeProfile.adminName : '';
+                document.getElementById('srv-status').value = 'Antrian';
+                document.getElementById('srv-parts').value = 0;
+                document.getElementById('srv-total').value = 0;
                 document.querySelectorAll('.acc-checkbox').forEach(cb => {
                     cb.checked = ['Unit HP', 'Baterai'].includes(cb.value);
                 });
@@ -1594,25 +1739,58 @@
             document.getElementById('service-modal').classList.add('hidden');
         }
 
-        function updateProfitPreview() {
-            const parts = Number(document.getElementById('srv-parts').value) || 0;
-            const total = Number(document.getElementById('srv-total').value) || 0;
-            document.getElementById('srv-profit-preview').textContent = formatRupiah(total - parts);
+        function handleServiceFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('srv-id').value;
+            const accessories = Array.from(document.querySelectorAll('.acc-checkbox:checked')).map(cb => cb.value);
+
+            const record = {
+                id: id || 'SRV-' + Date.now(),
+                nota: document.getElementById('srv-nota').value.trim(),
+                date: document.getElementById('srv-date').value,
+                customer: document.getElementById('srv-customer').value.trim(),
+                phone: document.getElementById('srv-phone').value.trim(),
+                device: document.getElementById('srv-device').value.trim(),
+                imei: document.getElementById('srv-imei').value.trim(),
+                accessories: accessories.length > 0 ? accessories : ['Unit HP'],
+                issue: document.getElementById('srv-issue').value.trim(),
+                technician: document.getElementById('srv-tech').value.trim() || 'Teknisi',
+                status: document.getElementById('srv-status').value,
+                partsCost: Number(document.getElementById('srv-parts').value) || 0,
+                totalPrice: Number(document.getElementById('srv-total').value) || 0
+            };
+
+            if (id) {
+                const idx = servicesData.findIndex(s => s.id === id);
+                if (idx !== -1) servicesData[idx] = record;
+                showToast('Data service berhasil diperbarui!');
+            } else {
+                servicesData.unshift(record);
+                showToast('Data service baru berhasil ditambahkan!');
+            }
+
+            closeServiceModal();
+            renderDashboard();
+            renderServicesTable();
+            syncToOnlineDatabase();
         }
 
-        function openNotaModal(item) {
+        // ==================== NOTA & WHATSAPP ====================
+        function openNotaModal(serviceId) {
+            const item = servicesData.find(s => s.id === serviceId);
+            if (!item) return;
             currentNotaService = item;
-            const p = storeProfile || {};
 
+            const p = storeProfile || {};
             const logoEl = document.getElementById('nota-doc-logo');
-            if (p.photoUrl && (p.photoUrl.startsWith('data:image') || p.photoUrl.startsWith('http'))) {
+            if (p.photoUrl) {
                 logoEl.src = p.photoUrl;
                 logoEl.classList.remove('hidden');
             } else {
                 logoEl.classList.add('hidden');
             }
 
-            document.getElementById('nota-doc-store').textContent = p.name || 'KONTER SERVICE HP';
+            document.getElementById('nota-doc-store').textContent = p.name || 'TOKO SERVICE HP';
             document.getElementById('nota-doc-tagline').textContent = p.tagline || '';
             document.getElementById('nota-doc-address').textContent = p.address || '';
             document.getElementById('nota-doc-phone').textContent = p.phone ? 'WA: ' + p.phone : '';
@@ -1623,9 +1801,9 @@
             document.getElementById('nota-doc-custphone').textContent = item.phone;
             document.getElementById('nota-doc-device').textContent = item.device;
             document.getElementById('nota-doc-imei').textContent = item.imei || '-';
-            document.getElementById('nota-doc-tech').textContent = item.technician;
+            document.getElementById('nota-doc-tech').textContent = item.technician || '-';
             document.getElementById('nota-doc-status').textContent = item.status;
-            document.getElementById('nota-doc-acc').textContent = Array.isArray(item.accessories) ? item.accessories.join(', ') : '-';
+            document.getElementById('nota-doc-acc').textContent = Array.isArray(item.accessories) ? item.accessories.join(', ') : 'Unit HP';
             document.getElementById('nota-doc-issue').textContent = item.issue;
             document.getElementById('nota-doc-total').textContent = formatRupiah(item.totalPrice);
             document.getElementById('nota-doc-terms').textContent = p.terms || 'Terima kasih atas kepercayaan Anda.';
@@ -1633,23 +1811,36 @@
             document.getElementById('nota-modal').classList.remove('hidden');
         }
 
-        function sendWhatsAppUpdate(item) {
-            let cleanPhone = String(item.phone || '').replace(/[^0-9]/g, '');
-            if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
-            const storeName = (storeProfile && storeProfile.name) ? storeProfile.name : 'Toko Service HP';
-            const msg =
-                `Halo Kak *${item.customer}*,\n` +
-                `Update status service HP dari *${storeName}*:\n\n` +
-                `• No. Nota: *${item.nota}*\n` +
-                `• Unit: *${item.device}*\n` +
-                `• Kerusakan: ${item.issue}\n` +
-                `• Status: *${item.status}*\n` +
-                `• Total Biaya: *${formatRupiah(item.totalPrice)}*\n\n` +
-                `Terima kasih.`;
-            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+        function closeNotaModal() {
+            document.getElementById('nota-modal').classList.add('hidden');
+            currentNotaService = null;
         }
 
-        // ==================== LAPORAN KEUANGAN & EKSPOR CSV ====================
+        function sendWhatsAppUpdate(service) {
+            if (!service) return;
+            let rawPhone = String(service.phone || '').replace(/[^0-9]/g, '');
+            if (rawPhone.startsWith('0')) rawPhone = '62' + rawPhone.slice(1);
+            if (!rawPhone) {
+                showToast('Nomor WhatsApp pelanggan tidak valid.');
+                return;
+            }
+
+            const storeName = (storeProfile && storeProfile.name) || 'Konter Service HP';
+            const message =
+                `Halo Kak *${service.customer}*,\n` +
+                `Berikut informasi update service perangkat Anda di *${storeName}*:\n\n` +
+                `• *No. Nota:* ${service.nota}\n` +
+                `• *Perangkat:* ${service.device}\n` +
+                `• *Keluhan/Tindakan:* ${service.issue}\n` +
+                `• *Status Saat Ini:* *${service.status}*\n` +
+                `• *Total Biaya:* ${formatRupiah(service.totalPrice)}\n\n` +
+                `Terima kasih telah mempercayakan perbaikan perangkat Anda kepada kami.`;
+
+            const waUrl = `https://wa.me/${rawPhone}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        // ==================== LAPORAN KEUANGAN & CSV ====================
         function renderReports() {
             const monthVal = document.getElementById('report-month-filter').value;
             const filtered = servicesData.filter(s => {
@@ -1658,11 +1849,12 @@
                 return (s.date || '').startsWith(monthVal);
             });
 
+            const count = filtered.length;
             const revenue = filtered.reduce((sum, s) => sum + (Number(s.totalPrice) || 0), 0);
             const parts = filtered.reduce((sum, s) => sum + (Number(s.partsCost) || 0), 0);
             const profit = revenue - parts;
 
-            document.getElementById('rep-count').textContent = filtered.length;
+            document.getElementById('rep-count').textContent = count;
             document.getElementById('rep-revenue').textContent = formatRupiah(revenue);
             document.getElementById('rep-parts').textContent = formatRupiah(parts);
             document.getElementById('rep-profit').textContent = formatRupiah(profit);
@@ -1671,22 +1863,22 @@
 
             const techMap = {};
             filtered.forEach(s => {
-                const tech = (s.technician || 'Umum').trim();
-                if (!techMap[tech]) techMap[tech] = { count: 0, profit: 0 };
-                techMap[tech].count++;
-                techMap[tech].profit += ((Number(s.totalPrice) || 0) - (Number(s.partsCost) || 0));
+                const name = (s.technician || 'Tanpa Nama').trim();
+                if (!techMap[name]) techMap[name] = { count: 0, profit: 0 };
+                techMap[name].count += 1;
+                techMap[name].profit += (Number(s.totalPrice) || 0) - (Number(s.partsCost) || 0);
             });
 
+            const techRows = Object.entries(techMap).sort((a, b) => b[1].profit - a[1].profit);
             const techBody = document.getElementById('tech-report-body');
-            const techEntries = Object.entries(techMap);
-            if (techEntries.length === 0) {
-                techBody.innerHTML = '<tr><td colspan="3" class="py-6 text-center text-slate-400 text-xs">Belum ada data pada periode ini.</td></tr>';
+            if (techRows.length === 0) {
+                techBody.innerHTML = `<tr><td colspan="3" class="py-6 text-center text-slate-400 text-xs">Tidak ada data pada periode ini.</td></tr>`;
             } else {
-                techBody.innerHTML = techEntries.map(([tech, stat]) => `
+                techBody.innerHTML = techRows.map(([name, stat]) => `
                     <tr>
-                        <td class="py-2.5 px-2 font-semibold text-slate-800">${escapeHtml(tech)}</td>
-                        <td class="py-2.5 px-2 text-center font-bold text-blue-600">${stat.count}</td>
-                        <td class="py-2.5 px-2 text-right font-semibold text-emerald-600">${formatRupiah(stat.profit)}</td>
+                        <td class="py-2.5 px-2 font-semibold text-slate-800">${escapeHtml(name)}</td>
+                        <td class="py-2.5 px-2 text-center font-medium text-slate-600">${stat.count}</td>
+                        <td class="py-2.5 px-2 text-right font-bold text-emerald-600">${formatRupiah(stat.profit)}</td>
                     </tr>
                 `).join('');
             }
@@ -1694,18 +1886,20 @@
 
         function renderFinanceChart(revenue, parts, profit) {
             const canvas = document.getElementById('financeChart');
-            if (!canvas || typeof Chart === 'undefined') return;
+            if (typeof Chart === 'undefined' || !canvas) return;
             if (financeChartInstance) financeChartInstance.destroy();
+
             const isDark = document.documentElement.classList.contains('dark');
+            const tickColor = isDark ? '#94a3b8' : '#475569';
 
             financeChartInstance = new Chart(canvas.getContext('2d'), {
                 type: 'bar',
                 data: {
                     labels: ['Total Omzet', 'Modal Sparepart', 'Laba Bersih'],
                     datasets: [{
-                        label: 'Rupiah',
+                        label: 'Nominal (Rp)',
                         data: [revenue, parts, profit],
-                        backgroundColor: ['#2563eb', '#e11d48', '#10b981'],
+                        backgroundColor: ['#2563eb', '#f43f5e', '#10b981'],
                         borderRadius: 10
                     }]
                 },
@@ -1714,36 +1908,37 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: {
-                            ticks: { color: isDark ? '#cbd5e1' : '#475569' },
-                            grid: { color: isDark ? '#1e293b' : '#f1f5f9' }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: isDark ? '#cbd5e1' : '#475569',
-                                callback: (val) => 'Rp ' + Number(val).toLocaleString('id-ID')
-                            },
-                            grid: { color: isDark ? '#1e293b' : '#f1f5f9' }
-                        }
+                        x: { ticks: { color: tickColor } },
+                        y: { beginAtZero: true, ticks: { color: tickColor } }
                     }
                 }
             });
         }
 
-        function exportToCSV() {
+        function exportReportToCsv() {
             if (servicesData.length === 0) {
-                showToast('Tidak ada data untuk diekspor.');
+                showToast('Belum ada data untuk diekspor.');
                 return;
             }
-            const headers = ['No Nota', 'Tanggal', 'Pelanggan', 'WhatsApp', 'Perangkat', 'IMEI', 'Keluhan', 'Teknisi', 'Modal Part', 'Total Biaya', 'Laba Bersih', 'Status'];
+
+            const headers = ['No Nota', 'Tanggal', 'Pelanggan', 'WhatsApp', 'Perangkat', 'IMEI', 'Kelengkapan', 'Keluhan', 'Teknisi', 'Modal Part', 'Total Biaya', 'Laba Bersih', 'Status'];
             const rows = servicesData.map(s => {
-                const parts = Number(s.partsCost) || 0;
-                const total = Number(s.totalPrice) || 0;
+                const profit = (Number(s.totalPrice) || 0) - (Number(s.partsCost) || 0);
                 return [
-                    s.nota, s.date, s.customer, s.phone, s.device, s.imei || '-',
-                    s.issue, s.technician, parts, total, total - parts, s.status
-                ].map(v => `"${String(v || '').replace(/"/g, '""')}"`).join(',');
+                    s.nota,
+                    s.date,
+                    s.customer,
+                    s.phone,
+                    s.device,
+                    s.imei || '',
+                    Array.isArray(s.accessories) ? s.accessories.join('; ') : '',
+                    s.issue,
+                    s.technician,
+                    s.partsCost || 0,
+                    s.totalPrice || 0,
+                    profit,
+                    s.status
+                ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
             });
 
             const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\n');
@@ -1751,10 +1946,12 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Laporan_Service_HP_${new Date().toISOString().split('T')[0]}.csv`;
+            a.download = `Laporan-Service-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast('File laporan CSV berhasil diunduh!');
+            showToast('File Excel (CSV) berhasil diunduh!');
         }
 
         // ==================== PROFIL TOKO & UPLOAD FOTO ====================
@@ -1768,80 +1965,129 @@
             document.getElementById('prof-terms').value = p.terms || '';
             document.getElementById('prof-pin').value = p.pin || '';
             document.getElementById('prof-webapp-url').value = webAppUrl || '';
+            document.getElementById('prof-banner-fit').value = p.bannerFit || 'auto';
+            document.getElementById('prof-banner-pos').value = p.bannerPos || 'center';
             updateProfileLivePreview();
         }
 
         function updateProfileLivePreview() {
             const name = document.getElementById('prof-name').value.trim() || (storeProfile && storeProfile.name) || 'Nama Toko Anda';
-            const tagline = document.getElementById('prof-tagline').value.trim() || (storeProfile && storeProfile.tagline) || 'Slogan Toko';
-            const phone = document.getElementById('prof-phone').value.trim() || (storeProfile && storeProfile.phone) || '-';
-            const admin = document.getElementById('prof-admin').value.trim() || (storeProfile && storeProfile.adminName) || '-';
-            const address = document.getElementById('prof-address').value.trim() || (storeProfile && storeProfile.address) || 'Alamat Lengkap Toko';
-            const terms = document.getElementById('prof-terms').value.trim() || (storeProfile && storeProfile.terms) || '-';
-            const photo = (storeProfile && storeProfile.photoUrl) ? storeProfile.photoUrl : '';
+            const tagline = document.getElementById('prof-tagline').value.trim() || 'Slogan Toko Anda';
+            const phone = document.getElementById('prof-phone').value.trim() || '-';
+            const adminName = document.getElementById('prof-admin').value.trim() || '-';
+            const address = document.getElementById('prof-address').value.trim() || 'Alamat Lengkap Toko';
+            const terms = document.getElementById('prof-terms').value.trim() || '-';
+            const photo = (storeProfile && storeProfile.photoUrl) || '';
 
             document.getElementById('prof-hero-name').textContent = name;
             document.getElementById('prof-hero-tagline').textContent = tagline;
-            document.getElementById('prof-hero-admin').textContent = 'Admin: ' + admin;
+            document.getElementById('prof-hero-admin').textContent = 'Admin: ' + adminName;
             document.getElementById('prof-hero-phone').textContent = 'WA: ' + phone;
 
-            document.getElementById('nota-prev-name').textContent = name;
+            document.getElementById('nota-prev-name').textContent = name.toUpperCase();
             document.getElementById('nota-prev-tagline').textContent = tagline;
             document.getElementById('nota-prev-address').textContent = address;
             document.getElementById('nota-prev-phone').textContent = 'WA: ' + phone;
             document.getElementById('nota-prev-terms').textContent = terms;
 
             const avatarPrev = document.getElementById('prof-avatar-preview');
-            const avatarHolder = document.getElementById('prof-avatar-placeholder');
+            const avatarPlaceholder = document.getElementById('prof-avatar-placeholder');
             const notaLogo = document.getElementById('nota-prev-logo');
+            const bannerPrevImg = document.getElementById('prof-banner-preview-img');
+            const bannerPrevBg = document.getElementById('prof-banner-preview-bg');
+            const bannerPrevEmpty = document.getElementById('prof-banner-preview-empty');
+            const bannerPrevBox = document.getElementById('prof-banner-preview-box');
 
-            if (photo && (photo.startsWith('data:image') || photo.startsWith('http'))) {
+            if (photo) {
                 avatarPrev.src = photo;
                 avatarPrev.classList.remove('hidden');
-                avatarHolder.classList.add('hidden');
+                avatarPlaceholder.classList.add('hidden');
+
                 notaLogo.src = photo;
                 notaLogo.classList.remove('hidden');
+
+                bannerPrevImg.src = photo;
+                applyBannerStyleToElements(bannerPrevImg, bannerPrevBg, bannerPrevEmpty, photo, false);
             } else {
                 avatarPrev.classList.add('hidden');
-                avatarHolder.classList.remove('hidden');
+                avatarPlaceholder.classList.remove('hidden');
+
                 notaLogo.classList.add('hidden');
+
+                bannerPrevImg.classList.add('hidden');
+                if (bannerPrevBg) bannerPrevBg.classList.add('hidden');
+                if (bannerPrevBox) {
+                    bannerPrevBox.classList.remove('h-auto');
+                    bannerPrevBox.classList.add('aspect-[16/5]');
+                }
+                bannerPrevEmpty.classList.remove('hidden');
             }
         }
 
-        function compressAndUploadPhoto(file) {
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxW = 1280;
-                    const scale = Math.min(1, maxW / img.width);
-                    canvas.width = Math.round(img.width * scale);
-                    canvas.height = Math.round(img.height * scale);
-                    const ctx = canvas.getContext('2d');
+        function handleProfileFormSubmit(e) {
+            e.preventDefault();
+            const pinVal = document.getElementById('prof-pin').value.trim();
+            if (!/^[0-9]{4,6}$/.test(pinVal)) {
+                showToast('PIN harus terdiri dari 4 hingga 6 digit angka.');
+                return;
+            }
 
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
-                    if (!storeProfile) storeProfile = {};
-                    storeProfile.photoUrl = compressedDataUrl;
-
-                    updateProfileLivePreview();
-                    applyStoreIdentityToUI();
-                    syncToOnlineDatabase(() => {
-                        showToast('Foto profil & banner HD berhasil diperbarui!');
-                    });
-                };
-                img.src = evt.target.result;
+            webAppUrl = document.getElementById('prof-webapp-url').value.trim();
+            storeProfile = {
+                ...(storeProfile || {}),
+                name: document.getElementById('prof-name').value.trim(),
+                tagline: document.getElementById('prof-tagline').value.trim(),
+                phone: document.getElementById('prof-phone').value.trim(),
+                adminName: document.getElementById('prof-admin').value.trim(),
+                address: document.getElementById('prof-address').value.trim(),
+                terms: document.getElementById('prof-terms').value.trim(),
+                pin: pinVal,
+                bannerFit: document.getElementById('prof-banner-fit').value,
+                bannerPos: document.getElementById('prof-banner-pos').value
             };
-            reader.readAsDataURL(file);
+
+            applyStoreIdentityToUI();
+            updateProfileLivePreview();
+            syncToOnlineDatabase(() => {
+                showToast('Profil toko berhasil disimpan!');
+            });
         }
 
-        // ==================== EVENT LISTENERS TERPUSAT ====================
+        // ==================== EVENT LISTENERS & INISIALISASI ====================
+        function enterAppWorkspace() {
+            document.getElementById('onboarding-screen').classList.add('hidden');
+            document.getElementById('pin-lock-screen').classList.add('hidden');
+            document.getElementById('app-workspace').classList.remove('hidden');
+            document.getElementById('bottom-nav-bar').classList.remove('hidden');
+
+            applyStoreIdentityToUI();
+            switchTab('dashboard');
+        }
+
+        function showPinScreen() {
+            enteredPin = '';
+            updatePinDots();
+            applyStoreIdentityToUI();
+            document.getElementById('onboarding-screen').classList.add('hidden');
+            document.getElementById('app-workspace').classList.add('hidden');
+            document.getElementById('bottom-nav-bar').classList.add('hidden');
+            document.getElementById('pin-lock-screen').classList.remove('hidden');
+        }
+
+        function showOnboardingScreen() {
+            document.getElementById('pin-lock-screen').classList.add('hidden');
+            document.getElementById('app-workspace').classList.add('hidden');
+            document.getElementById('bottom-nav-bar').classList.add('hidden');
+            document.getElementById('onboarding-screen').classList.remove('hidden');
+        }
+
         function bindAllEvents() {
+            // Tombol mode gelap / terang
+            document.querySelectorAll('.btn-theme-toggle').forEach(btn => {
+                btn.addEventListener('click', toggleTheme);
+            });
+
+            // Tab onboarding
             document.getElementById('tab-onboard-new').addEventListener('click', () => {
                 document.getElementById('tab-onboard-new').classList.add('bg-white', 'text-blue-600', 'shadow-sm');
                 document.getElementById('tab-onboard-new').classList.remove('text-slate-600');
@@ -1860,103 +2106,102 @@
                 document.getElementById('form-register-store').classList.add('hidden');
             });
 
+            // Form pendaftaran toko baru
             document.getElementById('form-register-store').addEventListener('submit', (e) => {
                 e.preventDefault();
+                const pinVal = document.getElementById('reg-pin').value.trim();
+                if (!/^[0-9]{4,6}$/.test(pinVal)) {
+                    showToast('PIN harus 4-6 digit angka.');
+                    return;
+                }
+
+                webAppUrl = document.getElementById('reg-url').value.trim();
                 storeProfile = {
                     name: document.getElementById('reg-name').value.trim(),
-                    pin: document.getElementById('reg-pin').value.trim(),
+                    pin: pinVal,
                     phone: document.getElementById('reg-phone').value.trim(),
-                    adminName: document.getElementById('reg-admin').value.trim() || 'Admin Toko',
+                    adminName: document.getElementById('reg-admin').value.trim() || 'Admin',
                     tagline: document.getElementById('reg-tagline').value.trim() || 'Spesialis Service HP & Sparepart Bergaransi',
                     address: document.getElementById('reg-address').value.trim(),
-                    terms: '1. Garansi service berlaku 14 hari untuk kerusakan yang sama.\n2. Barang yang tidak diambil lebih dari 30 hari di luar tanggung jawab toko.',
-                    photoUrl: ''
+                    terms: '1. Garansi service 14 hari untuk kerusakan yang sama.\n2. Barang yang tidak diambil lebih dari 30 hari di luar tanggung jawab kami.',
+                    photoUrl: '',
+                    bannerFit: 'auto',
+                    bannerPos: 'center'
                 };
-                webAppUrl = document.getElementById('reg-url').value.trim();
+
                 safeSessionSet(SESSION_UNLOCKED_KEY, '1');
-                syncToOnlineDatabase();
-                enterMainWorkspace();
-                showToast('Toko berhasil didaftarkan!');
+                enterAppWorkspace();
+                syncToOnlineDatabase(() => {
+                    showToast('Toko berhasil didaftarkan!');
+                });
             });
 
+            // Form hubungkan link database yang sudah ada
             document.getElementById('form-connect-existing').addEventListener('submit', (e) => {
                 e.preventDefault();
                 const urlInput = document.getElementById('connect-url').value.trim();
-                const btn = document.getElementById('btn-connect-submit');
-                const origText = btn.textContent;
-                btn.disabled = true;
-                btn.textContent = 'Menghubungkan ke Google Sheets...';
+                const submitBtn = document.getElementById('btn-connect-submit');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Menghubungkan...';
 
                 pullFromOnlineDatabase(urlInput, (ok) => {
-                    btn.disabled = false;
-                    btn.textContent = origText;
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Tarik Data Toko dari Google Sheets';
+
                     if (ok && storeProfile && storeProfile.name) {
-                        showToast('Data toko berhasil ditarik dari Google Sheets!');
+                        showToast('Data toko berhasil ditarik!');
                         if (storeProfile.pin) {
-                            showPinLockScreen();
+                            showPinScreen();
                         } else {
                             safeSessionSet(SESSION_UNLOCKED_KEY, '1');
-                            enterMainWorkspace();
+                            enterAppWorkspace();
                         }
-                    } else if (ok) {
-                        webAppUrl = urlInput;
-                        saveLocalCache();
-                        showToast('Terhubung ke server! Silakan isi profil toko baru.');
-                        document.getElementById('reg-url').value = urlInput;
-                        document.getElementById('tab-onboard-new').click();
                     } else {
-                        showToast('Gagal terhubung. Pastikan URL Web App benar & akses Anyone.');
+                        showToast('Gagal menarik data. Pastikan URL Web App benar & akses publik.');
                     }
                 });
             });
 
-            document.querySelectorAll('.btn-theme-toggle').forEach(btn => {
-                btn.addEventListener('click', toggleTheme);
-            });
-
-            const bindFastTap = (el, handler) => {
-                let lastTouchTime = 0;
-                el.addEventListener('pointerdown', (e) => {
-                    if (e.button !== undefined && e.button !== 0) return;
-                    lastTouchTime = Date.now();
-                    handler();
-                });
-                el.addEventListener('click', () => {
-                    if (Date.now() - lastTouchTime < 400) return;
-                    handler();
-                });
-            };
-
+            // Keypad PIN sensitif (pointerdown + keyboard)
             document.querySelectorAll('.pin-key').forEach(btn => {
-                bindFastTap(btn, () => handlePinInput(btn.getAttribute('data-key')));
+                btn.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    handlePinDigit(btn.getAttribute('data-key'));
+                });
             });
-            bindFastTap(document.getElementById('pin-clear'), () => {
-                if (pinResetTimer) { clearTimeout(pinResetTimer); pinResetTimer = null; }
-                enteredPin = '';
-                document.getElementById('pin-error').classList.add('hidden');
-                updatePinDots();
+            document.getElementById('pin-clear').addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                clearPinInput();
             });
-            bindFastTap(document.getElementById('pin-backspace'), () => {
-                if (pinResetTimer) { clearTimeout(pinResetTimer); pinResetTimer = null; }
-                enteredPin = enteredPin.slice(0, -1);
-                document.getElementById('pin-error').classList.add('hidden');
-                updatePinDots();
+            document.getElementById('pin-backspace').addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                backspacePinInput();
             });
 
             document.addEventListener('keydown', (e) => {
-                if (!document.getElementById('pin-lock-screen').classList.contains('hidden')) {
-                    if (/^[0-9]$/.test(e.key)) handlePinInput(e.key);
-                    if (e.key === 'Backspace') {
-                        if (pinResetTimer) { clearTimeout(pinResetTimer); pinResetTimer = null; }
-                        enteredPin = enteredPin.slice(0, -1);
-                        document.getElementById('pin-error').classList.add('hidden');
-                        updatePinDots();
-                    }
+                const pinScreen = document.getElementById('pin-lock-screen');
+                if (!pinScreen || pinScreen.classList.contains('hidden')) return;
+                if (/^[0-9]$/.test(e.key)) {
+                    handlePinDigit(e.key);
+                } else if (e.key === 'Backspace') {
+                    backspacePinInput();
+                } else if (e.key === 'Escape') {
+                    clearPinInput();
                 }
             });
 
             document.getElementById('btn-reset-onboarding').addEventListener('click', () => {
-                showOnboardingScreen();
+                openConfirmModal('Ganti Toko / Database', 'Anda akan kembali ke layar pengaturan awal toko. Lanjutkan?', () => {
+                    closeConfirmModal();
+                    safeSessionRemove(SESSION_UNLOCKED_KEY);
+                    showOnboardingScreen();
+                });
+            });
+
+            // Header aksi
+            document.getElementById('btn-lock-app').addEventListener('click', () => {
+                safeSessionRemove(SESSION_UNLOCKED_KEY);
+                showPinScreen();
             });
 
             document.getElementById('btn-sync-now').addEventListener('click', () => {
@@ -1965,18 +2210,14 @@
                         applyStoreIdentityToUI();
                         renderDashboard();
                         renderServicesTable();
-                        showToast('Data berhasil disinkronkan dari Google Sheets!');
+                        showToast('Data tersinkron dengan Google Sheets!');
                     } else {
-                        syncToOnlineDatabase(() => showToast('Data tersimpan di perangkat.'));
+                        syncToOnlineDatabase(() => showToast('Data tersimpan.'));
                     }
                 });
             });
 
-            document.getElementById('btn-lock-app').addEventListener('click', () => {
-                safeSessionRemove(SESSION_UNLOCKED_KEY);
-                showPinLockScreen();
-            });
-
+            // Navigasi bawah
             document.getElementById('bottom-nav-bar').addEventListener('click', (e) => {
                 const btn = e.target.closest('.nav-btn');
                 if (!btn) return;
@@ -1984,9 +2225,11 @@
                 if (tab) switchTab(tab);
             });
 
+            // Dashboard tombol pintasan
             document.getElementById('btn-dash-add').addEventListener('click', () => openServiceModal(null));
             document.getElementById('btn-dash-all').addEventListener('click', () => switchTab('services'));
 
+            // Data Service
             document.getElementById('btn-add-service').addEventListener('click', () => openServiceModal(null));
             document.getElementById('search-service').addEventListener('input', renderServicesTable);
             document.getElementById('filter-status').addEventListener('change', renderServicesTable);
@@ -2000,174 +2243,135 @@
                 const item = servicesData.find(s => s.id === id);
                 if (!item) return;
 
-                if (action === 'nota') openNotaModal(item);
-                if (action === 'edit') openServiceModal(item);
-                if (action === 'wa') sendWhatsAppUpdate(item);
-                if (action === 'delete') {
+                if (action === 'edit') {
+                    openServiceModal(item);
+                } else if (action === 'nota') {
+                    openNotaModal(id);
+                } else if (action === 'wa') {
+                    sendWhatsAppUpdate(item);
+                } else if (action === 'delete') {
                     openConfirmModal('Hapus Data Service', `Hapus nota ${item.nota} milik ${item.customer}?`, () => {
                         servicesData = servicesData.filter(s => s.id !== id);
-                        syncToOnlineDatabase();
-                        renderServicesTable();
+                        closeConfirmModal();
                         renderDashboard();
-                        showToast('Data service berhasil dihapus.');
+                        renderServicesTable();
+                        syncToOnlineDatabase(() => showToast('Data service dihapus.'));
                     });
                 }
             });
 
+            // Modal Service
             document.getElementById('btn-close-service-modal').addEventListener('click', closeServiceModal);
             document.getElementById('btn-cancel-service-modal').addEventListener('click', closeServiceModal);
             document.getElementById('srv-parts').addEventListener('input', updateProfitPreview);
             document.getElementById('srv-total').addEventListener('input', updateProfitPreview);
+            document.getElementById('service-form').addEventListener('submit', handleServiceFormSubmit);
 
-            document.getElementById('service-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const editId = document.getElementById('srv-id').value;
-                const selectedAcc = [];
-                document.querySelectorAll('.acc-checkbox:checked').forEach(cb => selectedAcc.push(cb.value));
-
-                const record = {
-                    id: editId || ('SRV-' + Date.now()),
-                    nota: document.getElementById('srv-nota').value.trim(),
-                    date: document.getElementById('srv-date').value,
-                    customer: document.getElementById('srv-customer').value.trim(),
-                    phone: document.getElementById('srv-phone').value.trim(),
-                    device: document.getElementById('srv-device').value.trim(),
-                    imei: document.getElementById('srv-imei').value.trim(),
-                    accessories: selectedAcc,
-                    issue: document.getElementById('srv-issue').value.trim(),
-                    technician: document.getElementById('srv-tech').value.trim(),
-                    status: document.getElementById('srv-status').value,
-                    partsCost: Number(document.getElementById('srv-parts').value) || 0,
-                    totalPrice: Number(document.getElementById('srv-total').value) || 0
-                };
-
-                if (editId) {
-                    const idx = servicesData.findIndex(s => s.id === editId);
-                    if (idx !== -1) servicesData[idx] = record;
-                    showToast('Data service berhasil diperbarui!');
-                } else {
-                    servicesData.unshift(record);
-                    showToast('Data service baru berhasil ditambahkan!');
-                }
-
-                syncToOnlineDatabase();
-                closeServiceModal();
-                renderServicesTable();
-                renderDashboard();
-            });
-
-            document.getElementById('btn-close-nota-modal').addEventListener('click', () => {
-                document.getElementById('nota-modal').classList.add('hidden');
-            });
+            // Modal Nota
+            document.getElementById('btn-close-nota-modal').addEventListener('click', closeNotaModal);
             document.getElementById('btn-print-nota').addEventListener('click', () => window.print());
             document.getElementById('btn-wa-from-nota').addEventListener('click', () => {
                 if (currentNotaService) sendWhatsAppUpdate(currentNotaService);
             });
 
+            // Laporan
             document.getElementById('report-month-filter').addEventListener('change', renderReports);
-            document.getElementById('btn-export-csv').addEventListener('click', exportToCSV);
+            document.getElementById('btn-export-csv').addEventListener('click', exportReportToCsv);
 
-            const triggerFileInput = () => document.getElementById('prof-photo-file').click();
-            document.getElementById('btn-camera-upload').addEventListener('click', triggerFileInput);
-            document.getElementById('btn-upload-photo-main').addEventListener('click', triggerFileInput);
+            // Profil Toko & Upload Foto
+            document.getElementById('btn-camera-upload').addEventListener('click', () => {
+                document.getElementById('prof-photo-file').click();
+            });
+            document.getElementById('btn-upload-photo-main').addEventListener('click', () => {
+                document.getElementById('prof-photo-file').click();
+            });
+            document.getElementById('btn-upload-banner-card').addEventListener('click', () => {
+                document.getElementById('prof-photo-file').click();
+            });
             document.getElementById('prof-photo-file').addEventListener('change', (e) => {
                 if (e.target.files && e.target.files[0]) {
                     compressAndUploadPhoto(e.target.files[0]);
                     e.target.value = '';
                 }
             });
-
             document.getElementById('btn-remove-photo').addEventListener('click', () => {
                 if (!storeProfile) return;
                 storeProfile.photoUrl = '';
-                updateProfileLivePreview();
                 applyStoreIdentityToUI();
-                syncToOnlineDatabase(() => showToast('Foto profil toko dihapus.'));
+                updateProfileLivePreview();
+                syncToOnlineDatabase(() => showToast('Foto toko dihapus.'));
             });
 
             ['prof-name', 'prof-tagline', 'prof-phone', 'prof-admin', 'prof-address', 'prof-terms'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.addEventListener('input', updateProfileLivePreview);
+                document.getElementById(id).addEventListener('input', updateProfileLivePreview);
             });
 
-            document.getElementById('form-store-profile').addEventListener('submit', (e) => {
-                e.preventDefault();
-                storeProfile = {
-                    ...(storeProfile || {}),
-                    name: document.getElementById('prof-name').value.trim(),
-                    tagline: document.getElementById('prof-tagline').value.trim(),
-                    phone: document.getElementById('prof-phone').value.trim(),
-                    adminName: document.getElementById('prof-admin').value.trim(),
-                    address: document.getElementById('prof-address').value.trim(),
-                    terms: document.getElementById('prof-terms').value.trim(),
-                    pin: document.getElementById('prof-pin').value.trim()
-                };
-                webAppUrl = document.getElementById('prof-webapp-url').value.trim();
-
+            document.getElementById('prof-banner-fit').addEventListener('change', (e) => {
+                storeProfile = { ...(storeProfile || {}), bannerFit: e.target.value };
                 applyStoreIdentityToUI();
                 updateProfileLivePreview();
-                syncToOnlineDatabase(() => {
-                    showToast('Profil toko & konfigurasi berhasil disimpan!');
-                });
+            });
+            document.getElementById('prof-banner-pos').addEventListener('change', (e) => {
+                storeProfile = { ...(storeProfile || {}), bannerPos: e.target.value };
+                applyStoreIdentityToUI();
+                updateProfileLivePreview();
             });
 
+            document.getElementById('form-store-profile').addEventListener('submit', handleProfileFormSubmit);
             document.getElementById('btn-pull-server').addEventListener('click', () => {
-                const urlVal = document.getElementById('prof-webapp-url').value.trim();
-                pullFromOnlineDatabase(urlVal, (ok) => {
+                const urlInput = document.getElementById('prof-webapp-url').value.trim();
+                pullFromOnlineDatabase(urlInput, (ok) => {
                     if (ok) {
-                        populateProfileForm();
                         applyStoreIdentityToUI();
+                        populateProfileForm();
                         renderDashboard();
-                        showToast('Data profil & service berhasil ditarik dari server!');
+                        showToast('Data berhasil ditarik dari server!');
                     } else {
-                        showToast('Gagal menarik data dari server. Periksa kembali URL Web App.');
+                        showToast('Gagal menarik data dari server.');
                     }
                 });
             });
 
+            // Modal Konfirmasi
             document.getElementById('btn-confirm-cancel').addEventListener('click', closeConfirmModal);
             document.getElementById('btn-confirm-ok').addEventListener('click', () => {
                 if (typeof confirmCallback === 'function') confirmCallback();
-                closeConfirmModal();
             });
         }
 
-        // ==================== INISIALISASI APLIKASI ====================
         function initApp() {
-            try {
-                applyTheme(getPreferredTheme());
-                bindAllEvents();
-                loadLocalCache();
+            applyTheme(getPreferredTheme());
+            loadLocalCache();
+            bindAllEvents();
 
-                const startFlow = () => {
-                    if (!storeProfile || !storeProfile.name) {
-                        showOnboardingScreen();
-                    } else if (storeProfile.pin && safeSessionGet(SESSION_UNLOCKED_KEY) !== '1') {
-                        showPinLockScreen();
-                    } else {
-                        enterMainWorkspace();
-                    }
-                };
+            const unlocked = safeSessionGet(SESSION_UNLOCKED_KEY) === '1';
 
-                startFlow();
-
-                if (isGasEnvironment() || (webAppUrl && webAppUrl.startsWith('http'))) {
+            if (storeProfile && storeProfile.name) {
+                if (unlocked || !storeProfile.pin) {
+                    enterAppWorkspace();
+                } else {
+                    showPinScreen();
+                }
+                if (isGasEnvironment() || webAppUrl) {
                     pullFromOnlineDatabase(webAppUrl, (ok) => {
-                        if (ok && storeProfile && storeProfile.name) {
+                        if (ok) {
                             applyStoreIdentityToUI();
                             if (!document.getElementById('app-workspace').classList.contains('hidden')) {
                                 renderDashboard();
-                                renderServicesTable();
-                            } else if (safeSessionGet(SESSION_UNLOCKED_KEY) === '1' || !storeProfile.pin) {
-                                enterMainWorkspace();
-                            } else {
-                                showPinLockScreen();
                             }
                         }
                     });
                 }
-            } catch (err) {
-                console.error('Init error:', err);
+            } else if (isGasEnvironment()) {
+                pullFromOnlineDatabase('', (ok) => {
+                    if (ok && storeProfile && storeProfile.name) {
+                        if (storeProfile.pin) showPinScreen();
+                        else enterAppWorkspace();
+                    } else {
+                        showOnboardingScreen();
+                    }
+                });
+            } else {
                 showOnboardingScreen();
             }
         }
