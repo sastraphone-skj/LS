@@ -34,10 +34,16 @@
         html.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
         /* Optimalisasi responsivitas sentuhan keypad PIN */
-        .pin-key, #pin-clear, #pin-backspace {
+        #pin-keypad-grid, .pin-key, #pin-clear, #pin-backspace {
             touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+        .pin-key-pressed {
+            transform: scale(0.92) !important;
+            background-color: #2563eb !important;
+            color: #ffffff !important;
         }
 
         @keyframes pinShake {
@@ -229,20 +235,20 @@
 
             <p id="pin-error" class="hidden text-xs font-medium text-rose-600 bg-rose-50 py-2 px-3 rounded-xl mb-4">PIN salah, silakan coba lagi.</p>
 
-            <div class="grid grid-cols-3 gap-2.5 max-w-[260px] mx-auto select-none">
-                <button type="button" data-key="1" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">1</button>
-                <button type="button" data-key="2" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">2</button>
-                <button type="button" data-key="3" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">3</button>
-                <button type="button" data-key="4" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">4</button>
-                <button type="button" data-key="5" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">5</button>
-                <button type="button" data-key="6" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">6</button>
-                <button type="button" data-key="7" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">7</button>
-                <button type="button" data-key="8" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">8</button>
-                <button type="button" data-key="9" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">9</button>
-                <button type="button" id="pin-clear" class="py-3.5 rounded-2xl bg-rose-50 hover:bg-rose-100 active:scale-95 text-xs font-bold text-rose-600 transition cursor-pointer">Hapus</button>
-                <button type="button" data-key="0" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-lg font-bold text-slate-800 transition cursor-pointer">0</button>
-                <button type="button" id="pin-backspace" class="py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 flex items-center justify-center text-slate-700 transition cursor-pointer" aria-label="Hapus satu digit">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <div id="pin-keypad-grid" class="grid grid-cols-3 gap-2.5 max-w-[260px] mx-auto select-none">
+                <button type="button" data-key="1" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">1</button>
+                <button type="button" data-key="2" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">2</button>
+                <button type="button" data-key="3" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">3</button>
+                <button type="button" data-key="4" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">4</button>
+                <button type="button" data-key="5" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">5</button>
+                <button type="button" data-key="6" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">6</button>
+                <button type="button" data-key="7" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">7</button>
+                <button type="button" data-key="8" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">8</button>
+                <button type="button" data-key="9" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">9</button>
+                <button type="button" id="pin-clear" data-pin-action="clear" class="py-3.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-xs font-bold text-rose-600 transition-transform duration-75 cursor-pointer">Hapus</button>
+                <button type="button" data-key="0" class="pin-key py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-lg font-bold text-slate-800 transition-transform duration-75 cursor-pointer">0</button>
+                <button type="button" id="pin-backspace" data-pin-action="backspace" class="py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-transform duration-75 cursor-pointer" aria-label="Hapus satu digit">
+                    <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
                         <line x1="18" y1="9" x2="12" y2="15"></line>
                         <line x1="12" y1="9" x2="18" y2="15"></line>
@@ -311,15 +317,19 @@
             </div>
         </header>
 
-        <!-- Banner Full-Bleed Rasio 1280 x 400 (aspect-[16/5]) -->
-        <div id="dashboard-banner-card" class="relative w-full aspect-[16/5] max-h-[400px] overflow-hidden border-b border-slate-200/80 dark:border-slate-800 bg-slate-900 select-none transition-all duration-300">
-            <img id="dashboard-banner-bg" src="" alt="" aria-hidden="true" class="hidden absolute inset-0 w-full h-full object-cover blur-2xl scale-110 brightness-75 saturate-125 transition-opacity duration-300">
-            <div id="dashboard-banner-vignette" class="hidden absolute inset-0 z-[5] pointer-events-none bg-gradient-to-b from-black/10 via-transparent to-black/15"></div>
-            <img id="dashboard-banner-img" src="" alt="Banner Toko" class="hidden relative z-10 w-full h-full object-cover object-center transition-all duration-300">
-            <div id="dashboard-banner-empty" class="relative w-full h-full bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 overflow-hidden">
-                <div class="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-blue-500/20 blur-3xl"></div>
-                <div class="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-indigo-500/20 blur-3xl"></div>
-                <div class="absolute inset-0 opacity-15" style="background-image: radial-gradient(#93c5fd 1px, transparent 1px); background-size: 24px 24px;"></div>
+        <!-- Banner Rasio 1280 x 400 dengan Bingkai Border Elegan -->
+        <div id="dashboard-banner-card" class="max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-5 select-none">
+            <div class="p-1.5 sm:p-2 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-500/25 via-indigo-500/20 to-slate-300/60 dark:from-blue-500/30 dark:via-indigo-500/25 dark:to-slate-700/70 shadow-lg shadow-slate-900/10 dark:shadow-black/40 border border-slate-300/90 dark:border-slate-700/90">
+                <div class="relative w-full aspect-[16/5] max-h-[400px] overflow-hidden rounded-xl sm:rounded-2xl border-2 border-white/90 dark:border-slate-800 bg-slate-900 ring-1 ring-slate-900/10 dark:ring-white/10">
+                    <img id="dashboard-banner-bg" src="" alt="" aria-hidden="true" class="hidden absolute inset-0 w-full h-full object-cover blur-2xl scale-110 brightness-75 saturate-125 transition-opacity duration-300">
+                    <div id="dashboard-banner-vignette" class="hidden absolute inset-0 z-[5] pointer-events-none bg-gradient-to-b from-black/10 via-transparent to-black/15"></div>
+                    <img id="dashboard-banner-img" src="" alt="Banner Toko" class="hidden relative z-10 w-full h-full object-cover object-center transition-all duration-300">
+                    <div id="dashboard-banner-empty" class="relative w-full h-full bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 overflow-hidden">
+                        <div class="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-blue-500/20 blur-3xl"></div>
+                        <div class="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-indigo-500/20 blur-3xl"></div>
+                        <div class="absolute inset-0 opacity-15" style="background-image: radial-gradient(#93c5fd 1px, transparent 1px); background-size: 24px 24px;"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -565,131 +575,67 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <form id="form-store-profile" class="lg:col-span-7 bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm space-y-5">
-                        <div class="border-b border-slate-100 pb-3">
-                            <h3 class="text-base font-bold text-slate-900">Informasi Identitas Toko</h3>
-                            <p class="text-xs text-slate-500">Data ini otomatis digunakan pada kop nota cetak dan pesan WhatsApp.</p>
-                        </div>
+                <form id="form-store-profile" class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm space-y-5">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h3 class="text-base font-bold text-slate-900">Informasi Identitas Toko</h3>
+                        <p class="text-xs text-slate-500">Data ini otomatis digunakan pada kop nota cetak dan pesan WhatsApp.</p>
+                    </div>
 
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Toko / Konter *</label>
+                            <input type="text" id="prof-name" required class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Slogan Konter</label>
+                            <input type="text" id="prof-tagline" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp Toko *</label>
+                            <input type="tel" id="prof-phone" required class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Pemilik / Admin</label>
+                            <input type="text" id="prof-admin" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Lengkap Toko</label>
+                        <input type="text" id="prof-address" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Syarat & Ketentuan Garansi (Footer Nota)</label>
+                        <textarea id="prof-terms" rows="3" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 space-y-4">
+                        <h4 class="text-sm font-bold text-slate-900">Keamanan PIN & Sinkronisasi Google Sheets</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Toko / Konter *</label>
-                                <input type="text" id="prof-name" required class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">PIN Keamanan (4-6 Angka) *</label>
+                                <input type="text" id="prof-pin" inputmode="numeric" pattern="[0-9]{4,6}" maxlength="6" required class="w-full px-3.5 py-2.5 text-sm font-mono border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1">Slogan Konter</label>
-                                <input type="text" id="prof-tagline" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp Toko *</label>
-                                <input type="tel" id="prof-phone" required class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Pemilik / Admin</label>
-                                <input type="text" id="prof-admin" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Lengkap Toko</label>
-                            <input type="text" id="prof-address" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Syarat & Ketentuan Garansi (Footer Nota)</label>
-                            <textarea id="prof-terms" rows="3" class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
-                        </div>
-
-                        <div class="pt-3 border-t border-slate-100 space-y-4">
-                            <h4 class="text-sm font-bold text-slate-900">Keamanan PIN & Sinkronisasi Google Sheets</h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">PIN Keamanan (4-6 Angka) *</label>
-                                    <input type="text" id="prof-pin" inputmode="numeric" pattern="[0-9]{4,6}" maxlength="6" required class="w-full px-3.5 py-2.5 text-sm font-mono border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Link Web App Google Apps Script</label>
-                                    <input type="url" id="prof-webapp-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 text-xs font-mono border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-                            <button type="button" id="btn-pull-server" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold transition cursor-pointer">
-                                Tarik Data dari Server
-                            </button>
-                            <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-blue-600/25 transition cursor-pointer">
-                                Simpan Profil Toko
-                            </button>
-                        </div>
-                    </form>
-
-                    <div class="lg:col-span-5 space-y-4">
-                        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-                            <div class="flex items-center justify-between gap-2">
-                                <div>
-                                    <h3 class="text-sm font-bold text-slate-900">Tampilan Banner Dashboard</h3>
-                                    <p class="text-[11px] text-slate-500">Rasio standar 1280 × 400 px (bebas ukuran lain)</p>
-                                </div>
-                                <button type="button" id="btn-upload-banner-card" class="shrink-0 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition cursor-pointer">
-                                    + Pilih Gambar
-                                </button>
-                            </div>
-
-                            <div id="prof-banner-preview-box" class="relative w-full aspect-[16/5] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-900 transition-all duration-300">
-                                <img id="prof-banner-preview-bg" src="" alt="" aria-hidden="true" class="hidden absolute inset-0 w-full h-full object-cover blur-xl scale-110 brightness-75 saturate-125">
-                                <img id="prof-banner-preview-img" src="" alt="Preview Banner" class="hidden relative z-10 w-full h-full object-cover object-center transition-all duration-300">
-                                <div id="prof-banner-preview-empty" class="relative w-full h-full bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 overflow-hidden">
-                                    <div class="absolute -top-10 -left-10 w-36 h-36 rounded-full bg-blue-500/20 blur-2xl"></div>
-                                    <div class="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-indigo-500/20 blur-2xl"></div>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-slate-700 mb-1">Mode Tampilan Banner</label>
-                                    <select id="prof-banner-fit" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                                        <option value="auto">Otomatis (Adaptif Semua Ukuran)</option>
-                                        <option value="natural">Sesuai Proporsi Asli Gambar</option>
-                                        <option value="cover">Penuh Melebar (Full Cover)</option>
-                                        <option value="contain">Utuh + Latar Blur (Contain)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-[11px] font-semibold text-slate-700 mb-1">Posisi Fokus</label>
-                                    <select id="prof-banner-pos" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                                        <option value="center">Tengah</option>
-                                        <option value="top">Bagian Atas</option>
-                                        <option value="bottom">Bagian Bawah</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200 shadow-sm">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-sm font-bold text-slate-900">Pratinjau Kop Nota Cetak</h3>
-                                <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-600 font-semibold">Live Preview</span>
-                            </div>
-
-                            <div class="p-5 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/70 text-center space-y-2">
-                                <img id="nota-prev-logo" src="" alt="Logo Nota" class="hidden w-14 h-14 mx-auto rounded-xl object-cover border border-slate-200">
-                                <h4 id="nota-prev-name" class="font-extrabold text-base text-slate-900 uppercase tracking-wide">NAMA TOKO</h4>
-                                <p id="nota-prev-tagline" class="text-xs text-slate-600">Slogan Toko Anda</p>
-                                <p id="nota-prev-address" class="text-[11px] text-slate-500">Alamat Lengkap Toko</p>
-                                <p id="nota-prev-phone" class="text-[11px] font-semibold text-slate-700">WA: 08123456789</p>
-                                <div class="border-t border-dashed border-slate-300 my-3 pt-3 text-left">
-                                    <p class="text-[10px] font-bold text-slate-600 uppercase mb-1">Syarat & Ketentuan Garansi:</p>
-                                    <p id="nota-prev-terms" class="text-[11px] text-slate-500 whitespace-pre-line leading-relaxed">-</p>
-                                </div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Link Web App Google Apps Script</label>
+                                <input type="url" id="prof-webapp-url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3.5 py-2.5 text-xs font-mono border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                        <button type="button" id="btn-pull-server" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold transition cursor-pointer">
+                            Tarik Data dari Server
+                        </button>
+                        <button type="submit" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-blue-600/25 transition cursor-pointer">
+                            Simpan Profil Toko
+                        </button>
+                    </div>
+                </form>
             </section>
         </main>
     </div>
@@ -860,7 +806,6 @@
 
             <div id="nota-print-area" class="p-6 text-slate-900 text-xs space-y-4">
                 <div class="text-center border-b border-dashed border-slate-300 pb-3">
-                    <img id="nota-doc-logo" src="" alt="Logo" class="hidden w-12 h-12 mx-auto mb-1.5 rounded-xl object-cover">
                     <h2 id="nota-doc-store" class="font-extrabold text-base uppercase tracking-wide">NAMA TOKO</h2>
                     <p id="nota-doc-tagline" class="text-[11px] text-slate-600"></p>
                     <p id="nota-doc-address" class="text-[11px] text-slate-500 mt-0.5"></p>
@@ -1208,66 +1153,6 @@
         }
 
         // ==================== IDENTITAS TOKO & FOTO ====================
-        function applyBannerStyleToElements(imgEl, bgEl, emptyEl, photo, isDashboard) {
-            const fitPref = (storeProfile && storeProfile.bannerFit) || 'auto';
-            const posPref = (storeProfile && storeProfile.bannerPos) || 'center';
-            const containerEl = imgEl.parentElement;
-            const vignetteEl = isDashboard ? document.getElementById('dashboard-banner-vignette') : null;
-
-            const posClass = posPref === 'top' ? 'object-top' : (posPref === 'bottom' ? 'object-bottom' : 'object-center');
-
-            const renderWithDimensions = () => {
-                const nw = imgEl.naturalWidth || 1280;
-                const nh = imgEl.naturalHeight || 400;
-                const ratio = nw / nh;
-
-                imgEl.classList.remove(
-                    'hidden', 'object-cover', 'object-contain',
-                    'object-top', 'object-center', 'object-bottom',
-                    'h-full', 'h-auto', 'max-h-[480px]', 'max-h-72',
-                    'drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)]'
-                );
-                if (emptyEl) emptyEl.classList.add('hidden');
-                if (vignetteEl) vignetteEl.classList.remove('hidden');
-
-                if (containerEl) {
-                    containerEl.classList.remove('h-auto');
-                    containerEl.classList.add('aspect-[16/5]');
-                    if (isDashboard) containerEl.classList.add('max-h-[400px]');
-                }
-
-                // Tentukan mode efektif (rasio >= 2.2 otomatis full cover sesuai 1280x400)
-                let effectiveMode = fitPref;
-                if (fitPref === 'auto') {
-                    effectiveMode = ratio >= 2.2 ? 'cover' : 'contain';
-                }
-
-                if (effectiveMode === 'natural') {
-                    if (bgEl) bgEl.classList.add('hidden');
-                    if (containerEl) {
-                        containerEl.classList.remove('aspect-[16/5]');
-                        if (isDashboard) containerEl.classList.remove('max-h-[400px]');
-                        containerEl.classList.add('h-auto');
-                    }
-                    imgEl.classList.add('w-full', 'h-auto', isDashboard ? 'max-h-[400px]' : 'max-h-72', 'object-contain', 'object-center');
-                } else if (effectiveMode === 'contain') {
-                    if (bgEl) {
-                        bgEl.src = photo;
-                        bgEl.classList.remove('hidden');
-                    }
-                    imgEl.classList.add('h-full', 'object-contain', 'object-center', 'drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)]');
-                } else {
-                    if (bgEl) bgEl.classList.add('hidden');
-                    imgEl.classList.add('h-full', 'object-cover', posClass);
-                }
-            };
-
-            imgEl.onload = renderWithDimensions;
-            if (imgEl.complete && imgEl.naturalWidth > 0) {
-                renderWithDimensions();
-            }
-        }
-
         function applyStoreIdentityToUI() {
             const p = storeProfile || {
                 name: 'Toko Service HP',
@@ -1293,7 +1178,6 @@
             const bannerBg = document.getElementById('dashboard-banner-bg');
             const bannerVignette = document.getElementById('dashboard-banner-vignette');
             const bannerEmpty = document.getElementById('dashboard-banner-empty');
-            const bannerCard = document.getElementById('dashboard-banner-card');
 
             if (photo) {
                 headerAvatar.src = photo;
@@ -1305,11 +1189,13 @@
                 pinIcon.classList.add('hidden');
 
                 bannerImg.src = photo;
-                applyBannerStyleToElements(bannerImg, bannerBg, bannerEmpty, photo, true);
+                bannerImg.classList.remove('hidden');
+                if (bannerBg) bannerBg.classList.add('hidden');
+                if (bannerVignette) bannerVignette.classList.add('hidden');
+                bannerEmpty.classList.add('hidden');
+
                 bannerImg.onerror = function() {
                     bannerImg.classList.add('hidden');
-                    if (bannerBg) bannerBg.classList.add('hidden');
-                    if (bannerVignette) bannerVignette.classList.add('hidden');
                     bannerEmpty.classList.remove('hidden');
                 };
             } else {
@@ -1322,10 +1208,6 @@
                 bannerImg.classList.add('hidden');
                 if (bannerBg) bannerBg.classList.add('hidden');
                 if (bannerVignette) bannerVignette.classList.add('hidden');
-                if (bannerCard) {
-                    bannerCard.classList.remove('h-auto');
-                    bannerCard.classList.add('aspect-[16/5]', 'max-h-[400px]');
-                }
                 bannerEmpty.classList.remove('hidden');
             }
         }
@@ -1387,13 +1269,12 @@
 
                     storeProfile = {
                         ...(storeProfile || {}),
-                        photoUrl: bestDataUrl,
-                        bannerFit: (storeProfile && storeProfile.bannerFit) || 'auto'
+                        photoUrl: bestDataUrl
                     };
                     applyStoreIdentityToUI();
                     updateProfileLivePreview();
                     syncToOnlineDatabase(() => {
-                        showToast('Foto & banner toko berhasil disimpan!');
+                        showToast('Foto profil toko berhasil disimpan!');
                     });
                 };
                 img.src = evt.target.result;
@@ -1782,14 +1663,6 @@
             currentNotaService = item;
 
             const p = storeProfile || {};
-            const logoEl = document.getElementById('nota-doc-logo');
-            if (p.photoUrl) {
-                logoEl.src = p.photoUrl;
-                logoEl.classList.remove('hidden');
-            } else {
-                logoEl.classList.add('hidden');
-            }
-
             document.getElementById('nota-doc-store').textContent = p.name || 'TOKO SERVICE HP';
             document.getElementById('nota-doc-tagline').textContent = p.tagline || '';
             document.getElementById('nota-doc-address').textContent = p.address || '';
@@ -1965,8 +1838,6 @@
             document.getElementById('prof-terms').value = p.terms || '';
             document.getElementById('prof-pin').value = p.pin || '';
             document.getElementById('prof-webapp-url').value = webAppUrl || '';
-            document.getElementById('prof-banner-fit').value = p.bannerFit || 'auto';
-            document.getElementById('prof-banner-pos').value = p.bannerPos || 'center';
             updateProfileLivePreview();
         }
 
@@ -1975,8 +1846,6 @@
             const tagline = document.getElementById('prof-tagline').value.trim() || 'Slogan Toko Anda';
             const phone = document.getElementById('prof-phone').value.trim() || '-';
             const adminName = document.getElementById('prof-admin').value.trim() || '-';
-            const address = document.getElementById('prof-address').value.trim() || 'Alamat Lengkap Toko';
-            const terms = document.getElementById('prof-terms').value.trim() || '-';
             const photo = (storeProfile && storeProfile.photoUrl) || '';
 
             document.getElementById('prof-hero-name').textContent = name;
@@ -1984,43 +1853,16 @@
             document.getElementById('prof-hero-admin').textContent = 'Admin: ' + adminName;
             document.getElementById('prof-hero-phone').textContent = 'WA: ' + phone;
 
-            document.getElementById('nota-prev-name').textContent = name.toUpperCase();
-            document.getElementById('nota-prev-tagline').textContent = tagline;
-            document.getElementById('nota-prev-address').textContent = address;
-            document.getElementById('nota-prev-phone').textContent = 'WA: ' + phone;
-            document.getElementById('nota-prev-terms').textContent = terms;
-
             const avatarPrev = document.getElementById('prof-avatar-preview');
             const avatarPlaceholder = document.getElementById('prof-avatar-placeholder');
-            const notaLogo = document.getElementById('nota-prev-logo');
-            const bannerPrevImg = document.getElementById('prof-banner-preview-img');
-            const bannerPrevBg = document.getElementById('prof-banner-preview-bg');
-            const bannerPrevEmpty = document.getElementById('prof-banner-preview-empty');
-            const bannerPrevBox = document.getElementById('prof-banner-preview-box');
 
             if (photo) {
                 avatarPrev.src = photo;
                 avatarPrev.classList.remove('hidden');
                 avatarPlaceholder.classList.add('hidden');
-
-                notaLogo.src = photo;
-                notaLogo.classList.remove('hidden');
-
-                bannerPrevImg.src = photo;
-                applyBannerStyleToElements(bannerPrevImg, bannerPrevBg, bannerPrevEmpty, photo, false);
             } else {
                 avatarPrev.classList.add('hidden');
                 avatarPlaceholder.classList.remove('hidden');
-
-                notaLogo.classList.add('hidden');
-
-                bannerPrevImg.classList.add('hidden');
-                if (bannerPrevBg) bannerPrevBg.classList.add('hidden');
-                if (bannerPrevBox) {
-                    bannerPrevBox.classList.remove('h-auto');
-                    bannerPrevBox.classList.add('aspect-[16/5]');
-                }
-                bannerPrevEmpty.classList.remove('hidden');
             }
         }
 
@@ -2041,9 +1883,7 @@
                 adminName: document.getElementById('prof-admin').value.trim(),
                 address: document.getElementById('prof-address').value.trim(),
                 terms: document.getElementById('prof-terms').value.trim(),
-                pin: pinVal,
-                bannerFit: document.getElementById('prof-banner-fit').value,
-                bannerPos: document.getElementById('prof-banner-pos').value
+                pin: pinVal
             };
 
             applyStoreIdentityToUI();
@@ -2149,34 +1989,47 @@
                     submitBtn.textContent = 'Tarik Data Toko dari Google Sheets';
 
                     if (ok && storeProfile && storeProfile.name) {
-                        showToast('Data toko berhasil ditarik!');
-                        if (storeProfile.pin) {
-                            showPinScreen();
-                        } else {
-                            safeSessionSet(SESSION_UNLOCKED_KEY, '1');
-                            enterAppWorkspace();
-                        }
+                        safeSessionSet(SESSION_UNLOCKED_KEY, '1');
+                        enterAppWorkspace();
+                        showToast('Data toko berhasil ditarik dari Google Sheets!');
                     } else {
-                        showToast('Gagal menarik data. Pastikan URL Web App benar & akses publik.');
+                        showToast('Gagal menghubungkan link database. Pastikan URL Web App valid.');
                     }
                 });
             });
 
-            // Keypad PIN sensitif (pointerdown + keyboard)
-            document.querySelectorAll('.pin-key').forEach(btn => {
-                btn.addEventListener('pointerdown', (e) => {
-                    e.preventDefault();
-                    handlePinDigit(btn.getAttribute('data-key'));
-                });
-            });
-            document.getElementById('pin-clear').addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                clearPinInput();
-            });
-            document.getElementById('pin-backspace').addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                backspacePinInput();
-            });
+            // Keypad PIN ultra-sensitif (event delegation touchstart / pointerdown / mousedown + keyboard)
+            const pinGrid = document.getElementById('pin-keypad-grid');
+            let lastPinTouchTime = 0;
+
+            function triggerPinKeypadPress(e) {
+                if (e.type === 'mousedown' && Date.now() - lastPinTouchTime < 400) return;
+                if (e.type === 'touchstart' || e.type === 'pointerdown') {
+                    lastPinTouchTime = Date.now();
+                }
+
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                if (e.cancelable) e.preventDefault();
+
+                btn.classList.add('pin-key-pressed');
+                setTimeout(() => btn.classList.remove('pin-key-pressed'), 110);
+
+                const digit = btn.getAttribute('data-key');
+                const action = btn.getAttribute('data-pin-action');
+
+                if (digit !== null) {
+                    handlePinDigit(digit);
+                } else if (action === 'clear') {
+                    clearPinInput();
+                } else if (action === 'backspace') {
+                    backspacePinInput();
+                }
+            }
+
+            pinGrid.addEventListener('touchstart', triggerPinKeypadPress, { passive: false });
+            pinGrid.addEventListener('pointerdown', triggerPinKeypadPress);
+            pinGrid.addEventListener('mousedown', triggerPinKeypadPress);
 
             document.addEventListener('keydown', (e) => {
                 const pinScreen = document.getElementById('pin-lock-screen');
@@ -2285,9 +2138,6 @@
             document.getElementById('btn-upload-photo-main').addEventListener('click', () => {
                 document.getElementById('prof-photo-file').click();
             });
-            document.getElementById('btn-upload-banner-card').addEventListener('click', () => {
-                document.getElementById('prof-photo-file').click();
-            });
             document.getElementById('prof-photo-file').addEventListener('change', (e) => {
                 if (e.target.files && e.target.files[0]) {
                     compressAndUploadPhoto(e.target.files[0]);
@@ -2302,19 +2152,8 @@
                 syncToOnlineDatabase(() => showToast('Foto toko dihapus.'));
             });
 
-            ['prof-name', 'prof-tagline', 'prof-phone', 'prof-admin', 'prof-address', 'prof-terms'].forEach(id => {
+            ['prof-name', 'prof-tagline', 'prof-phone', 'prof-admin'].forEach(id => {
                 document.getElementById(id).addEventListener('input', updateProfileLivePreview);
-            });
-
-            document.getElementById('prof-banner-fit').addEventListener('change', (e) => {
-                storeProfile = { ...(storeProfile || {}), bannerFit: e.target.value };
-                applyStoreIdentityToUI();
-                updateProfileLivePreview();
-            });
-            document.getElementById('prof-banner-pos').addEventListener('change', (e) => {
-                storeProfile = { ...(storeProfile || {}), bannerPos: e.target.value };
-                applyStoreIdentityToUI();
-                updateProfileLivePreview();
             });
 
             document.getElementById('form-store-profile').addEventListener('submit', handleProfileFormSubmit);
