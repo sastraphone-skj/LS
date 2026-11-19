@@ -223,6 +223,7 @@
             </div>
             <h2 id="pin-store-title" class="text-lg font-bold text-slate-900">Masukkan PIN Toko</h2>
             <p class="text-xs text-slate-500 mt-1">Masukkan PIN keamanan untuk membuka aplikasi</p>
+            <p id="pin-length-hint" class="text-[11px] font-semibold text-blue-600 mt-1">PIN 4 digit</p>
 
             <div id="pin-dots" class="flex justify-center gap-3 my-5">
                 <span class="w-3.5 h-3.5 rounded-full border-2 border-slate-300 transition-all"></span>
@@ -1153,6 +1154,31 @@
         }
 
         // ==================== IDENTITAS TOKO & FOTO ====================
+        function setAvatarImageState(imgEl, iconEl, photoUrl) {
+            if (!imgEl || !iconEl) return;
+            const cleanUrl = String(photoUrl || '').trim();
+            if (!cleanUrl) {
+                imgEl.removeAttribute('src');
+                imgEl.classList.add('hidden');
+                iconEl.classList.remove('hidden');
+                return;
+            }
+
+            imgEl.onerror = function() {
+                imgEl.classList.add('hidden');
+                iconEl.classList.remove('hidden');
+            };
+            imgEl.onload = function() {
+                imgEl.classList.remove('hidden');
+                iconEl.classList.add('hidden');
+            };
+            imgEl.src = cleanUrl;
+            if (imgEl.complete && imgEl.naturalWidth > 0) {
+                imgEl.classList.remove('hidden');
+                iconEl.classList.add('hidden');
+            }
+        }
+
         function applyStoreIdentityToUI() {
             const p = storeProfile || {
                 name: 'Toko Service HP',
@@ -1170,24 +1196,23 @@
             document.getElementById('pin-store-title').textContent = p.name;
 
             const photo = (p.photoUrl || '').trim();
-            const headerAvatar = document.getElementById('header-store-avatar');
-            const headerIcon = document.getElementById('header-store-icon');
-            const pinAvatar = document.getElementById('pin-screen-avatar');
-            const pinIcon = document.getElementById('pin-screen-icon');
+            setAvatarImageState(
+                document.getElementById('header-store-avatar'),
+                document.getElementById('header-store-icon'),
+                photo
+            );
+            setAvatarImageState(
+                document.getElementById('pin-screen-avatar'),
+                document.getElementById('pin-screen-icon'),
+                photo
+            );
+
             const bannerImg = document.getElementById('dashboard-banner-img');
             const bannerBg = document.getElementById('dashboard-banner-bg');
             const bannerVignette = document.getElementById('dashboard-banner-vignette');
             const bannerEmpty = document.getElementById('dashboard-banner-empty');
 
             if (photo) {
-                headerAvatar.src = photo;
-                headerAvatar.classList.remove('hidden');
-                headerIcon.classList.add('hidden');
-
-                pinAvatar.src = photo;
-                pinAvatar.classList.remove('hidden');
-                pinIcon.classList.add('hidden');
-
                 bannerImg.src = photo;
                 bannerImg.classList.remove('hidden');
                 if (bannerBg) bannerBg.classList.add('hidden');
@@ -1199,12 +1224,6 @@
                     bannerEmpty.classList.remove('hidden');
                 };
             } else {
-                headerAvatar.classList.add('hidden');
-                headerIcon.classList.remove('hidden');
-
-                pinAvatar.classList.add('hidden');
-                pinIcon.classList.remove('hidden');
-
                 bannerImg.classList.add('hidden');
                 if (bannerBg) bannerBg.classList.add('hidden');
                 if (bannerVignette) bannerVignette.classList.add('hidden');
@@ -1283,9 +1302,28 @@
         }
 
         // ==================== LAYAR KUNCI PIN ====================
+        function normalizePinValue(rawPin) {
+            return String(rawPin || '').replace(/[^0-9]/g, '').trim();
+        }
+
+        function getExpectedPin() {
+            const normalized = normalizePinValue(storeProfile && storeProfile.pin);
+            return normalized || '1234';
+        }
+
         function updatePinDots() {
+            const expectedPin = getExpectedPin();
+            const hintEl = document.getElementById('pin-length-hint');
+            if (hintEl) {
+                hintEl.textContent = `PIN ${expectedPin.length} digit`;
+            }
+
             const dots = document.querySelectorAll('#pin-dots span');
             dots.forEach((dot, idx) => {
+                const isActiveSlot = idx < expectedPin.length;
+                dot.classList.toggle('hidden', !isActiveSlot);
+                if (!isActiveSlot) return;
+
                 if (idx < enteredPin.length) {
                     dot.classList.remove('border-slate-300');
                     dot.classList.add('bg-blue-600', 'border-blue-600', 'scale-110');
@@ -1297,7 +1335,10 @@
         }
 
         function handlePinDigit(digit) {
-            const expectedPin = String((storeProfile && storeProfile.pin) || '1234');
+            const cleanDigit = String(digit || '').replace(/[^0-9]/g, '');
+            if (!cleanDigit) return;
+
+            const expectedPin = getExpectedPin();
             if (pinResetTimer) {
                 clearTimeout(pinResetTimer);
                 pinResetTimer = null;
@@ -1305,15 +1346,18 @@
             document.getElementById('pin-error').classList.add('hidden');
             document.getElementById('pin-card').classList.remove('animate-pin-shake');
 
-            if (enteredPin.length >= 6) return;
-            enteredPin += String(digit);
+            if (enteredPin.length >= expectedPin.length) {
+                enteredPin = '';
+            }
+            enteredPin += cleanDigit;
             updatePinDots();
 
             if (navigator.vibrate) {
                 try { navigator.vibrate(15); } catch (e) {}
             }
 
-            if (enteredPin === expectedPin) {
+            const normalizedEntered = normalizePinValue(enteredPin);
+            if (normalizedEntered === expectedPin) {
                 safeSessionSet(SESSION_UNLOCKED_KEY, '1');
                 enteredPin = '';
                 updatePinDots();
@@ -1321,9 +1365,10 @@
                 return;
             }
 
-            if (enteredPin.length >= expectedPin.length) {
+            if (normalizedEntered.length >= expectedPin.length) {
                 const errEl = document.getElementById('pin-error');
                 const cardEl = document.getElementById('pin-card');
+                errEl.textContent = `PIN salah (${expectedPin.length} digit), silakan coba lagi.`;
                 errEl.classList.remove('hidden');
                 cardEl.classList.remove('animate-pin-shake');
                 void cardEl.offsetWidth;
@@ -1853,22 +1898,16 @@
             document.getElementById('prof-hero-admin').textContent = 'Admin: ' + adminName;
             document.getElementById('prof-hero-phone').textContent = 'WA: ' + phone;
 
-            const avatarPrev = document.getElementById('prof-avatar-preview');
-            const avatarPlaceholder = document.getElementById('prof-avatar-placeholder');
-
-            if (photo) {
-                avatarPrev.src = photo;
-                avatarPrev.classList.remove('hidden');
-                avatarPlaceholder.classList.add('hidden');
-            } else {
-                avatarPrev.classList.add('hidden');
-                avatarPlaceholder.classList.remove('hidden');
-            }
+            setAvatarImageState(
+                document.getElementById('prof-avatar-preview'),
+                document.getElementById('prof-avatar-placeholder'),
+                photo
+            );
         }
 
         function handleProfileFormSubmit(e) {
             e.preventDefault();
-            const pinVal = document.getElementById('prof-pin').value.trim();
+            const pinVal = normalizePinValue(document.getElementById('prof-pin').value);
             if (!/^[0-9]{4,6}$/.test(pinVal)) {
                 showToast('PIN harus terdiri dari 4 hingga 6 digit angka.');
                 return;
@@ -1949,7 +1988,7 @@
             // Form pendaftaran toko baru
             document.getElementById('form-register-store').addEventListener('submit', (e) => {
                 e.preventDefault();
-                const pinVal = document.getElementById('reg-pin').value.trim();
+                const pinVal = normalizePinValue(document.getElementById('reg-pin').value);
                 if (!/^[0-9]{4,6}$/.test(pinVal)) {
                     showToast('PIN harus 4-6 digit angka.');
                     return;
@@ -1989,9 +2028,15 @@
                     submitBtn.textContent = 'Tarik Data Toko dari Google Sheets';
 
                     if (ok && storeProfile && storeProfile.name) {
-                        safeSessionSet(SESSION_UNLOCKED_KEY, '1');
-                        enterAppWorkspace();
-                        showToast('Data toko berhasil ditarik dari Google Sheets!');
+                        if (storeProfile.pin) {
+                            safeSessionRemove(SESSION_UNLOCKED_KEY);
+                            showPinScreen();
+                            showToast('Data toko berhasil ditarik! Silakan masukkan PIN toko.');
+                        } else {
+                            safeSessionSet(SESSION_UNLOCKED_KEY, '1');
+                            enterAppWorkspace();
+                            showToast('Data toko berhasil ditarik dari Google Sheets!');
+                        }
                     } else {
                         showToast('Gagal menghubungkan link database. Pastikan URL Web App valid.');
                     }
@@ -2000,13 +2045,15 @@
 
             // Keypad PIN ultra-sensitif (event delegation touchstart / pointerdown / mousedown + keyboard)
             const pinGrid = document.getElementById('pin-keypad-grid');
-            let lastPinTouchTime = 0;
+            let lastPinPressAt = 0;
 
             function triggerPinKeypadPress(e) {
-                if (e.type === 'mousedown' && Date.now() - lastPinTouchTime < 400) return;
-                if (e.type === 'touchstart' || e.type === 'pointerdown') {
-                    lastPinTouchTime = Date.now();
-                }
+                if (e.type === 'pointerdown' && e.pointerType === 'mouse') return;
+                if (e.type === 'mousedown' && e.button !== 0) return;
+
+                const now = Date.now();
+                if (now - lastPinPressAt < 90) return;
+                lastPinPressAt = now;
 
                 const btn = e.target.closest('button');
                 if (!btn) return;
