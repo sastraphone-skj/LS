@@ -411,16 +411,79 @@
                 </div>
             </section>
 
-            <!-- ==================== TAB 2: DATA SERVICE ==================== -->
+            <!-- ==================== TAB 2: DATA SERVICE & UANG KAS ==================== -->
             <section id="view-services" class="hidden space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-900">Data Service Handphone</h2>
-                        <p class="text-xs text-slate-500">Kelola antrian, update status via WhatsApp, dan cetak nota pelanggan.</p>
+                        <h2 class="text-lg font-bold text-slate-900">Data Service & Uang Kas</h2>
+                        <p class="text-xs text-slate-500">Kelola antrian service, modal kas awal, pengeluaran kas harian, dan cetak nota pelanggan.</p>
                     </div>
-                    <button type="button" id="btn-add-service" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md shadow-blue-600/20 transition flex items-center justify-center gap-2 cursor-pointer">
-                        <span>+ Tambah Data Service</span>
-                    </button>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="button" id="btn-add-expense" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold shadow-md shadow-rose-600/20 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                            <span>- Catat Pengeluaran Kas</span>
+                        </button>
+                        <button type="button" id="btn-add-service" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md shadow-blue-600/20 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                            <span>+ Tambah Data Service</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ringkasan Nominal Uang Kas, Pengeluaran & Sisa Uang Kas -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-2">
+                                <p class="text-xs font-medium text-slate-500">Nominal Uang Kas</p>
+                                <button type="button" id="btn-set-initial-cash" class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 text-[11px] font-semibold transition cursor-pointer">
+                                    Atur Kas Awal
+                                </button>
+                            </div>
+                            <p id="kas-total-in" class="text-xl font-bold text-blue-600 mt-1">Rp 0</p>
+                        </div>
+                        <span id="kas-initial-breakdown" class="inline-block mt-1.5 text-[11px] text-slate-400">Modal uang kas awal (terpisah dari pemasukan)</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500">Pengeluaran Uang Kas</p>
+                            <p id="kas-total-out" class="text-xl font-bold text-rose-600 mt-1">Rp 0</p>
+                        </div>
+                        <span class="inline-block mt-1.5 text-[11px] text-slate-400">Operasional, part & belanja</span>
+                    </div>
+                    <div class="bg-gradient-to-br from-emerald-600 to-teal-700 p-4 rounded-2xl text-white shadow-md flex flex-col justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-emerald-100">Sisa Uang Kas</p>
+                            <p id="kas-balance" class="text-xl sm:text-2xl font-bold mt-1">Rp 0</p>
+                        </div>
+                        <span class="inline-block mt-1.5 text-[11px] text-emerald-100">Nominal Uang Kas - Pengeluaran Kas</span>
+                    </div>
+                </div>
+
+                <!-- Riwayat Pengeluaran Uang Kas -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="px-4 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-900">Riwayat Pengeluaran Uang Kas</h3>
+                            <p class="text-[11px] text-slate-500">Tersimpan otomatis ke database Google Sheets</p>
+                        </div>
+                        <span id="expense-count-badge" class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-600 border border-rose-200">0 Catatan</span>
+                    </div>
+                    <div class="overflow-x-auto max-h-60">
+                        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-slate-50/70 border-b border-slate-200 text-slate-600 text-[11px] uppercase">
+                                    <th class="py-2.5 px-4">Tanggal</th>
+                                    <th class="py-2.5 px-4">Kategori</th>
+                                    <th class="py-2.5 px-4">Keterangan Pengeluaran</th>
+                                    <th class="py-2.5 px-4 text-right">Nominal</th>
+                                    <th class="py-2.5 px-4 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenses-table-body" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                    <div id="expenses-empty-state" class="p-6 text-center text-slate-400 text-xs">
+                        Belum ada catatan pengeluaran uang kas.
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
@@ -818,55 +881,131 @@
                     <span id="nota-doc-date">2026-01-01</span>
                 </div>
 
-                <div class="space-y-1.5">
-                    <div class="flex justify-between"><span class="text-slate-500">Pelanggan:</span><span id="nota-doc-customer" class="font-semibold"></span></div>
-                    <div class="flex justify-between"><span class="text-slate-500">No. WA:</span><span id="nota-doc-custphone"></span></div>
-                    <div class="flex justify-between"><span class="text-slate-500">Perangkat:</span><span id="nota-doc-device" class="font-semibold"></span></div>
-                    <div class="flex justify-between"><span class="text-slate-500">IMEI / SN:</span><span id="nota-doc-imei" class="font-mono"></span></div>
-                    <div class="flex justify-between"><span class="text-slate-500">Teknisi:</span><span id="nota-doc-tech"></span></div>
-                    <div class="flex justify-between"><span class="text-slate-500">Status:</span><span id="nota-doc-status" class="font-bold"></span></div>
+                <div class="grid grid-cols-2 gap-2 border-b border-dashed border-slate-300 pb-3">
+                    <div>
+                        <span class="text-slate-400 block text-[10px] uppercase">Pelanggan</span>
+                        <span id="nota-doc-customer" class="font-bold text-slate-800">-</span>
+                        <span id="nota-doc-custphone" class="block text-slate-500">-</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-slate-400 block text-[10px] uppercase">Perangkat</span>
+                        <span id="nota-doc-device" class="font-bold text-slate-800">-</span>
+                        <span id="nota-doc-imei" class="block font-mono text-[10px] text-slate-500">-</span>
+                    </div>
                 </div>
 
-                <div class="border-t border-dashed border-slate-300 pt-2.5 space-y-1">
-                    <p class="text-slate-500 font-semibold">Kelengkapan:</p>
-                    <p id="nota-doc-acc" class="text-slate-800"></p>
-                    <p class="text-slate-500 font-semibold pt-1">Keluhan / Tindakan:</p>
-                    <p id="nota-doc-issue" class="text-slate-800"></p>
+                <div class="space-y-1.5 border-b border-dashed border-slate-300 pb-3">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Teknisi:</span>
+                        <span id="nota-doc-tech" class="font-semibold">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Status Unit:</span>
+                        <span id="nota-doc-status" class="font-bold text-blue-600">-</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block">Kelengkapan:</span>
+                        <span id="nota-doc-acc" class="font-medium text-slate-800">-</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block">Keluhan / Tindakan:</span>
+                        <span id="nota-doc-issue" class="font-medium text-slate-800">-</span>
+                    </div>
                 </div>
 
-                <div class="border-t border-b border-dashed border-slate-300 py-2.5 flex justify-between items-center text-sm font-bold">
-                    <span>TOTAL BIAYA</span>
-                    <span id="nota-doc-total" class="text-blue-700">Rp 0</span>
+                <div class="flex justify-between items-center bg-blue-50 px-3.5 py-2.5 rounded-xl border border-blue-100">
+                    <span class="font-bold text-slate-700">TOTAL BIAYA SERVICE</span>
+                    <span id="nota-doc-total" class="font-extrabold text-base text-blue-700">Rp 0</span>
                 </div>
 
-                <div class="text-[10px] text-slate-500 space-y-1">
-                    <p class="font-bold text-slate-700">Syarat & Ketentuan Garansi:</p>
-                    <p id="nota-doc-terms" class="whitespace-pre-line leading-relaxed"></p>
+                <div class="text-[10px] text-slate-500 whitespace-pre-line leading-relaxed border-t border-slate-200 pt-2.5">
+                    <p class="font-semibold text-slate-700 mb-0.5">Syarat & Ketentuan Garansi:</p>
+                    <p id="nota-doc-terms"></p>
                 </div>
             </div>
 
-            <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2 no-print">
-                <button type="button" id="btn-wa-from-nota" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition cursor-pointer">
+            <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex gap-2 no-print">
+                <button type="button" id="btn-wa-from-nota" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition cursor-pointer">
                     Kirim WA
                 </button>
-                <button type="button" id="btn-print-nota" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition cursor-pointer">
+                <button type="button" id="btn-print-nota" class="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition cursor-pointer">
                     Cetak Nota
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- ==================== MODAL KONFIRMASI HAPUS ==================== -->
-    <div id="confirm-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 text-center space-y-4 border border-slate-200">
-            <div class="w-12 h-12 mx-auto rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xl">!</div>
-            <div>
-                <h3 id="confirm-title" class="font-bold text-base text-slate-900">Konfirmasi</h3>
-                <p id="confirm-message" class="text-xs text-slate-500 mt-1">Apakah Anda yakin ingin melanjutkan?</p>
+    <!-- ==================== MODAL PENGELUARAN UANG KAS ==================== -->
+    <div id="expense-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <h3 class="font-bold text-base text-slate-900">Catat Pengeluaran Uang Kas</h3>
+                <button type="button" id="btn-close-expense-modal" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition cursor-pointer">✕</button>
             </div>
-            <div class="flex justify-center gap-2.5 pt-2">
-                <button type="button" id="btn-confirm-cancel" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer">Batal</button>
-                <button type="button" id="btn-confirm-ok" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold transition cursor-pointer">Ya, Lanjutkan</button>
+            <form id="expense-form" class="p-6 space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal *</label>
+                        <input type="date" id="exp-date" required class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori *</label>
+                        <select id="exp-category" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                            <option value="Belanja Sparepart">Belanja Sparepart</option>
+                            <option value="Operasional Konter">Operasional Konter</option>
+                            <option value="Listrik & Internet">Listrik & Internet</option>
+                            <option value="Gaji / Kasbon Teknisi">Gaji / Kasbon Teknisi</option>
+                            <option value="Lain-lain">Lain-lain</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Keterangan Pengeluaran *</label>
+                    <input type="text" id="exp-note" required placeholder="Contoh: Beli LCD Redmi Note 10 / Token Listrik" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nominal Pengeluaran (Rp) *</label>
+                    <input type="number" id="exp-amount" min="1" required placeholder="Contoh: 150000" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                </div>
+                <div class="flex justify-end gap-2.5 pt-2">
+                    <button type="button" id="btn-cancel-expense-modal" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold transition cursor-pointer">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold shadow-md transition cursor-pointer">Simpan Pengeluaran</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL ATUR UANG KAS AWAL ==================== -->
+    <div id="initial-cash-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <h3 class="font-bold text-base text-slate-900">Atur Nominal Uang Kas Awal</h3>
+                <button type="button" id="btn-close-initial-cash-modal" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition cursor-pointer">✕</button>
+            </div>
+            <form id="initial-cash-form" class="p-6 space-y-4">
+                <div class="p-3 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-800 leading-relaxed">
+                    Masukkan nominal modal uang kas awal. Saldo kas ini terpisah dari pemasukan transaksi service dan hanya berkurang saat ada pengeluaran kas.
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nominal Uang Kas Awal (Rp) *</label>
+                    <input type="number" id="input-initial-cash" min="0" required placeholder="Contoh: 500000" class="w-full px-3.5 py-2.5 text-sm font-semibold border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div class="flex justify-end gap-2.5 pt-2">
+                    <button type="button" id="btn-cancel-initial-cash-modal" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold transition cursor-pointer">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-md transition cursor-pointer">Simpan Kas Awal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL KONFIRMASI ==================== -->
+    <div id="confirm-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 overflow-hidden p-6 space-y-4">
+            <h3 id="confirm-title" class="font-bold text-base text-slate-900">Konfirmasi</h3>
+            <p id="confirm-message" class="text-xs sm:text-sm text-slate-600 leading-relaxed">Apakah Anda yakin?</p>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button type="button" id="btn-confirm-cancel" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold transition cursor-pointer">Batal</button>
+                <button type="button" id="btn-confirm-ok" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-semibold shadow-md transition cursor-pointer">Ya, Lanjutkan</button>
             </div>
         </div>
     </div>
@@ -882,12 +1021,14 @@
     <script>
         const STORAGE_PROFILE_KEY = 'service_hp_profile_v3';
         const STORAGE_SERVICES_KEY = 'service_hp_records_v3';
+        const STORAGE_EXPENSES_KEY = 'service_hp_expenses_v3';
         const STORAGE_WEBAPP_URL_KEY = 'service_hp_webapp_url_v3';
         const STORAGE_THEME_KEY = 'service_hp_theme_v3';
         const SESSION_UNLOCKED_KEY = 'service_hp_unlocked_v3';
 
         let storeProfile = null;
         let servicesData = [];
+        let expensesData = [];
         let webAppUrl = '';
         let enteredPin = '';
         let pinResetTimer = null;
@@ -1014,6 +1155,7 @@
         // ==================== PENYIMPANAN & SINKRONISASI ONLINE ====================
         function saveLocalCache() {
             safeLocalSet(STORAGE_SERVICES_KEY, JSON.stringify(servicesData));
+            safeLocalSet(STORAGE_EXPENSES_KEY, JSON.stringify(expensesData));
             safeLocalSet(STORAGE_WEBAPP_URL_KEY, webAppUrl || '');
             if (storeProfile) {
                 try {
@@ -1041,6 +1183,14 @@
                 servicesData = [];
             }
 
+            try {
+                const rawExp = safeLocalGet(STORAGE_EXPENSES_KEY);
+                expensesData = rawExp ? JSON.parse(rawExp) : [];
+                if (!Array.isArray(expensesData)) expensesData = [];
+            } catch (e) {
+                expensesData = [];
+            }
+
             webAppUrl = safeLocalGet(STORAGE_WEBAPP_URL_KEY) || '';
         }
 
@@ -1048,7 +1198,8 @@
             saveLocalCache();
             const payload = {
                 profile: storeProfile,
-                services: servicesData
+                services: servicesData,
+                expenses: expensesData
             };
 
             if (isGasEnvironment()) {
@@ -1098,8 +1249,15 @@
                     .withSuccessHandler((res) => {
                         if (res && res.status === 'success') {
                             if (Array.isArray(res.services)) servicesData = res.services;
+                            if (Array.isArray(res.expenses)) expensesData = res.expenses;
                             if (res.profile && res.profile.name) {
-                                storeProfile = { ...(storeProfile || {}), ...res.profile };
+                                const serverPhoto = String(res.profile.photoUrl || '').trim();
+                                const localPhoto = String((storeProfile && storeProfile.photoUrl) || '').trim();
+                                storeProfile = {
+                                    ...(storeProfile || {}),
+                                    ...res.profile,
+                                    photoUrl: serverPhoto || localPhoto
+                                };
                             }
                             saveLocalCache();
                             setDbStatus('online', 'Google Sheets');
@@ -1135,8 +1293,15 @@
                     if (res && res.status === 'success') {
                         webAppUrl = urlToUse;
                         if (Array.isArray(res.services)) servicesData = res.services;
+                        if (Array.isArray(res.expenses)) expensesData = res.expenses;
                         if (res.profile && res.profile.name) {
-                            storeProfile = { ...(storeProfile || {}), ...res.profile };
+                            const serverPhoto = String(res.profile.photoUrl || '').trim();
+                            const localPhoto = String((storeProfile && storeProfile.photoUrl) || '').trim();
+                            storeProfile = {
+                                ...(storeProfile || {}),
+                                ...res.profile,
+                                photoUrl: serverPhoto || localPhoto
+                            };
                         }
                         saveLocalCache();
                         setDbStatus('online', 'Sheets Terhubung');
@@ -1249,7 +1414,6 @@
                     showToast('Format gambar tidak didukung browser.');
                 };
                 img.onload = function() {
-                    // Kompresi adaptif bertahap agar bebas upload ukuran & resolusi berapapun
                     const dimSteps = [1600, 1360, 1120, 900];
                     const qualitySteps = [0.88, 0.78, 0.68, 0.58];
                     let bestDataUrl = '';
@@ -1543,6 +1707,7 @@
         }
 
         function renderServicesTable() {
+            renderCashAndExpenses();
             updateTechnicianFilterOptions();
             const q = (document.getElementById('search-service').value || '').toLowerCase().trim();
             const statusFilter = document.getElementById('filter-status').value;
@@ -1605,6 +1770,106 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        // ==================== UANG KAS & PENGELUARAN KAS ====================
+        function renderCashAndExpenses() {
+            const initialCash = Number(storeProfile && storeProfile.initialCash) || 0;
+            const totalCashOut = expensesData
+                .reduce((sum, ex) => sum + (Number(ex.amount) || 0), 0);
+            const remainingCash = initialCash - totalCashOut;
+
+            document.getElementById('kas-total-in').textContent = formatRupiah(initialCash);
+            const breakdownEl = document.getElementById('kas-initial-breakdown');
+            if (breakdownEl) {
+                breakdownEl.textContent = 'Modal uang kas (terpisah dari pemasukan service)';
+            }
+            document.getElementById('kas-total-out').textContent = formatRupiah(totalCashOut);
+            document.getElementById('kas-balance').textContent = formatRupiah(remainingCash);
+            document.getElementById('expense-count-badge').textContent = `${expensesData.length} Catatan`;
+
+            const tbody = document.getElementById('expenses-table-body');
+            const emptyState = document.getElementById('expenses-empty-state');
+
+            if (expensesData.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            tbody.innerHTML = expensesData.map(ex => `
+                <tr class="hover:bg-slate-50/90 transition">
+                    <td class="py-2.5 px-4 text-xs font-mono text-slate-600 whitespace-nowrap">${escapeHtml(ex.date)}</td>
+                    <td class="py-2.5 px-4">
+                        <span class="inline-flex px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-700">${escapeHtml(ex.category)}</span>
+                    </td>
+                    <td class="py-2.5 px-4 text-xs text-slate-800">${escapeHtml(ex.note)}</td>
+                    <td class="py-2.5 px-4 text-right font-bold text-rose-600 whitespace-nowrap">- ${formatRupiah(ex.amount)}</td>
+                    <td class="py-2.5 px-4 text-right">
+                        <button type="button" data-exp-delete="${escapeHtml(ex.id)}" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-semibold transition cursor-pointer">Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openExpenseModal() {
+            document.getElementById('expense-form').reset();
+            document.getElementById('exp-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('expense-modal').classList.remove('hidden');
+        }
+
+        function closeExpenseModal() {
+            document.getElementById('expense-modal').classList.add('hidden');
+        }
+
+        function handleExpenseFormSubmit(e) {
+            e.preventDefault();
+            const amount = Number(document.getElementById('exp-amount').value) || 0;
+            if (amount <= 0) {
+                showToast('Masukkan nominal pengeluaran yang valid.');
+                return;
+            }
+
+            const newExpense = {
+                id: 'EXP-' + Date.now(),
+                date: document.getElementById('exp-date').value || new Date().toISOString().split('T')[0],
+                category: document.getElementById('exp-category').value,
+                note: document.getElementById('exp-note').value.trim(),
+                amount: amount
+            };
+
+            expensesData.unshift(newExpense);
+            closeExpenseModal();
+            renderCashAndExpenses();
+            syncToOnlineDatabase(() => {
+                showToast('Pengeluaran uang kas berhasil dicatat!');
+            });
+        }
+
+        function openInitialCashModal() {
+            const currentVal = Number(storeProfile && storeProfile.initialCash) || 0;
+            document.getElementById('input-initial-cash').value = currentVal;
+            document.getElementById('initial-cash-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('input-initial-cash').focus(), 50);
+        }
+
+        function closeInitialCashModal() {
+            document.getElementById('initial-cash-modal').classList.add('hidden');
+        }
+
+        function handleInitialCashSubmit(e) {
+            e.preventDefault();
+            const val = Math.max(0, Number(document.getElementById('input-initial-cash').value) || 0);
+            storeProfile = {
+                ...(storeProfile || {}),
+                initialCash: val
+            };
+            closeInitialCashModal();
+            renderCashAndExpenses();
+            syncToOnlineDatabase(() => {
+                showToast('Nominal uang kas awal disimpan ke database!');
+            });
         }
 
         function generateNextNotaNumber() {
@@ -2003,9 +2268,8 @@
                     tagline: document.getElementById('reg-tagline').value.trim() || 'Spesialis Service HP & Sparepart Bergaransi',
                     address: document.getElementById('reg-address').value.trim(),
                     terms: '1. Garansi service 14 hari untuk kerusakan yang sama.\n2. Barang yang tidak diambil lebih dari 30 hari di luar tanggung jawab kami.',
-                    photoUrl: '',
-                    bannerFit: 'auto',
-                    bannerPos: 'center'
+                    initialCash: 0,
+                    photoUrl: ''
                 };
 
                 safeSessionSet(SESSION_UNLOCKED_KEY, '1');
@@ -2043,24 +2307,21 @@
                 });
             });
 
-            // Keypad PIN ultra-sensitif (event delegation touchstart / pointerdown / mousedown + keyboard)
+            // Keypad PIN anti-dobel (single pointerup / click handler dengan debounce)
             const pinGrid = document.getElementById('pin-keypad-grid');
             let lastPinPressAt = 0;
 
-            function triggerPinKeypadPress(e) {
-                if (e.type === 'pointerdown' && e.pointerType === 'mouse') return;
-                if (e.type === 'mousedown' && e.button !== 0) return;
-
-                const now = Date.now();
-                if (now - lastPinPressAt < 90) return;
-                lastPinPressAt = now;
-
+            function handlePinButtonClick(e) {
                 const btn = e.target.closest('button');
                 if (!btn) return;
                 if (e.cancelable) e.preventDefault();
 
+                const now = Date.now();
+                if (now - lastPinPressAt < 180) return;
+                lastPinPressAt = now;
+
                 btn.classList.add('pin-key-pressed');
-                setTimeout(() => btn.classList.remove('pin-key-pressed'), 110);
+                setTimeout(() => btn.classList.remove('pin-key-pressed'), 120);
 
                 const digit = btn.getAttribute('data-key');
                 const action = btn.getAttribute('data-pin-action');
@@ -2074,9 +2335,11 @@
                 }
             }
 
-            pinGrid.addEventListener('touchstart', triggerPinKeypadPress, { passive: false });
-            pinGrid.addEventListener('pointerdown', triggerPinKeypadPress);
-            pinGrid.addEventListener('mousedown', triggerPinKeypadPress);
+            if (window.PointerEvent) {
+                pinGrid.addEventListener('pointerup', handlePinButtonClick);
+            } else {
+                pinGrid.addEventListener('click', handlePinButtonClick);
+            }
 
             document.addEventListener('keydown', (e) => {
                 const pinScreen = document.getElementById('pin-lock-screen');
@@ -2110,26 +2373,50 @@
                         applyStoreIdentityToUI();
                         renderDashboard();
                         renderServicesTable();
-                        showToast('Data tersinkron dengan Google Sheets!');
+                        showToast('Data berhasil disinkronkan dengan Google Sheets!');
                     } else {
-                        syncToOnlineDatabase(() => showToast('Data tersimpan.'));
+                        syncToOnlineDatabase(() => showToast('Sinkronisasi selesai.'));
                     }
                 });
             });
 
-            // Navigasi bawah
+            // Bottom Navigation Bar
             document.getElementById('bottom-nav-bar').addEventListener('click', (e) => {
-                const btn = e.target.closest('.nav-btn');
+                const btn = e.target.closest('button[data-tab]');
                 if (!btn) return;
-                const tab = btn.getAttribute('data-tab');
-                if (tab) switchTab(tab);
+                switchTab(btn.getAttribute('data-tab'));
             });
 
-            // Dashboard tombol pintasan
+            // Pintasan Dashboard
             document.getElementById('btn-dash-add').addEventListener('click', () => openServiceModal(null));
             document.getElementById('btn-dash-all').addEventListener('click', () => switchTab('services'));
 
-            // Data Service
+            // Data Service, Kas Awal & Pengeluaran Kas
+            document.getElementById('btn-set-initial-cash').addEventListener('click', openInitialCashModal);
+            document.getElementById('btn-close-initial-cash-modal').addEventListener('click', closeInitialCashModal);
+            document.getElementById('btn-cancel-initial-cash-modal').addEventListener('click', closeInitialCashModal);
+            document.getElementById('initial-cash-form').addEventListener('submit', handleInitialCashSubmit);
+
+            document.getElementById('btn-add-expense').addEventListener('click', openExpenseModal);
+            document.getElementById('btn-close-expense-modal').addEventListener('click', closeExpenseModal);
+            document.getElementById('btn-cancel-expense-modal').addEventListener('click', closeExpenseModal);
+            document.getElementById('expense-form').addEventListener('submit', handleExpenseFormSubmit);
+
+            document.getElementById('expenses-table-body').addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-exp-delete]');
+                if (!btn) return;
+                const expId = btn.getAttribute('data-exp-delete');
+                const expItem = expensesData.find(x => x.id === expId);
+                if (!expItem) return;
+
+                openConfirmModal('Hapus Pengeluaran Kas', `Hapus catatan pengeluaran "${expItem.note}" sebesar ${formatRupiah(expItem.amount)}?`, () => {
+                    expensesData = expensesData.filter(x => x.id !== expId);
+                    closeConfirmModal();
+                    renderCashAndExpenses();
+                    syncToOnlineDatabase(() => showToast('Catatan pengeluaran kas dihapus.'));
+                });
+            });
+
             document.getElementById('btn-add-service').addEventListener('click', () => openServiceModal(null));
             document.getElementById('search-service').addEventListener('input', renderServicesTable);
             document.getElementById('filter-status').addEventListener('change', renderServicesTable);
@@ -2244,6 +2531,7 @@
                             applyStoreIdentityToUI();
                             if (!document.getElementById('app-workspace').classList.contains('hidden')) {
                                 renderDashboard();
+                                renderServicesTable();
                             }
                         }
                     });
